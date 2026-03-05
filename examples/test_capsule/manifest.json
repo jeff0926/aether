@@ -1,0 +1,6 @@
+{
+    "id": "test-capsule-001",
+    "name": "Test Capsule",
+    "version": "1.0.0",
+    "description": "Minimal test capsule for framework validation"
+}
