@@ -62,8 +62,9 @@ def _extract_values(text: str) -> list[tuple[str, any, str]]:
         normalized = f"{m.group(3)}-{month_num:02d}-{int(m.group(2)):02d}"
         values.append((m.group(0), normalized, "date"))
 
-    # Capitalized names (skip common words)
-    skip = {"The", "This", "That", "These", "Those", "It", "He", "She", "They", "We", "You", "I"}
+    # Capitalized names (skip common words and pronouns)
+    skip = {"The", "This", "That", "These", "Those", "It", "He", "She", "They", "We", "You", "I",
+            "His", "Her", "Its", "Their", "Our", "Your", "My", "And", "But", "Or", "So", "If"}
     for m in re.finditer(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)\b', text):
         name = m.group(1)
         if name not in skip:
@@ -159,7 +160,14 @@ def deterministic_gate(statement: str, kg_nodes: list[dict]) -> dict:
 def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRESHOLD) -> dict:
     """
     Verify response against KG subgraph.
-    Returns {score, threshold, passed, total_statements, grounded_statements, statements, gaps}.
+
+    Statement categories:
+    - GROUNDED: has extractable values that match KG
+    - UNGROUNDED: has extractable values that DON'T match KG
+    - PERSONA: no extractable values (qualitative/interpretive)
+
+    Score = grounded / (grounded + ungrounded)
+    PERSONA statements excluded from ratio - they're expected behavior.
     """
     statements = split_statements(response)
 
@@ -167,37 +175,57 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
         return {
             "score": 0.0, "threshold": threshold, "passed": False,
             "total_statements": 0, "grounded_statements": 0,
+            "ungrounded_statements": 0, "persona_statements": 0, "persona_ratio": 0.0,
             "statements": [], "gaps": [{"text": response[:100], "reason": "no_statements"}],
         }
 
     results, gaps = [], []
-    grounded = 0
+    grounded, ungrounded, persona = 0, 0, 0
 
     for stmt in statements:
         gate = deterministic_gate(stmt, kg_nodes)
-        results.append({"text": stmt, "grounded": gate["matched"], "method": gate["method"]})
-        if gate["matched"]:
+
+        if gate["values_found"] == 0:
+            # PERSONA: no extractable values
+            persona += 1
+            results.append({"text": stmt, "grounded": None, "method": "persona", "category": "persona"})
+        elif gate["matched"]:
+            # GROUNDED: values match KG
             grounded += 1
-        elif gate.get("values_found", 0) > 0:
+            results.append({"text": stmt, "grounded": True, "method": gate["method"], "category": "grounded"})
+        else:
+            # UNGROUNDED: values don't match KG
+            ungrounded += 1
+            results.append({"text": stmt, "grounded": False, "method": gate["method"], "category": "ungrounded"})
             gaps.append({"text": stmt, "reason": "values_not_in_kg"})
 
-    score = grounded / len(statements)
+    # Score excludes persona statements
+    verifiable = grounded + ungrounded
+    score = grounded / verifiable if verifiable > 0 else 1.0  # All-persona = pass
+    persona_ratio = persona / len(statements) if statements else 0.0
+
     return {
         "score": round(score, 3),
         "threshold": threshold,
         "passed": score >= threshold,
         "total_statements": len(statements),
         "grounded_statements": grounded,
+        "ungrounded_statements": ungrounded,
+        "persona_statements": persona,
+        "persona_ratio": round(persona_ratio, 3),
         "statements": results,
         "gaps": gaps,
     }
 
 
 if __name__ == "__main__":
+    # Test with mix of grounded, ungrounded, and persona statements
     test_response = """
     Thomas Jefferson was born on April 13, 1743 in Virginia.
-    He served as the 3rd President of the United States.
-    Jefferson authored the Declaration of Independence in 1776.
+    He was a brilliant thinker and visionary leader.
+    Jefferson served as the 3rd President of the United States.
+    His ideas continue to inspire people around the world.
+    He authored the Declaration of Independence in 1776.
     """
     test_kg = [
         {"@id": "person:jefferson", "rdfs:label": "Thomas Jefferson", "birth_year": 1743, "birth_date": "1743-04-13", "role": "3rd President"},
@@ -207,6 +235,10 @@ if __name__ == "__main__":
     result = verify(test_response, test_kg)
     print(f"Score: {result['score']} (threshold: {result['threshold']})")
     print(f"Passed: {result['passed']}")
-    print(f"Grounded: {result['grounded_statements']}/{result['total_statements']}")
+    print(f"Grounded: {result['grounded_statements']}, Ungrounded: {result['ungrounded_statements']}, Persona: {result['persona_statements']}")
+    print(f"Persona ratio: {result['persona_ratio']} (expected ~20% for good responses)")
+    print(f"Gaps: {len(result['gaps'])}")
+    print("\nStatements:")
     for s in result["statements"]:
-        print(f"  [{'OK' if s['grounded'] else 'FAIL'}] {s['text'][:60]}...")
+        cat = s["category"].upper()
+        print(f"  [{cat:10}] {s['text'][:55]}...")
