@@ -1,0 +1,27 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#"
+  },
+  "@graph": [
+    {
+      "@id": "aether:Framework",
+      "@type": "aether:System",
+      "rdfs:label": "Aether Framework",
+      "rdfs:comment": "Adaptive Embodied Thinking Holistic Evolutionary Runtime"
+    },
+    {
+      "@id": "aether:Capsule",
+      "@type": "aether:Component",
+      "rdfs:label": "Capsule",
+      "aether:partOf": {"@id": "aether:Framework"},
+      "rdfs:comment": "A folder with 5 files defining an agent"
+    },
+    {
+      "@id": "aether:Pipeline",
+      "@type": "aether:Process",
+      "rdfs:label": "Pipeline",
+      "aether:stages": ["distill", "augment", "generate", "review"]
+    }
+  ]
+}

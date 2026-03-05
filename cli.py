@@ -6,7 +6,7 @@ import argparse
 import json
 from pathlib import Path
 
-from aether import Capsule, validate_folder
+from aether import Capsule, validate_folder, get_required_files
 from stamper import stamp_empty, stamp_from_source, validate_capsule
 from llm import make_llm_fn
 from kg import load_kg, stats as kg_stats
@@ -72,8 +72,10 @@ def cmd_info(args):
         print(f"Invalid capsule. Missing: {missing}")
         return
 
-    capsule = Capsule(args.capsule)
-    kg = load_kg(Path(args.capsule) / "kg.jsonld")
+    capsule_path = Path(args.capsule)
+    capsule = Capsule(capsule_path)
+    files = get_required_files(capsule_path.name)
+    kg = load_kg(capsule_path / files["kg"])
 
     print(f"ID: {capsule.id}")
     print(f"Name: {capsule.name}")
@@ -84,9 +86,8 @@ def cmd_info(args):
 
     # File sizes
     print("\nFiles:")
-    for key, filename in [("manifest", "manifest.json"), ("definition", "definition.json"),
-                          ("persona", "persona.json"), ("kb", "kb.md"), ("kg", "kg.jsonld")]:
-        size = (Path(args.capsule) / filename).stat().st_size
+    for key, filename in files.items():
+        size = (capsule_path / filename).stat().st_size
         print(f"  {filename}: {size} bytes")
 
 

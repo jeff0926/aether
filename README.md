@@ -38,16 +38,16 @@ echo "ANTHROPIC_API_KEY=your-key-here" > .env
 
 ```bash
 # Validate the example capsule
-python cli.py validate examples/test_capsule
+python cli.py validate examples/test-agent
 
 # Get capsule info
-python cli.py info examples/test_capsule
+python cli.py info examples/test-agent
 
 # Run a query (uses stub LLM by default)
-python cli.py run examples/test_capsule "What is Aether?"
+python cli.py run examples/test-agent "What is Aether?"
 
 # Run with real LLM
-python cli.py run examples/test_capsule "What is Aether?" --provider anthropic
+python cli.py run examples/test-agent "What is Aether?" --provider anthropic
 
 # Create a new empty capsule
 python cli.py stamp "My Agent" --output ./capsules
@@ -58,28 +58,30 @@ python cli.py stamp "My Agent" --source knowledge.md --output ./capsules
 
 ## Capsule Structure
 
-A capsule is a folder containing exactly 5 files:
+A capsule is a folder containing exactly 5 files. **Files are prefixed with the folder name:**
 
 ```
-my-agent-abc123/
-├── manifest.json      # Identity: id, name, version, created
-├── definition.json    # Behavior: pipeline config, AEC thresholds
-├── persona.json       # Personality: tone, style, constraints
-├── kb.md              # Knowledge Base: markdown content
-└── kg.jsonld          # Knowledge Graph: JSON-LD with @graph array
+jefferson/
+├── jefferson-manifest.json      # Identity: id, name, version, created
+├── jefferson-definition.json    # Behavior: pipeline config, AEC thresholds
+├── jefferson-persona.json       # Personality: tone, style, constraints
+├── jefferson-kb.md              # Knowledge Base: markdown content
+└── jefferson-kg.jsonld          # Knowledge Graph: JSON-LD with @graph array
 ```
 
-### manifest.json
+File naming pattern: `{folder-name}-{type}.{ext}`
+
+### {name}-manifest.json
 ```json
 {
-  "id": "my-agent-abc123",
-  "name": "My Agent",
+  "id": "jefferson",
+  "name": "Thomas Jefferson",
   "version": "1.0.0",
   "created": "2024-01-15T10:30:00"
 }
 ```
 
-### definition.json
+### {name}-definition.json
 ```json
 {
   "pipeline": {
@@ -96,7 +98,7 @@ my-agent-abc123/
 }
 ```
 
-### persona.json
+### {name}-persona.json
 ```json
 {
   "tone": "professional",
@@ -105,10 +107,10 @@ my-agent-abc123/
 }
 ```
 
-### kb.md
+### {name}-kb.md
 Markdown document containing the agent's knowledge. Paragraphs are searched during augmentation and matched to query entities.
 
-### kg.jsonld
+### {name}-kg.jsonld
 JSON-LD knowledge graph. Nodes are matched during augmentation and used for AEC verification.
 
 ```json
@@ -194,7 +196,7 @@ The KG has two zones:
 ```python
 from kg import load_kg, add_acquired, get_core_nodes, get_acquired_nodes
 
-kg = load_kg("capsule/kg.jsonld")
+kg = load_kg("jefferson/jefferson-kg.jsonld")
 
 # Add learned knowledge
 kg = add_acquired(kg, {

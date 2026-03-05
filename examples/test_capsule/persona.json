@@ -1,5 +1,0 @@
-{
-    "tone": "helpful",
-    "style": "concise",
-    "constraints": ["factual", "grounded"]
-}

@@ -8,13 +8,19 @@ import re
 import hashlib
 from pathlib import Path
 
-REQUIRED_FILES = {
-    "manifest": "manifest.json",
-    "definition": "definition.json",
-    "persona": "persona.json",
-    "kb": "kb.md",
-    "kg": "kg.jsonld",
+# File suffixes for capsule files: {folder-name}{suffix}
+REQUIRED_SUFFIXES = {
+    "manifest": "-manifest.json",
+    "definition": "-definition.json",
+    "persona": "-persona.json",
+    "kb": "-kb.md",
+    "kg": "-kg.jsonld",
 }
+
+
+def get_required_files(folder_name: str) -> dict:
+    """Derive filenames from folder name. Pattern: {folder-name}-{type}.{ext}"""
+    return {key: f"{folder_name}{suffix}" for key, suffix in REQUIRED_SUFFIXES.items()}
 
 
 class Capsule:
@@ -32,8 +38,11 @@ class Capsule:
         if not self.path.is_dir():
             raise ValueError(f"Capsule path must be a directory: {self.path}")
 
+        folder_name = self.path.name
+        required_files = get_required_files(folder_name)
+
         files = {}
-        for key, filename in REQUIRED_FILES.items():
+        for key, filename in required_files.items():
             filepath = self.path / filename
             if not filepath.exists():
                 raise FileNotFoundError(f"Missing: {filename}")
@@ -238,8 +247,9 @@ def validate_folder(path: str | Path) -> list[str]:
     """Check if a folder has all required capsule files. Returns missing files."""
     path = Path(path)
     if not path.is_dir():
-        return list(REQUIRED_FILES.values())
-    return [f for f in REQUIRED_FILES.values() if not (path / f).exists()]
+        return [f"{path.name}{s}" for s in REQUIRED_SUFFIXES.values()]
+    required_files = get_required_files(path.name)
+    return [f for f in required_files.values() if not (path / f).exists()]
 
 
 # -----------------------------------------------------------------------------
