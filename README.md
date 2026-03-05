@@ -58,23 +58,31 @@ python cli.py stamp "My Agent" --source knowledge.md --output ./capsules
 
 ## Capsule Structure
 
-A capsule is a folder containing exactly 5 files. **Files are prefixed with the folder name:**
+A capsule is a folder containing exactly 5 files. **Folder and file names follow the pattern:**
 
 ```
-jefferson/
-├── jefferson-manifest.json      # Identity: id, name, version, created
-├── jefferson-definition.json    # Behavior: pipeline config, AEC thresholds
-├── jefferson-persona.json       # Personality: tone, style, constraints
-├── jefferson-kb.md              # Knowledge Base: markdown content
-└── jefferson-kg.jsonld          # Knowledge Graph: JSON-LD with @graph array
+{slug}-v{version}-{uid8}/
 ```
 
-File naming pattern: `{folder-name}-{type}.{ext}`
+Where:
+- `slug`: Lowercase name with hyphens (e.g., "jefferson", "my-agent")
+- `version`: Semver string (e.g., "1.0.0")
+- `uid8`: First 8 chars of SHA256 hash for uniqueness
 
-### {name}-manifest.json
+Example:
+```
+jefferson-v1.0.0-a3f7c2d1/
+├── jefferson-v1.0.0-a3f7c2d1-manifest.json      # Identity
+├── jefferson-v1.0.0-a3f7c2d1-definition.json    # Behavior
+├── jefferson-v1.0.0-a3f7c2d1-persona.json       # Personality
+├── jefferson-v1.0.0-a3f7c2d1-kb.md              # Knowledge Base
+└── jefferson-v1.0.0-a3f7c2d1-kg.jsonld          # Knowledge Graph
+```
+
+### {id}-manifest.json
 ```json
 {
-  "id": "jefferson",
+  "id": "jefferson-v1.0.0-a3f7c2d1",
   "name": "Thomas Jefferson",
   "version": "1.0.0",
   "created": "2024-01-15T10:30:00"

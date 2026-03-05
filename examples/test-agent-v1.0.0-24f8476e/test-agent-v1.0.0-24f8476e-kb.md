@@ -1,4 +1,4 @@
-# Test Knowledge Base
+# Test Agent Knowledge Base
 
 This is a minimal knowledge base for testing the Aether framework.
 
@@ -8,12 +8,7 @@ Aether is an Adaptive Embodied Thinking Holistic Evolutionary Runtime. It provid
 
 ## Capsules
 
-A capsule is a folder containing 5 files that define an agent's identity and knowledge. Files are prefixed with the folder name:
-- {folder}-manifest.json: Metadata and identity
-- {folder}-definition.json: Behavioral configuration
-- {folder}-persona.json: Personality and tone
-- {folder}-kb.md: Knowledge base as markdown
-- {folder}-kg.jsonld: Knowledge graph as JSON-LD
+A capsule is a folder containing 5 files that define an agent's identity and knowledge. Files are prefixed with the folder name following the pattern: {name}-v{version}-{uid8}
 
 ## Pipeline
 

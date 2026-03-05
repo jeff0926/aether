@@ -131,7 +131,8 @@ def restamp(path: str | Path, new_version: str) -> Path:
             data = json.loads(old_filepath.read_text(encoding="utf-8"))
             if key == "manifest":
                 data = {**data, "id": new_id, "version": new_version,
-                        "previous_version": manifest["version"], "restamped": datetime.now().isoformat()}
+                        "previous_version": manifest["version"], "previous_id": manifest["id"],
+                        "restamped": datetime.now().isoformat()}
             _write_json(new_filepath, data)
 
     return new_path
@@ -139,13 +140,31 @@ def restamp(path: str | Path, new_version: str) -> Path:
 
 if __name__ == "__main__":
     import tempfile
+    import re
     with tempfile.TemporaryDirectory() as tmp:
-        cap1 = stamp_empty("Test Agent", tmp)
-        print(f"Created: {cap1.name} | Valid: {validate_capsule(cap1)['valid']}")
-        print(f"Files: {[f.name for f in cap1.iterdir()]}")
+        # Test stamp_empty
+        cap1 = stamp_empty("Jefferson Agent", tmp)
+        print(f"Created: {cap1.name}")
+
+        # Verify format: {slug}-v{version}-{uid8}
+        pattern = r"^[a-z0-9-]+-v\d+\.\d+\.\d+-[a-f0-9]{8}$"
+        assert re.match(pattern, cap1.name), f"ID format mismatch: {cap1.name}"
+        print(f"Format OK: {cap1.name}")
+
+        # Verify files are prefixed with folder name
+        files = [f.name for f in cap1.iterdir()]
+        print(f"Files: {files}")
+        assert all(f.startswith(cap1.name) for f in files), "Files not prefixed correctly"
+        print(f"Valid: {validate_capsule(cap1)['valid']}")
+
+        # Test restamp with lineage
         cap2 = restamp(cap1, "1.1.0")
-        files1 = get_required_files(cap1.name)
         files2 = get_required_files(cap2.name)
-        m1 = json.loads((cap1 / files1["manifest"]).read_text())
         m2 = json.loads((cap2 / files2["manifest"]).read_text())
-        print(f"Restamped: {m1['version']} -> {m2['version']}")
+
+        print(f"\nRestamped: {cap1.name} -> {cap2.name}")
+        print(f"Lineage: previous_id={m2.get('previous_id')}, previous_version={m2.get('previous_version')}")
+        assert m2["previous_id"] == cap1.name, "Lineage not tracked"
+        assert m2["previous_version"] == "1.0.0", "Previous version not tracked"
+        assert cap1.name != cap2.name, "UIDs should differ"
+        print("All tests passed!")

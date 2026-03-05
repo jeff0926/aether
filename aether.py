@@ -7,6 +7,7 @@ import json
 import re
 import hashlib
 from pathlib import Path
+from datetime import datetime
 
 # File suffixes for capsule files: {folder-name}{suffix}
 REQUIRED_SUFFIXES = {
@@ -237,10 +238,11 @@ class Capsule:
 # -----------------------------------------------------------------------------
 
 def generate_id(name: str, version: str = "1.0.0") -> str:
-    """Generate capsule ID from name and version."""
-    h = hashlib.sha256(f"{name}:{version}".encode()).hexdigest()[:12]
+    """Generate capsule ID: {slug}-v{version}-{uid8}."""
     slug = re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
-    return f"{slug}-{h}"
+    raw = f"{name}:{version}:{datetime.now().isoformat()}"
+    uid = hashlib.sha256(raw.encode()).hexdigest()[:8]
+    return f"{slug}-v{version}-{uid}"
 
 
 def validate_folder(path: str | Path) -> list[str]:
