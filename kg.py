@@ -1,11 +1,13 @@
 """
 KG - Knowledge Graph loader for Aether capsules.
-JSON-LD based with core/acquired zone separation.
+JSON-LD based with 5 knowledge origin types.
 """
 
 import json
 from pathlib import Path
 from datetime import datetime
+
+ORIGIN_TYPES = ["core", "acquired", "updated", "deprecated", "provenance"]
 
 EMPTY_KG = {
     "@context": {"rdfs": "http://www.w3.org/2000/01/rdf-schema#", "aether": "http://aether.dev/ontology#"},
@@ -73,14 +75,18 @@ def _search_values(obj, entities_lower: list[str]) -> bool:
     return False
 
 
-def add_acquired(kg: dict, triple: dict) -> dict:
+def add_knowledge(kg: dict, triple: dict, origin: str = "acquired") -> dict:
     """
-    Add acquired knowledge with provenance metadata.
+    Add knowledge with specified origin type and provenance metadata.
     Triple: {subject, predicate, object, confidence, aec_trigger}
+    Origin must be one of: core, acquired, updated, deprecated, provenance
     """
+    if origin not in ORIGIN_TYPES:
+        raise ValueError(f"Unknown origin: {origin}. Must be one of {ORIGIN_TYPES}")
+
     nodes = kg.setdefault("@graph", [])
     subject = triple.get("subject", "unknown")
-    node_id = f"aether:acquired/{subject.replace(' ', '_').lower()}"
+    node_id = f"aether:{origin}/{subject.replace(' ', '_').lower()}"
 
     # Find or create node
     existing = next((n for n in nodes if n.get("@id") == node_id), None)
@@ -93,7 +99,7 @@ def add_acquired(kg: dict, triple: dict) -> dict:
             "@id": node_id,
             "rdfs:label": subject,
             triple["predicate"]: triple["object"],
-            "aether:origin": "acquired",
+            "aether:origin": origin,
             "aether:confidence": triple.get("confidence", 0.5),
             "aether:acquired_date": datetime.now().isoformat(),
             "aether:aec_trigger": triple.get("aec_trigger", "unknown"),
@@ -101,14 +107,54 @@ def add_acquired(kg: dict, triple: dict) -> dict:
     return kg
 
 
+def add_acquired(kg: dict, triple: dict) -> dict:
+    """Convenience wrapper for add_knowledge with origin='acquired'."""
+    return add_knowledge(kg, triple, origin="acquired")
+
+
+def mark_deprecated(kg: dict, node_id: str, reason: str = "") -> dict:
+    """Mark an existing node as deprecated. Does NOT delete it."""
+    for node in get_nodes(kg):
+        if node.get("@id") == node_id:
+            node["aether:origin"] = "deprecated"
+            node["aether:deprecated_date"] = datetime.now().isoformat()
+            node["aether:deprecated_reason"] = reason
+            break
+    return kg
+
+
+def mark_updated(kg: dict, node_id: str, updates: dict) -> dict:
+    """Update an existing node's values and mark as updated."""
+    for node in get_nodes(kg):
+        if node.get("@id") == node_id:
+            for k, v in updates.items():
+                node[k] = v
+            node["aether:origin"] = "updated"
+            node["aether:updated_date"] = datetime.now().isoformat()
+            break
+    return kg
+
+
+def get_nodes_by_origin(kg: dict, origin: str) -> list[dict]:
+    """Return nodes with specified origin type."""
+    if origin == "core":
+        return [n for n in get_nodes(kg) if n.get("aether:origin", "core") == "core"]
+    return [n for n in get_nodes(kg) if n.get("aether:origin") == origin]
+
+
 def get_core_nodes(kg: dict) -> list[dict]:
     """Return nodes with origin: 'core' or no origin (original knowledge)."""
-    return [n for n in get_nodes(kg) if n.get("aether:origin", "core") == "core"]
+    return get_nodes_by_origin(kg, "core")
 
 
 def get_acquired_nodes(kg: dict) -> list[dict]:
     """Return nodes with origin: 'acquired' (learned through AEC)."""
-    return [n for n in get_nodes(kg) if n.get("aether:origin") == "acquired"]
+    return get_nodes_by_origin(kg, "acquired")
+
+
+def get_deprecated_nodes(kg: dict) -> list[dict]:
+    """Return nodes marked as deprecated."""
+    return get_nodes_by_origin(kg, "deprecated")
 
 
 def save_kg(kg: dict, path: str | Path) -> None:
@@ -118,28 +164,56 @@ def save_kg(kg: dict, path: str | Path) -> None:
 
 
 def stats(kg: dict) -> dict:
-    """Return KG statistics."""
+    """Return KG statistics for all 5 origin types."""
     nodes = get_nodes(kg)
     return {
         "total": len(nodes),
         "core": len([n for n in nodes if n.get("aether:origin", "core") == "core"]),
         "acquired": len([n for n in nodes if n.get("aether:origin") == "acquired"]),
+        "updated": len([n for n in nodes if n.get("aether:origin") == "updated"]),
+        "deprecated": len([n for n in nodes if n.get("aether:origin") == "deprecated"]),
+        "provenance": len([n for n in nodes if n.get("aether:origin") == "provenance"]),
     }
 
 
 if __name__ == "__main__":
-    kg = load_kg("examples/test_capsule/kg.jsonld")
-    print(f"Loaded: {stats(kg)}")
+    # Start with empty KG for testing
+    kg = {"@context": EMPTY_KG["@context"].copy(), "@graph": [
+        {"@id": "test:core1", "rdfs:label": "Core Node 1", "value": 100},
+        {"@id": "test:core2", "rdfs:label": "Core Node 2", "value": 200},
+    ]}
+    print(f"Initial: {stats(kg)}")
 
-    matches = query_nodes(kg, ["Aether", "Pipeline"])
-    print(f"Query matches: {[m.get('rdfs:label', m.get('@id')) for m in matches]}")
-
+    # Test add_acquired (convenience wrapper)
     kg = add_acquired(kg, {
-        "subject": "Test Fact",
+        "subject": "Acquired Fact",
         "predicate": "rdfs:comment",
         "object": "Learned via AEC",
         "confidence": 0.85,
-        "aec_trigger": "test",
+        "aec_trigger": "verification",
     })
-    print(f"After acquire: {stats(kg)}")
-    print(f"Acquired: {[n['rdfs:label'] for n in get_acquired_nodes(kg)]}")
+    print(f"After acquired: {stats(kg)}")
+
+    # Test add_knowledge with provenance origin
+    kg = add_knowledge(kg, {
+        "subject": "Source Document",
+        "predicate": "rdfs:comment",
+        "object": "External reference",
+        "confidence": 1.0,
+    }, origin="provenance")
+    print(f"After provenance: {stats(kg)}")
+
+    # Test mark_updated
+    kg = mark_updated(kg, "test:core1", {"value": 150, "rdfs:comment": "Value updated"})
+    print(f"After update: {stats(kg)}")
+
+    # Test mark_deprecated
+    kg = mark_deprecated(kg, "test:core2", reason="Outdated information")
+    print(f"After deprecate: {stats(kg)}")
+
+    # Show final state
+    print(f"\nFinal stats: {stats(kg)}")
+    print(f"Core nodes: {[n['rdfs:label'] for n in get_core_nodes(kg)]}")
+    print(f"Acquired nodes: {[n['rdfs:label'] for n in get_acquired_nodes(kg)]}")
+    print(f"Deprecated nodes: {[n['rdfs:label'] for n in get_deprecated_nodes(kg)]}")
+    print(f"All origin types: {ORIGIN_TYPES}")

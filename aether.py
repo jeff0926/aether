@@ -6,8 +6,13 @@ Core: Capsule class loads 5 files, runs 4-stage pipeline.
 import json
 import re
 import hashlib
+import time
 from pathlib import Path
 from datetime import datetime
+
+from aec import verify as aec_verify
+from kg import query_nodes as kg_query
+from education import queue_failure
 
 # File suffixes for capsule files: {folder-name}{suffix}
 REQUIRED_SUFFIXES = {
@@ -86,6 +91,7 @@ class Capsule:
 
     def run(self, input_text: str) -> dict:
         """Run full 4-stage pipeline. Returns context dict with all results."""
+        start_time = time.time()
         ctx = {
             "input": input_text,
             "distilled": {},
@@ -93,19 +99,46 @@ class Capsule:
             "generated": "",
             "review": {},
             "meta": {"capsule_id": self.id, "version": self.version},
+            "telemetry": {"start": start_time, "stages": {}},
         }
 
         cfg = self.files["definition"].get("pipeline", {})
 
         if cfg.get("distill", {}).get("enabled", True):
+            t0 = time.time()
             ctx = self.distill(ctx)
-        if cfg.get("augment", {}).get("enabled", True):
-            ctx = self.augment(ctx)
-        if cfg.get("generate", {}).get("enabled", True):
-            ctx = self.generate(ctx)
-        if cfg.get("review", {}).get("enabled", True):
-            ctx = self.review(ctx)
+            ctx["telemetry"]["stages"]["distill"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+                "entities_extracted": len(ctx["distilled"].get("entities", [])),
+            }
 
+        if cfg.get("augment", {}).get("enabled", True):
+            t0 = time.time()
+            ctx = self.augment(ctx)
+            ctx["telemetry"]["stages"]["augment"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+                "kb_matches": len(ctx["augmented"].get("kb", [])),
+                "kg_matches": len(ctx["augmented"].get("kg", [])),
+            }
+
+        if cfg.get("generate", {}).get("enabled", True):
+            t0 = time.time()
+            ctx = self.generate(ctx)
+            ctx["telemetry"]["stages"]["generate"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+                "prompt_chars": ctx.get("_prompt_len", 0),
+                "tokens_in": ctx.get("_tokens_in", 0),
+                "tokens_out": ctx.get("_tokens_out", 0),
+            }
+
+        if cfg.get("review", {}).get("enabled", True):
+            t0 = time.time()
+            ctx = self.review(ctx)
+            ctx["telemetry"]["stages"]["review"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+            }
+
+        ctx["telemetry"]["total_ms"] = round((time.time() - start_time) * 1000, 2)
         return ctx
 
     def distill(self, ctx: dict) -> dict:
@@ -165,15 +198,9 @@ class Capsule:
         kb_context = [p for _, p in kb_matches[:3]]
 
         # Search KG nodes
-        kg = self.files["kg"]
-        nodes = kg.get("@graph", [kg] if "@id" in kg else [])
-        kg_context = []
-        for node in nodes:
-            node_str = json.dumps(node).lower()
-            if any(e.lower() in node_str for e in entities):
-                kg_context.append(node)
-                if len(kg_context) >= 5:
-                    break
+        kg_context = kg_query(self.files["kg"], entities)
+        if len(kg_context) > 5:
+            kg_context = kg_context[:5]
 
         ctx["augmented"] = {
             "kb": kb_context,
@@ -208,24 +235,47 @@ class Capsule:
         parts.append("\nResponse:")
 
         prompt = "\n".join(parts)
-        ctx["generated"] = self.llm_fn(prompt)
+        ctx["_prompt_len"] = len(prompt)
+
+        result = self.llm_fn(prompt)
+        # Handle dict response (with tokens) or string response
+        if isinstance(result, dict):
+            ctx["generated"] = result.get("text", "")
+            ctx["_tokens_in"] = result.get("tokens_in", 0)
+            ctx["_tokens_out"] = result.get("tokens_out", 0)
+        else:
+            ctx["generated"] = result
+            ctx["_tokens_in"] = 0
+            ctx["_tokens_out"] = 0
+
         return ctx
 
     def review(self, ctx: dict) -> dict:
-        """Stage 4: Verify response quality."""
+        """Stage 4: Verify response quality via AEC."""
         response = ctx["generated"]
+        # Handle both dict and string from LLM
+        if isinstance(response, dict):
+            response_text = response.get("text", str(response))
+        else:
+            response_text = str(response)
+
         definition = self.files["definition"]
+        kg_nodes = ctx["augmented"].get("kg", [])
+        threshold = definition.get("review", {}).get("threshold", 0.8)
 
-        min_len = definition.get("review", {}).get("min_length", 10)
-        max_len = definition.get("review", {}).get("max_length", 10000)
+        # Run AEC verification against augmented KG subgraph
+        aec_result = aec_verify(response_text, kg_nodes, threshold)
 
-        grounded = len(response) > 10
-        length_ok = min_len <= len(response) <= max_len
+        # Queue failures for education
+        queued = False
+        if not aec_result["passed"]:
+            queue_failure(self.path, ctx["input"], response_text, aec_result)
+            queued = True
 
         ctx["review"] = {
-            "grounded": grounded,
-            "length_ok": length_ok,
-            "passed": grounded and length_ok,
+            "aec": aec_result,
+            "passed": aec_result["passed"],
+            "queued": queued,
         }
         return ctx
 
