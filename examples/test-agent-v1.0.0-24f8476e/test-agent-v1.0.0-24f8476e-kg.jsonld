@@ -14,14 +14,30 @@
       "@id": "aether:Capsule",
       "@type": "aether:Component",
       "rdfs:label": "Capsule",
-      "aether:partOf": {"@id": "aether:Framework"},
+      "aether:partOf": {
+        "@id": "aether:Framework"
+      },
       "rdfs:comment": "A folder with 5 files defining an agent"
     },
     {
       "@id": "aether:Pipeline",
       "@type": "aether:Process",
       "rdfs:label": "Pipeline",
-      "aether:stages": ["distill", "augment", "generate", "review"]
+      "aether:stages": [
+        "distill",
+        "augment",
+        "generate",
+        "review"
+      ]
+    },
+    {
+      "@id": "aether:acquired/stub_response",
+      "rdfs:label": "Stub response",
+      "has_character_count": "337",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T19:13:02.293754",
+      "aether:aec_trigger": "2026-03-05T18-53-55-348c4adf"
     }
   ]
 }

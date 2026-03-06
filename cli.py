@@ -186,6 +186,33 @@ def cmd_educate(args):
         print(f"Reason: {result['reason']}")
 
 
+def cmd_verify(args):
+    """Run standalone AEC verification."""
+    from aec import verify
+    from kg import get_nodes
+
+    # Load text (from arg or file)
+    text = args.text
+    if Path(text).exists():
+        text = Path(text).read_text(encoding="utf-8")
+
+    # Load reference KG
+    kg = load_kg(args.reference)
+    nodes = get_nodes(kg)
+
+    threshold = args.threshold or 0.8
+    result = verify(text, nodes, threshold)
+
+    print(f"AEC Score: {result['score']} (threshold: {result['threshold']})")
+    print(f"Passed: {result['passed']}")
+    print(f"Statements: {result['grounded_statements']}G / {result['ungrounded_statements']}U / {result['persona_statements']}P")
+    print(f"Persona Ratio: {result['persona_ratio']}")
+    if result['gaps']:
+        print(f"\nGaps ({len(result['gaps'])}):")
+        for g in result['gaps']:
+            print(f"  - {g['text'][:80]}...")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="aether", description="Aether Capsule Framework")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -229,6 +256,13 @@ def main():
     p_educate.add_argument("--provider", default="anthropic", help="LLM provider")
     p_educate.add_argument("--model", help="Model name")
     p_educate.set_defaults(func=cmd_educate)
+
+    # verify
+    p_verify = subparsers.add_parser("verify", help="Standalone AEC verification")
+    p_verify.add_argument("text", help="Text to verify (or path to text file)")
+    p_verify.add_argument("--reference", "-r", required=True, help="Reference KG file (.jsonld)")
+    p_verify.add_argument("--threshold", "-t", type=float, default=0.8)
+    p_verify.set_defaults(func=cmd_verify)
 
     args = parser.parse_args()
     args.func(args)

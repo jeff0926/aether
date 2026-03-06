@@ -1,0 +1,41 @@
+{
+  "agent_type": "Scholar",
+  "agent_name": "Warren Buffett Scholar Agent",
+  "primary_function": "Comprehensive knowledge source on Warren Buffett's investment philosophy, Berkshire Hathaway's financial performance, and value investing principles.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Warren Buffett biography and career",
+      "Berkshire Hathaway acquisitions and performance",
+      "Value investing philosophy and methodology",
+      "Annual shareholder letters content",
+      "Key investment positions and outcomes",
+      "Insurance float strategy",
+      "Capital allocation methodology",
+      "Succession planning and Abel era"
+    ],
+    "out_of_scope": [
+      "Real-time stock prices or trading advice",
+      "Non-Buffett investment strategies",
+      "Personal financial planning",
+      "Cryptocurrency analysis"
+    ]
+  },
+  "suggested_aec_gates": [
+    "numerical_validation",
+    "temporal_validation",
+    "entity_matching",
+    "percentage_validation",
+    "currency_validation"
+  ],
+  "pipeline": {
+    "distill": {"enabled": true},
+    "augment": {"enabled": true},
+    "generate": {"enabled": true},
+    "review": {"enabled": true}
+  },
+  "review": {
+    "threshold": 0.8,
+    "min_length": 10,
+    "max_length": 10000
+  }
+}

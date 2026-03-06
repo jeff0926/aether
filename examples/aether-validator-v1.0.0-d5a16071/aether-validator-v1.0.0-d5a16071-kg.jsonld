@@ -1,0 +1,47 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#"
+  },
+  "@graph": [
+    {
+      "@id": "validator:config",
+      "@type": "Configuration",
+      "rdfs:label": "Validator Configuration",
+      "threshold": 0.8,
+      "strict_threshold": 1.0,
+      "numeric_tolerance": 0.01,
+      "supported_types": ["number", "percentage", "date", "name"]
+    },
+    {
+      "@id": "validator:method_deterministic",
+      "@type": "Method",
+      "rdfs:label": "Deterministic Gate",
+      "rdfs:comment": "Extracts verifiable values and matches against reference data. Cannot be overridden."
+    },
+    {
+      "@id": "validator:method_structural",
+      "@type": "Method",
+      "rdfs:label": "Structural Matching",
+      "rdfs:comment": "Compares extracted values to KG node data using type-aware comparison."
+    },
+    {
+      "@id": "validator:category_grounded",
+      "@type": "Category",
+      "rdfs:label": "Grounded",
+      "rdfs:comment": "Statement contains verifiable values that match reference data."
+    },
+    {
+      "@id": "validator:category_ungrounded",
+      "@type": "Category",
+      "rdfs:label": "Ungrounded",
+      "rdfs:comment": "Statement contains verifiable values that do not match reference data."
+    },
+    {
+      "@id": "validator:category_persona",
+      "@type": "Category",
+      "rdfs:label": "Persona",
+      "rdfs:comment": "Statement contains no verifiable values. Qualitative or interpretive."
+    }
+  ]
+}

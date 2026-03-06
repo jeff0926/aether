@@ -1,0 +1,703 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "schema": "https://schema.org",
+    "aether": "http://aether.dev/ontology#"
+  },
+  "@graph": [
+    {
+      "@id": "person:warren_buffett",
+      "@type": "Person",
+      "rdfs:label": "Warren Buffett",
+      "birth_date": "1930-08-30",
+      "birth_year": 1930,
+      "birth_place": "Omaha, Nebraska",
+      "age_at_ceo_transition": 95,
+      "first_stock_purchase_age": 11,
+      "first_stock": "Cities Service Preferred",
+      "first_stock_price": 38,
+      "partnership_initial_capital": 105000,
+      "personal_contribution": 100,
+      "partnership_start_year": 1956,
+      "berkshire_control_year": 1965,
+      "education": [
+        "Wharton School",
+        "University of Nebraska",
+        "Columbia Business School"
+      ],
+      "degrees": [
+        "B.S. Business Administration 1950",
+        "M.S. Economics 1951"
+      ]
+    },
+    {
+      "@id": "org:berkshire_hathaway",
+      "@type": "Organization",
+      "rdfs:label": "Berkshire Hathaway",
+      "founded_as_textile": true,
+      "buffett_control_year": 1965,
+      "cagr_1965_2025": 19.8,
+      "sp500_cagr_1965_2025": 10.4,
+      "market_cap_2025": 1100000000000,
+      "cash_reserve_2025": 373300000000,
+      "float_2025": 176000000000,
+      "corporate_tax_2024": 26800000000,
+      "operating_earnings_2024": 47400000000,
+      "dollar_growth_1000_since_1965": 48500000,
+      "sp500_dollar_growth_1000_since_1965": 399702,
+      "years_outperformed_sp500": 40,
+      "total_years_measured": 60,
+      "brk_b_price_march_2026": 500,
+      "headquarters": "Omaha, Nebraska"
+    },
+    {
+      "@id": "person:charlie_munger",
+      "@type": "Person",
+      "rdfs:label": "Charlie Munger",
+      "role": "Vice Chairman",
+      "met_buffett_year": 1959,
+      "influence": "Transition from cigar butts to quality investing"
+    },
+    {
+      "@id": "person:benjamin_graham",
+      "@type": "Person",
+      "rdfs:label": "Benjamin Graham",
+      "role": "Professor, Columbia Business School",
+      "rdfs:comment": "Father of value investing, author of The Intelligent Investor",
+      "key_chapters": [
+        "Chapter 8 - Mr. Market",
+        "Chapter 20 - Margin of Safety"
+      ]
+    },
+    {
+      "@id": "person:greg_abel",
+      "@type": "Person",
+      "rdfs:label": "Greg Abel",
+      "role": "CEO of Berkshire Hathaway",
+      "ceo_effective_date": "2026-01-01",
+      "previous_role": "Oversaw non-insurance operations"
+    },
+    {
+      "@id": "person:todd_combs",
+      "@type": "Person",
+      "rdfs:label": "Todd Combs",
+      "role": "Former GEICO CEO and Investment Manager",
+      "departure_date": "2025-12",
+      "new_role": "Head of Strategic Investment Group, JPMorgan Chase",
+      "jpmorgan_fund_size": 10000000000,
+      "portfolio_managed": 30000000000
+    },
+    {
+      "@id": "person:ted_weschler",
+      "@type": "Person",
+      "rdfs:label": "Ted Weschler",
+      "role": "Investment Manager",
+      "portfolio_percentage": 6
+    },
+    {
+      "@id": "person:ajit_jain",
+      "@type": "Person",
+      "rdfs:label": "Ajit Jain",
+      "role": "Vice Chairman, Insurance Operations"
+    },
+    {
+      "@id": "acq:sees_candies",
+      "@type": "Acquisition",
+      "rdfs:label": "See's Candies",
+      "year": 1972,
+      "purchase_price": 25000000,
+      "revenue_at_acquisition": 31300000,
+      "pretax_profit_at_acquisition": 4000000,
+      "cumulative_pretax_profit_by_2007": 1350000000
+    },
+    {
+      "@id": "acq:geico",
+      "@type": "Acquisition",
+      "rdfs:label": "GEICO",
+      "year": 1996,
+      "purchase_price": 2300000000,
+      "note": "Remaining 49%",
+      "premiums_1995": 2800000000,
+      "underwriting_profit_2025": 2200000000
+    },
+    {
+      "@id": "acq:bnsf",
+      "@type": "Acquisition",
+      "rdfs:label": "BNSF Railway",
+      "year": 2010,
+      "purchase_price": 44000000000,
+      "cash_component": 22000000000,
+      "revenue_2010": 16850000000,
+      "net_operating_cash_flow_2025": 8100000000,
+      "dividend_to_berkshire_2025": 4400000000
+    },
+    {
+      "@id": "acq:precision_castparts",
+      "@type": "Acquisition",
+      "rdfs:label": "Precision Castparts",
+      "year": 2016,
+      "purchase_price": 37200000000,
+      "revenue_2015": 10000000000,
+      "writedown_2021": 10000000000
+    },
+    {
+      "@id": "acq:national_indemnity",
+      "@type": "Acquisition",
+      "rdfs:label": "National Indemnity Company",
+      "year": 1967,
+      "rdfs:comment": "First insurance acquisition, began the float strategy"
+    },
+    {
+      "@id": "stake:apple",
+      "@type": "EquityStake",
+      "rdfs:label": "Apple",
+      "ticker": "AAPL",
+      "initial_year": 2016,
+      "q4_2025_value": 61961000000,
+      "portfolio_percentage": 22.6,
+      "shares_q4_2025": 227917808,
+      "position_trimmed_2024": 73
+    },
+    {
+      "@id": "stake:american_express",
+      "@type": "EquityStake",
+      "rdfs:label": "American Express",
+      "ticker": "AXP",
+      "initial_year": 1964,
+      "q4_2025_value": 56088000000,
+      "portfolio_percentage": 20.46,
+      "dividends_2025": 479000000
+    },
+    {
+      "@id": "stake:coca_cola",
+      "@type": "EquityStake",
+      "rdfs:label": "Coca-Cola",
+      "ticker": "KO",
+      "initial_year": 1988,
+      "initial_investment": 1300000000,
+      "q4_2025_value": 27964000000,
+      "portfolio_percentage": 10.2,
+      "shares_held": 400000000,
+      "annual_dividends_2025": 1000000000,
+      "coca_cola_revenue_1988": 8300000000,
+      "coca_cola_net_income_1988": 1040000000
+    },
+    {
+      "@id": "stake:bank_of_america",
+      "@type": "EquityStake",
+      "rdfs:label": "Bank of America",
+      "ticker": "BAC",
+      "initial_year": 2011,
+      "q4_2025_value": 28451000000,
+      "portfolio_percentage": 10.38
+    },
+    {
+      "@id": "perf:2008",
+      "@type": "AnnualPerformance",
+      "rdfs:label": "2008 Performance",
+      "year": 2008,
+      "berkshire_return": -31.78,
+      "sp500_return": -37.0,
+      "context": "Great Financial Crisis",
+      "goldman_sachs_investment": 5000000000
+    },
+    {
+      "@id": "perf:2020",
+      "@type": "AnnualPerformance",
+      "rdfs:label": "2020 Performance",
+      "year": 2020,
+      "berkshire_return": 2.42,
+      "sp500_return": 18.4,
+      "context": "COVID-19 recovery"
+    },
+    {
+      "@id": "perf:2024",
+      "@type": "AnnualPerformance",
+      "rdfs:label": "2024 Performance",
+      "year": 2024,
+      "berkshire_return": 25.49,
+      "context": "Record operating earnings"
+    },
+    {
+      "@id": "perf:2025",
+      "@type": "AnnualPerformance",
+      "rdfs:label": "2025 Performance",
+      "year": 2025,
+      "berkshire_return": 10.85,
+      "sp500_return": 20.0,
+      "context": "Record cash stance, succession discount"
+    },
+    {
+      "@id": "concept:economic_moat",
+      "@type": "Concept",
+      "rdfs:label": "Economic Moat",
+      "rdfs:comment": "Durable competitive advantage protecting profit margins"
+    },
+    {
+      "@id": "concept:margin_of_safety",
+      "@type": "Concept",
+      "rdfs:label": "Margin of Safety",
+      "rdfs:comment": "Purchase at price significantly below intrinsic value"
+    },
+    {
+      "@id": "concept:circle_of_competence",
+      "@type": "Concept",
+      "rdfs:label": "Circle of Competence",
+      "rdfs:comment": "Invest only in businesses you thoroughly understand"
+    },
+    {
+      "@id": "concept:intrinsic_value",
+      "@type": "Concept",
+      "rdfs:label": "Intrinsic Value",
+      "rdfs:comment": "Discounted value of cash extractable during remaining business life"
+    },
+    {
+      "@id": "concept:owner_earnings",
+      "@type": "Concept",
+      "rdfs:label": "Owner Earnings",
+      "rdfs:comment": "Reported earnings + depreciation - capex required to maintain competitive position"
+    },
+    {
+      "@id": "concept:insurance_float",
+      "@type": "Concept",
+      "rdfs:label": "Insurance Float",
+      "rdfs:comment": "Money held between premium collection and claims payment, deployed as leverage"
+    },
+    {
+      "@id": "concept:buffett_rule",
+      "@type": "Concept",
+      "rdfs:label": "Buffett Rule",
+      "year": 2011,
+      "buffett_tax_rate": 17.4,
+      "rdfs:comment": "Households earning over $1M should pay at least 30% tax rate"
+    },
+    {
+      "@id": "work:shareholder_letters",
+      "@type": "Work",
+      "rdfs:label": "Annual Shareholder Letters",
+      "start_year": 1965,
+      "end_year": 2025,
+      "author": "Warren Buffett"
+    },
+    {
+      "@id": "work:essays_of_buffett",
+      "@type": "Work",
+      "rdfs:label": "The Essays of Warren Buffett: Lessons for Corporate America",
+      "editor": "Lawrence Cunningham"
+    },
+    {
+      "@id": "work:superinvestors_speech",
+      "@type": "Work",
+      "rdfs:label": "The Superinvestors of Graham-and-Doddsville",
+      "year": 1984,
+      "type": "Speech",
+      "rdfs:comment": "Quantitative rebuttal to Efficient Market Hypothesis"
+    },
+    {
+      "@id": "work:intelligent_investor",
+      "@type": "Work",
+      "rdfs:label": "The Intelligent Investor",
+      "author": "Benjamin Graham",
+      "key_chapters": [
+        "Chapter 8 - Mr. Market",
+        "Chapter 20 - Margin of Safety"
+      ]
+    },
+    {
+      "@id": "location:omaha",
+      "@type": "Location",
+      "rdfs:label": "Omaha, Nebraska",
+      "rdfs:comment": "Berkshire Hathaway headquarters, Buffett's lifelong home"
+    },
+    {
+      "@id": "event:pacificorp_wildfire",
+      "@type": "Event",
+      "rdfs:label": "PacifiCorp Wildfire Liabilities",
+      "estimated_liability": 55000000000,
+      "rdfs:comment": "Significant legal overhang for energy segment"
+    },
+    {
+      "@id": "aether:acquired/charlie_munger",
+      "rdfs:label": "Charlie Munger",
+      "convinced": "Warren Buffett",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:19:07.138377",
+      "aether:aec_trigger": "2026-03-05T20-57-46-91d26687",
+      "helped_understand": "See's Candies acquisition strategy",
+      "aether:updated": "2026-03-05T21:39:33.455485",
+      "said_about": "luckiest guy he knew",
+      "stated_reason": "figured out power of compounding early"
+    },
+    {
+      "@id": "aether:acquired/warren_buffett",
+      "rdfs:label": "Warren Buffett",
+      "was_student_of": "Ben Graham",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:19:07.138415",
+      "aether:aec_trigger": "2026-03-05T20-57-46-91d26687",
+      "learned": "paying up for quality",
+      "aether:updated": "2026-03-05T21:37:51.743039",
+      "jokes_about": "waistline as proof of See's quality"
+    },
+    {
+      "@id": "aether:acquired/see's_candies",
+      "rdfs:label": "See's Candies",
+      "has": "pricing flexibility",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:19:07.138430",
+      "aether:aec_trigger": "2026-03-05T20-57-46-91d26687",
+      "aether:updated": "2026-03-05T21:38:42.021992",
+      "initially_priced_at": "30 million",
+      "sold_for": "25 million",
+      "purchased_by": "Berkshire Hathaway",
+      "generated": "2 billion in pre-tax earnings",
+      "proved": "quality investment principle",
+      "is_type_of": "beloved brand",
+      "has_property": "incredible pricing power",
+      "taught_lesson_about": "beauty of great business",
+      "can_perform": "raise prices year after year",
+      "served_as": "graduate school education",
+      "cost": "$25 million",
+      "located_in": "California",
+      "characterized_as": "overpriced by critics",
+      "demonstrated": "pricing power",
+      "described_as": "prototype of a dream business"
+    },
+    {
+      "@id": "aether:acquired/customers",
+      "rdfs:label": "customers",
+      "behavior_towards": "kept coming back despite price increases",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:37:51.743035",
+      "aether:aec_trigger": "2026-03-05T21-12-14-6e93f047"
+    },
+    {
+      "@id": "aether:acquired/best_investments",
+      "rdfs:label": "best investments",
+      "can_be_found": "shopping mall",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:37:51.743042",
+      "aether:aec_trigger": "2026-03-05T21-12-14-6e93f047"
+    },
+    {
+      "@id": "aether:acquired/$25_million",
+      "rdfs:label": "$25 million",
+      "compared_to": "three times annual earnings",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:38:42.021978",
+      "aether:aec_trigger": "2026-03-05T21-14-38-23a037ec",
+      "characterized_as": "best business school tuition",
+      "aether:updated": "2026-03-05T21:38:42.022000"
+    },
+    {
+      "@id": "aether:acquired/$25_million_investment",
+      "rdfs:label": "$25 million investment",
+      "provided": "education in quality business",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:38:42.021996",
+      "aether:aec_trigger": "2026-03-05T21-14-38-23a037ec"
+    },
+    {
+      "@id": "aether:acquired/$1,000",
+      "rdfs:label": "$1,000",
+      "would_grow_to": "$300,000",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:39:33.455451",
+      "aether:aec_trigger": "2026-03-05T21-15-09-a6fb36bd"
+    },
+    {
+      "@id": "aether:acquired/$300,000",
+      "rdfs:label": "$300,000",
+      "growth_from": "index",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:39:33.455476",
+      "aether:aec_trigger": "2026-03-05T21-15-09-a6fb36bd"
+    },
+    {
+      "@id": "aether:acquired/power_of_compounding",
+      "rdfs:label": "power of compounding",
+      "characteristic": "starts small but becomes remarkable",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-05T21:39:33.455489",
+      "aether:aec_trigger": "2026-03-05T21-15-09-a6fb36bd"
+    }
+  ],
+  "knowledge_graph_triples": [
+    {
+      "subject": "Warren Buffett",
+      "predicate": "FOUNDED",
+      "object": "Buffett Partnerships Ltd.",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "CONTROLS",
+      "object": "Berkshire Hathaway",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "MENTORED_BY",
+      "object": "Benjamin Graham",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "PARTNERED_WITH",
+      "object": "Charlie Munger",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ACQUIRED",
+      "object": "See's Candies",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ACQUIRED",
+      "object": "GEICO",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ACQUIRED",
+      "object": "BNSF Railway",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ACQUIRED",
+      "object": "Precision Castparts",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ACQUIRED",
+      "object": "National Indemnity Company",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "INVESTED_IN",
+      "object": "Apple",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "INVESTED_IN",
+      "object": "Coca-Cola",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "INVESTED_IN",
+      "object": "American Express",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "INVESTED_IN",
+      "object": "Bank of America",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ADVOCATED",
+      "object": "Economic Moat",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ADVOCATED",
+      "object": "Margin of Safety",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ADVOCATED",
+      "object": "Circle of Competence",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ADVOCATED",
+      "object": "Intrinsic Value",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "ADVOCATED",
+      "object": "Buffett Rule",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "BORN_IN",
+      "object": "Omaha, Nebraska",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Warren Buffett",
+      "predicate": "WROTE",
+      "object": "Annual Shareholder Letters",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Greg Abel",
+      "predicate": "SUCCEEDED",
+      "object": "Warren Buffett",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Greg Abel",
+      "predicate": "SERVES_AS",
+      "object": "CEO of Berkshire Hathaway",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Todd Combs",
+      "predicate": "DEPARTED_TO",
+      "object": "JPMorgan Chase",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Charlie Munger",
+      "predicate": "INFLUENCED",
+      "object": "Warren Buffett",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Benjamin Graham",
+      "predicate": "MENTORED",
+      "object": "Warren Buffett",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Berkshire Hathaway",
+      "predicate": "ACHIEVED_CAGR",
+      "object": "19.8% (1965-2025)",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Berkshire Hathaway",
+      "predicate": "REPORTED_CASH",
+      "object": "$373.3 billion (2025)",
+      "confidence": "stated"
+    },
+    {
+      "subject": "Berkshire Hathaway",
+      "predicate": "REPORTED_FLOAT",
+      "object": "$176 billion (2025)",
+      "confidence": "stated"
+    }
+  ],
+  "entity_registry": [
+    {
+      "canonical_name": "Warren Buffett",
+      "type": "Person",
+      "aliases": [
+        "Buffett",
+        "Oracle of Omaha"
+      ]
+    },
+    {
+      "canonical_name": "Berkshire Hathaway",
+      "type": "Organization",
+      "aliases": [
+        "BRK",
+        "BRK.A",
+        "BRK.B",
+        "Berkshire"
+      ]
+    },
+    {
+      "canonical_name": "Charlie Munger",
+      "type": "Person",
+      "aliases": [
+        "Munger"
+      ]
+    },
+    {
+      "canonical_name": "Benjamin Graham",
+      "type": "Person",
+      "aliases": [
+        "Graham"
+      ]
+    },
+    {
+      "canonical_name": "Greg Abel",
+      "type": "Person",
+      "aliases": [
+        "Abel"
+      ]
+    },
+    {
+      "canonical_name": "See's Candies",
+      "type": "Organization",
+      "aliases": [
+        "See's"
+      ]
+    },
+    {
+      "canonical_name": "GEICO",
+      "type": "Organization",
+      "aliases": []
+    },
+    {
+      "canonical_name": "BNSF Railway",
+      "type": "Organization",
+      "aliases": [
+        "BNSF",
+        "Burlington Northern Santa Fe"
+      ]
+    },
+    {
+      "canonical_name": "Precision Castparts",
+      "type": "Organization",
+      "aliases": [
+        "PCC"
+      ]
+    },
+    {
+      "canonical_name": "Apple",
+      "type": "Organization",
+      "aliases": [
+        "AAPL"
+      ]
+    },
+    {
+      "canonical_name": "Coca-Cola",
+      "type": "Organization",
+      "aliases": [
+        "KO",
+        "Coke"
+      ]
+    },
+    {
+      "canonical_name": "Economic Moat",
+      "type": "Concept",
+      "aliases": [
+        "moat",
+        "competitive advantage"
+      ]
+    },
+    {
+      "canonical_name": "Margin of Safety",
+      "type": "Concept",
+      "aliases": [
+        "safety margin"
+      ]
+    }
+  ]
+}

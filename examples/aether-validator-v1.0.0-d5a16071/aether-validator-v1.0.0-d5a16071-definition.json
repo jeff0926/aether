@@ -1,0 +1,35 @@
+{
+  "agent_type": "Validator",
+  "agent_name": "Aether Validator Agent",
+  "primary_function": "Validates LLM-generated content against structured reference data using deterministic entailment checking.",
+  "domain_boundaries": {
+    "authoritative": [
+      "LLM output verification",
+      "factual grounding analysis",
+      "schema validation",
+      "hallucination detection",
+      "knowledge gap identification"
+    ],
+    "out_of_scope": [
+      "content generation",
+      "creative writing",
+      "opinion assessment"
+    ]
+  },
+  "suggested_aec_gates": [
+    "entity_matching",
+    "temporal_validation",
+    "numerical_validation"
+  ],
+  "pipeline": {
+    "distill": {"enabled": true},
+    "augment": {"enabled": true},
+    "generate": {"enabled": false},
+    "review": {"enabled": true}
+  },
+  "review": {
+    "threshold": 1.0,
+    "min_length": 1,
+    "max_length": 100000
+  }
+}

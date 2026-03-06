@@ -1,0 +1,14 @@
+{
+  "id": "buffett-v1.0.0-scholar",
+  "name": "buffett",
+  "version": "1.0.0",
+  "created": "2026-03-05T20:00:00",
+  "framework_version": "0.2.0",
+  "source": "Deep Research Prompt v3.0 — Gemini Deep Research output",
+  "subject": "Warren Buffett",
+  "areas_of_focus": [
+    "Investment philosophy",
+    "Berkshire Hathaway annual returns",
+    "Key acquisitions and financial outcomes"
+  ]
+}

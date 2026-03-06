@@ -1,0 +1,39 @@
+{
+  "agent_type": "Scholar",
+  "agent_name": "Thomas Jefferson Scholar Agent",
+  "primary_function": "To serve as a comprehensive knowledge source on Thomas Jefferson's political, scientific, and architectural contributions.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Declaration of Independence drafting process",
+      "French diplomatic residency 1784-1789",
+      "Jeffersonian political philosophy",
+      "Natural rights theory",
+      "Monticello and Palladian architecture",
+      "Virginia Dynasty political succession",
+      "Scientific data collection and meteorology",
+      "Sally Hemings controversy",
+      "Age of Enlightenment intellectual networks"
+    ],
+    "out_of_scope": [
+      "Modern political commentary",
+      "Unrelated historical figures of the 20th century",
+      "Fictionalized historical narratives"
+    ]
+  },
+  "suggested_aec_gates": [
+    "temporal_validation",
+    "entity_matching",
+    "citation_verification"
+  ],
+  "pipeline": {
+    "distill": {"enabled": true},
+    "augment": {"enabled": true},
+    "generate": {"enabled": true},
+    "review": {"enabled": true}
+  },
+  "review": {
+    "threshold": 0.8,
+    "min_length": 10,
+    "max_length": 10000
+  }
+}

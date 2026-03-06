@@ -35,6 +35,17 @@ def _extract_values(text: str) -> list[tuple[str, any, str]]:
     """Extract verifiable values: (original, normalized, type)."""
     values = []
 
+    # Numbers with magnitude words (million, billion, trillion)
+    magnitude = {"million": 1e6, "billion": 1e9, "trillion": 1e12, "thousand": 1e3}
+    mag_pattern = r'\$?\s*(\d+(?:[.,]\d+)?)\s*(million|billion|trillion|thousand)\b'
+    for m in re.finditer(mag_pattern, text, re.I):
+        try:
+            num = float(m.group(1).replace(",", ""))
+            mult = magnitude[m.group(2).lower()]
+            values.append((m.group(0).strip(), num * mult, "number"))
+        except (ValueError, KeyError):
+            pass
+
     # Numbers (integers and decimals)
     for m in re.finditer(r'\b(\d{1,3}(?:,\d{3})*(?:\.\d+)?|\d+(?:\.\d+)?)\b', text):
         try:

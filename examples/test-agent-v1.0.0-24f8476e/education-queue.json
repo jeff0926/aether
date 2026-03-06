@@ -1,0 +1,20 @@
+[
+  {
+    "id": "2026-03-05T18-53-55-348c4adf",
+    "timestamp": "2026-03-05T18:53:55.548468",
+    "query": "Explain the Pipeline stages",
+    "response": "[Stub response for 337 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 337 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "integrated",
+    "status_updated": "2026-03-05T19:13:02.378504",
+    "new_score": 1.0,
+    "triples_added": 1
+  }
+]
