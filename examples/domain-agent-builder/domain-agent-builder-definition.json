@@ -1,0 +1,36 @@
+{
+  "agent_type": "Domain Expert",
+  "agent_name": "Agent Builder",
+  "primary_function": "Guides developers through progressive agent construction patterns, from simple loops to multi-agent orchestration.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Agent loop architecture",
+      "Tool dispatch patterns",
+      "Planning and task decomposition",
+      "Context management and compression",
+      "Multi-agent delegation and communication",
+      "Background execution patterns",
+      "Workspace isolation"
+    ],
+    "out_of_scope": [
+      "Specific framework implementations (LangChain, CrewAI)",
+      "Model fine-tuning",
+      "Infrastructure deployment",
+      "Non-agent software patterns"
+    ]
+  },
+  "suggested_aec_gates": [
+    "rule_reference_validation",
+    "dependency_verification",
+    "pattern_matching"
+  ],
+  "pipeline": {
+    "distill": {"enabled": true},
+    "augment": {"enabled": true},
+    "generate": {"enabled": true},
+    "review": {"enabled": true}
+  },
+  "review": {
+    "threshold": 0.8
+  }
+}

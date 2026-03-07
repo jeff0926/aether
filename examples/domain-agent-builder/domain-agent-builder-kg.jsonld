@@ -1,0 +1,252 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    },
+    "pattern_type": "aether:pattern_type"
+  },
+  "@graph": [
+    {
+      "@id": "aether:s01",
+      "@type": "Rule",
+      "rdfs:label": "One loop & Bash is all you need",
+      "description": "one tool + one loop = an agent",
+      "requires": [],
+      "pattern_type": "loop",
+      "teaches": [
+        "aether:concept_agent_loop"
+      ]
+    },
+    {
+      "@id": "aether:s02",
+      "@type": "Rule",
+      "rdfs:label": "Adding a tool means adding one handler",
+      "description": "the loop stays the same; new tools register into the dispatch map",
+      "requires": [
+        "aether:s01"
+      ],
+      "pattern_type": "dispatch",
+      "teaches": [
+        "aether:concept_tool_dispatch"
+      ]
+    },
+    {
+      "@id": "aether:s03",
+      "@type": "Rule",
+      "rdfs:label": "An agent without a plan drifts",
+      "description": "list the steps first, then execute; completion doubles",
+      "requires": [
+        "aether:s01"
+      ],
+      "pattern_type": "planning",
+      "teaches": [
+        "aether:concept_planning"
+      ]
+    },
+    {
+      "@id": "aether:s04",
+      "@type": "Rule",
+      "rdfs:label": "Break big tasks down; each subtask gets a clean context",
+      "description": "subagents use independent messages[], keeping main conversation clean",
+      "requires": [
+        "aether:s01",
+        "aether:s03"
+      ],
+      "pattern_type": "decomposition",
+      "teaches": [
+        "aether:concept_planning"
+      ]
+    },
+    {
+      "@id": "aether:s05",
+      "@type": "Rule",
+      "rdfs:label": "Load knowledge when you need it, not upfront",
+      "description": "inject via tool_result, not the system prompt",
+      "requires": [
+        "aether:s01",
+        "aether:s02"
+      ],
+      "pattern_type": "knowledge_injection",
+      "teaches": [
+        "aether:concept_context_management"
+      ]
+    },
+    {
+      "@id": "aether:s06",
+      "@type": "Rule",
+      "rdfs:label": "Context will fill up; you need a way to make room",
+      "description": "three-layer compression strategy for infinite sessions",
+      "requires": [
+        "aether:s01",
+        "aether:s05"
+      ],
+      "pattern_type": "compression",
+      "teaches": [
+        "aether:concept_context_management"
+      ]
+    },
+    {
+      "@id": "aether:s07",
+      "@type": "Rule",
+      "rdfs:label": "Break big goals into small tasks, order them, persist to disk",
+      "description": "file-based task graph with dependencies for multi-agent collaboration",
+      "requires": [
+        "aether:s03",
+        "aether:s04"
+      ],
+      "pattern_type": "task_graph",
+      "teaches": [
+        "aether:concept_task_graph"
+      ]
+    },
+    {
+      "@id": "aether:s08",
+      "@type": "Rule",
+      "rdfs:label": "Run slow operations in the background; the agent keeps thinking",
+      "description": "daemon threads run commands, inject notifications on completion",
+      "requires": [
+        "aether:s01",
+        "aether:s02"
+      ],
+      "pattern_type": "concurrency",
+      "teaches": [
+        "aether:concept_agent_loop"
+      ]
+    },
+    {
+      "@id": "aether:s09",
+      "@type": "Rule",
+      "rdfs:label": "When the task is too big for one, delegate to teammates",
+      "description": "persistent teammates + async mailboxes",
+      "requires": [
+        "aether:s04",
+        "aether:s07"
+      ],
+      "pattern_type": "delegation",
+      "teaches": [
+        "aether:concept_multi_agent"
+      ]
+    },
+    {
+      "@id": "aether:s10",
+      "@type": "Rule",
+      "rdfs:label": "Teammates need shared communication rules",
+      "description": "one request-response pattern drives all negotiation",
+      "requires": [
+        "aether:s09"
+      ],
+      "pattern_type": "protocol",
+      "teaches": [
+        "aether:concept_multi_agent"
+      ]
+    },
+    {
+      "@id": "aether:s11",
+      "@type": "Rule",
+      "rdfs:label": "Teammates scan the board and claim tasks themselves",
+      "description": "no need for the lead to assign each one",
+      "requires": [
+        "aether:s09",
+        "aether:s10"
+      ],
+      "pattern_type": "autonomous_claiming",
+      "teaches": [
+        "aether:concept_multi_agent"
+      ]
+    },
+    {
+      "@id": "aether:s12",
+      "@type": "Rule",
+      "rdfs:label": "Each works in its own directory, no interference",
+      "description": "tasks manage goals, worktrees manage directories, bound by ID",
+      "requires": [
+        "aether:s11"
+      ],
+      "pattern_type": "isolation",
+      "teaches": [
+        "aether:concept_workspace_isolation"
+      ]
+    },
+    {
+      "@id": "aether:concept_agent_loop",
+      "@type": "Concept",
+      "rdfs:label": "Agent Loop",
+      "description": "The fundamental message-tool-response cycle that drives all agent behavior"
+    },
+    {
+      "@id": "aether:concept_tool_dispatch",
+      "@type": "Concept",
+      "rdfs:label": "Tool Dispatch",
+      "description": "Pattern for registering and routing tool calls to handler functions"
+    },
+    {
+      "@id": "aether:concept_planning",
+      "@type": "Concept",
+      "rdfs:label": "Planning",
+      "description": "Generating and executing ordered step sequences before acting"
+    },
+    {
+      "@id": "aether:concept_context_management",
+      "@type": "Concept",
+      "rdfs:label": "Context Management",
+      "description": "Strategies for loading, compressing, and archiving conversation context"
+    },
+    {
+      "@id": "aether:concept_task_graph",
+      "@type": "Concept",
+      "rdfs:label": "Task Graph",
+      "description": "Persistent dependency-ordered task structures for complex goal execution"
+    },
+    {
+      "@id": "aether:concept_multi_agent",
+      "@type": "Concept",
+      "rdfs:label": "Multi-Agent",
+      "description": "Patterns for delegation, communication protocols, and autonomous task claiming across agent teams"
+    },
+    {
+      "@id": "aether:concept_workspace_isolation",
+      "@type": "Concept",
+      "rdfs:label": "Workspace Isolation",
+      "description": "Each agent operates in its own directory to prevent interference during parallel execution"
+    },
+    {
+      "@id": "aether:acquired/agent",
+      "rdfs:label": "Agent",
+      "requires": "asynchronous task handling patterns",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:44:08.750576",
+      "aether:aec_trigger": "2026-03-07T01-27-13-46710f9e",
+      "can_have": "background execution capabilities",
+      "aether:updated": "2026-03-07T01:44:08.750609"
+    },
+    {
+      "@id": "aether:acquired/background_execution_capabilities",
+      "rdfs:label": "background execution capabilities",
+      "implemented_through": "asynchronous task handling patterns",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:44:08.750596",
+      "aether:aec_trigger": "2026-03-07T01-27-13-46710f9e"
+    },
+    {
+      "@id": "aether:acquired/background_processes",
+      "rdfs:label": "Background processes",
+      "tracked_via": "temporary files",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:47:56.345169",
+      "aether:aec_trigger": "2026-03-07T01-35-41-404987f2",
+      "can_be": "terminated",
+      "aether:updated": "2026-03-07T01:47:56.345205"
+    }
+  ]
+}

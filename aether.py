@@ -174,9 +174,21 @@ class Capsule:
         elif "json" in text_lower:
             fmt = "json"
 
+        # Keyword extraction: significant lowercase words from query
+        stop_words = {"what", "how", "when", "where", "who", "why",
+                      "is", "are", "was", "were", "do", "does", "did",
+                      "the", "a", "an", "to", "of", "in", "for", "on",
+                      "and", "or", "but", "not", "my", "i", "me", "it",
+                      "this", "that", "with", "from", "by", "at", "can",
+                      "should", "would", "could", "need", "before", "after",
+                      "much", "many", "some", "all", "any", "about"}
+        keywords = [w.lower() for w in words
+                    if w.lower() not in stop_words and len(w) > 2]
+
         ctx["distilled"] = {
             "intent": intent,
             "entities": entities,
+            "keywords": keywords,
             "brevity": any(w in text_lower for w in ["brief", "short", "concise"]),
             "format": fmt,
         }
@@ -185,20 +197,21 @@ class Capsule:
     def augment(self, ctx: dict) -> dict:
         """Stage 2: Enrich with KB and KG context."""
         entities = ctx["distilled"].get("entities", [])
+        search_terms = entities + ctx["distilled"].get("keywords", [])
 
         # Search KB paragraphs
         paragraphs = [p.strip() for p in self.files["kb"].split("\n\n") if p.strip()]
         kb_matches = []
         for para in paragraphs:
             para_lower = para.lower()
-            score = sum(1 for e in entities if e.lower() in para_lower)
+            score = sum(1 for t in search_terms if t.lower() in para_lower)
             if score > 0:
                 kb_matches.append((score, para))
         kb_matches.sort(reverse=True, key=lambda x: x[0])
         kb_context = [p for _, p in kb_matches[:3]]
 
         # Search KG nodes
-        kg_context = kg_query(self.files["kg"], entities)
+        kg_context = kg_query(self.files["kg"], search_terms)
         if len(kg_context) > 5:
             kg_context = kg_context[:5]
 
@@ -222,16 +235,36 @@ class Capsule:
 
         parts.append("\nIMPORTANT: Use exact figures, dates, and names from the provided knowledge. Do not round, approximate, or paraphrase numerical values. Cite precisely.")
 
+        constraints = self.files["persona"].get("constraints", [])
+        if constraints:
+            parts.append("\nYou MUST follow these rules:")
+            for c in constraints:
+                # Expand terse slugs into clear instructions
+                expanded = c.replace("-", " ").strip()
+                parts.append(f"- {expanded}")
+
         if aug.get("kb"):
             parts.append("\nKnowledge:")
             for kb in aug["kb"]:
                 parts.append(f"- {kb[:200]}...")
 
         if aug.get("kg"):
-            parts.append("\nConcepts:")
+            parts.append("\nReference Data (cite these exactly):")
             for node in aug["kg"]:
                 label = node.get("rdfs:label", node.get("@id", "?"))
-                parts.append(f"- {label}")
+                # Build a compact summary of key properties
+                props = []
+                for k, v in node.items():
+                    if k.startswith("@") or k.startswith("aether:") or k == "rdfs:label":
+                        continue
+                    if isinstance(v, (str, int, float, bool)):
+                        props.append(f"{k}: {v}")
+                    elif isinstance(v, list) and len(v) <= 5:
+                        props.append(f"{k}: {v}")
+                if props:
+                    parts.append(f"- {label} ({'; '.join(props[:5])})")
+                else:
+                    parts.append(f"- {label}")
 
         parts.append(f"\nQuery: {ctx['input']}")
         parts.append("\nResponse:")

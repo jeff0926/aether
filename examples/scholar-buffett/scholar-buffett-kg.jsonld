@@ -325,9 +325,11 @@
       "aether:acquired_date": "2026-03-05T21:19:07.138377",
       "aether:aec_trigger": "2026-03-05T20-57-46-91d26687",
       "helped_understand": "See's Candies acquisition strategy",
-      "aether:updated": "2026-03-05T21:39:33.455485",
+      "aether:updated": "2026-03-07T01:08:12.892790",
       "said_about": "luckiest guy he knew",
-      "stated_reason": "figured out power of compounding early"
+      "stated_reason": "figured out power of compounding early",
+      "influenced": "Warren Buffett",
+      "advocated": "buying wonderful business at fair price"
     },
     {
       "@id": "aether:acquired/warren_buffett",
@@ -430,6 +432,42 @@
       "aether:confidence": 0.8,
       "aether:acquired_date": "2026-03-05T21:39:33.455489",
       "aether:aec_trigger": "2026-03-05T21-15-09-a6fb36bd"
+    },
+    {
+      "@id": "aether:acquired/ben_graham",
+      "rdfs:label": "Ben Graham",
+      "associated_with": "cigar-butt investing strategy",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:08:12.892775",
+      "aether:aec_trigger": "2026-03-05T21-19-24-6767711d"
+    },
+    {
+      "@id": "aether:acquired/cigar-butt_investing",
+      "rdfs:label": "cigar-butt investing",
+      "focuses_on": "stocks below book value",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:08:12.892783",
+      "aether:aec_trigger": "2026-03-05T21-19-24-6767711d"
+    },
+    {
+      "@id": "aether:acquired/candy_company_acquisition",
+      "rdfs:label": "candy company acquisition",
+      "cost": "25 million",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:08:12.892796",
+      "aether:aec_trigger": "2026-03-05T21-19-24-6767711d"
+    },
+    {
+      "@id": "aether:acquired/candy_company",
+      "rdfs:label": "candy company",
+      "had_tangible_assets": "8 million",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-07T01:08:12.892802",
+      "aether:aec_trigger": "2026-03-05T21-19-24-6767711d"
     }
   ],
   "knowledge_graph_triples": [

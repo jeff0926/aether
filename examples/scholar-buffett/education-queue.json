@@ -191,6 +191,90 @@
         "reason": "values_not_in_kg"
       }
     ],
+    "status": "integrated",
+    "status_updated": "2026-03-07T01:08:12.899728",
+    "new_score": 0.889,
+    "triples_added": 6
+  },
+  {
+    "id": "2026-03-07T01-05-26-fc8fbd46",
+    "timestamp": "2026-03-07T01:05:26.725406",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "Well now, that's a question that takes me back to one of our finest moments in capital allocation. In 1972, Berkshire Hathaway paid $25 million for See's Candies, and let me tell you, it was worth every penny.\n\nNow, I'll be straight with you - Charlie Munger had to do some arm-twisting to get me to pay that price. See, the company was only earning about $4 million pre-tax at the time, which meant we were paying what seemed like a pretty full price. My old cigar-butt mentality was kicking in, and I was worried we were paying too much for a business that had maybe $8 million in tangible assets.\n\nBut Charlie, bless him, saw what I was missing. He understood that See's had something special - a brand that could command premium prices and generate cash year after year without requiring much additional capital investment. That $25 million purchase taught me one of the most valuable lessons of my investing career: it's far better to buy a wonderful company at a fair price than a fair company at a wonderful price.\n\nOver the years, See's has earned us many times that initial $25 million investment, proving that sometimes the best deals are the ones where you pay what looks like full freight upfront but get decades of compounding returns on the back end.",
+    "aec_score": 0.444,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "Well now, that's a question that takes me back to one of our finest moments in capital allocation",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "Now, I'll be straight with you - Charlie Munger had to do some arm-twisting to get me to pay that price",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "My old cigar-butt mentality was kicking in, and I was worried we were paying too much for a business that had maybe $8 million in tangible assets",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "But Charlie, bless him, saw what I was missing",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "That $25 million purchase taught me one of the most valuable lessons of my investing career: it's far better to buy a wonderful company at a fair price than a fair company at a wonderful price",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-07T01-11-07-c4709d8d",
+    "timestamp": "2026-03-07T01:11:07.097799",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "Well now, that's a wonderful question about one of our sweetest investments - quite literally! \n\nYou know, See's Candies has been such a marvelous teacher for Charlie and me about the beauty of businesses with pricing power and customer loyalty. When we bought See's back in 1972, we paid $25 million for that wonderful California candy company.\n\nNow, I'll tell you, at the time some folks thought we were paying a pretty penny - after all, See's only had about $4 million in net tangible assets. But Charlie and I could see something special there: a business with incredible brand loyalty where customers would pay premium prices for those delicious chocolates, especially around holidays.\n\nThat $25 million investment taught us an invaluable lesson about paying up for quality businesses with strong competitive moats. See's has been like a cash cow for us ever since, throwing off hundreds of millions in earnings that we've been able to redeploy into other wonderful businesses over the decades.\n\nIt's funny how some of your best investments look expensive at the time but turn out to be incredible bargains when you look back. See's Candies was certainly one of those for Berkshire.",
+    "aec_score": 0.625,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "Well now, that's a wonderful question about one of our sweetest investments - quite literally",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "But Charlie and I could see something special there: a business with incredible brand loyalty where customers would pay premium prices for those delicious chocolates, especially around holidays",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "That $25 million investment taught us an invaluable lesson about paying up for quality businesses with strong competitive moats",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-07T01-38-55-226f28c7",
+    "timestamp": "2026-03-07T01:38:55.554955",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "Well, you know, that's one of those interesting stories where the numbers tell a tale about negotiation and value. We actually paid $25 million for See's Candies, even though we had initially priced it at $30 million.\n\nNow, that might sound backwards to some folks - paying less than what you thought it was worth - but sometimes that's just how deals work out. The important thing wasn't haggling over those few million dollars. What mattered was recognizing that See's had something special: real pricing flexibility in their business.\n\nAnd boy, did that turn out to be prescient. Over the years since we bought See's, that little candy company has generated $2 billion in pre-tax earnings for Berkshire. When you look at it that way, whether we paid $25 million or $30 million becomes pretty academic, doesn't it?\n\nThat's the beauty of finding businesses with genuine competitive advantages - what Charlie and I call economic moats. The exact purchase price fades in importance when you've got a business that can compound value over decades. See's taught us a lot about the power of beloved brands and pricing power, lessons that served us well in evaluating other investments over the years.\n\nOf course, past performance doesn't guarantee future results, but See's remains a wonderful example of how paying a fair price for a quality business can work out just fine over the long haul.",
+    "aec_score": 0.556,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "Well, you know, that's one of those interesting stories where the numbers tell a tale about negotiation and value",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "Now, that might sound backwards to some folks - paying less than what you thought it was worth - but sometimes that's just how deals work out",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "When you look at it that way, whether we paid $25 million or $30 million becomes pretty academic, doesn't it",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "That's the beauty of finding businesses with genuine competitive advantages - what Charlie and I call economic moats",
+        "reason": "values_not_in_kg"
+      }
+    ],
     "status": "pending"
   }
 ]

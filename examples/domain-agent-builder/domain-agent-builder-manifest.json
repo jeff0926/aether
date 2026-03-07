@@ -1,0 +1,9 @@
+{
+  "id": "domain-agent-builder-v1.0.0",
+  "name": "domain-agent-builder",
+  "version": "1.0.0",
+  "created": "2026-03-06",
+  "framework_version": "0.2.0",
+  "subject": "AI Agent Construction Patterns",
+  "agent_type": "Domain Expert"
+}
