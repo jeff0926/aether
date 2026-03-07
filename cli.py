@@ -11,6 +11,7 @@ from stamper import stamp_empty, stamp_from_source, validate_capsule
 from llm import make_llm_fn
 from kg import load_kg, stats as kg_stats
 from education import queue_stats, get_pending, get_oldest_pending, educate
+from ingest import ingest_research, ingest_document
 
 
 def cmd_stamp(args):
@@ -213,6 +214,36 @@ def cmd_verify(args):
             print(f"  - {g['text'][:80]}...")
 
 
+def cmd_ingest_research(args):
+    """Ingest deep research output into a capsule."""
+    source = Path(args.source)
+    if not source.exists():
+        print(f"Source not found: {source}")
+        return
+    output = Path(args.output)
+    output.mkdir(parents=True, exist_ok=True)
+    path = ingest_research(source, output, args.name, args.version)
+    print(f"Ingested: {path}")
+    from stamper import validate_capsule
+    print(f"Valid: {validate_capsule(path)['valid']}")
+
+
+def cmd_ingest(args):
+    """Ingest any document into a capsule with LLM extraction."""
+    source = Path(args.source)
+    if not source.exists():
+        print(f"Source not found: {source}")
+        return
+    output = Path(args.output)
+    output.mkdir(parents=True, exist_ok=True)
+    llm_fn = make_llm_fn(provider=args.provider, model=args.model) if args.provider != "stub" else None
+    path = ingest_document(source, output, args.name, agent_type=args.agent_type,
+                           version=args.version, llm_fn=llm_fn)
+    print(f"Ingested: {path}")
+    from stamper import validate_capsule
+    print(f"Valid: {validate_capsule(path)['valid']}")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="aether", description="Aether Capsule Framework")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -263,6 +294,25 @@ def main():
     p_verify.add_argument("--reference", "-r", required=True, help="Reference KG file (.jsonld)")
     p_verify.add_argument("--threshold", "-t", type=float, default=0.8)
     p_verify.set_defaults(func=cmd_verify)
+
+    # ingest-research
+    p_ingest_r = subparsers.add_parser("ingest-research", help="Ingest deep research output into capsule")
+    p_ingest_r.add_argument("source", help="Path to deep research markdown file")
+    p_ingest_r.add_argument("name", help="Agent name")
+    p_ingest_r.add_argument("--output", default="./capsules", help="Output directory")
+    p_ingest_r.add_argument("--version", default="1.0.0", help="Version string")
+    p_ingest_r.set_defaults(func=cmd_ingest_research)
+
+    # ingest
+    p_ingest = subparsers.add_parser("ingest", help="Ingest any document into capsule (LLM-assisted)")
+    p_ingest.add_argument("source", help="Path to markdown file")
+    p_ingest.add_argument("name", help="Agent name")
+    p_ingest.add_argument("--type", default="scholar", dest="agent_type", help="Agent type")
+    p_ingest.add_argument("--output", default="./capsules", help="Output directory")
+    p_ingest.add_argument("--version", default="1.0.0", help="Version string")
+    p_ingest.add_argument("--provider", default="stub", help="LLM provider")
+    p_ingest.add_argument("--model", help="Model name")
+    p_ingest.set_defaults(func=cmd_ingest)
 
     args = parser.parse_args()
     args.func(args)

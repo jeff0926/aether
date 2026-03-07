@@ -1,0 +1,34 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "Domain Expert",
+  "agent_name": "SAP Cloud Application Programming Model Domain Expert Agent",
+  "primary_function": "To architect, validate, and troubleshoot enterprise software solutions utilizing the SAP Cloud Application Programming Model (CAP) across Node.js and Java runtimes.",
+  "domain_boundaries": {
+    "authoritative": [],
+    "out_of_scope": null
+  },
+  "suggested_aec_gates": [
+    "temporal_validation",
+    "entity_matching",
+    "numerical_validation",
+    "citation_verification"
+  ]
+}

@@ -10,7 +10,24 @@
       "Bash(git commit:*)",
       "Bash(git push:*)",
       "Bash(git config:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(python cli.py run examples/scholar-buffett \"How much did Berkshire pay for See's Candies?\" --provider anthropic 2>&1)",
+      "Bash(python cli.py run examples/scholar-jefferson \"When was Thomas Jefferson born?\" --provider anthropic 2>&1)",
+      "Bash(pip install anthropic 2>&1 | tail -5)",
+      "Bash(python cli.py run examples/jefferson \"When was Thomas Jefferson born?\" --provider anthropic 2>&1)",
+      "Bash(echo $ANTHROPIC_API_KEY | head -c 10)",
+      "Bash(gh codespace rebuild 2>&1)",
+      "Bash(gh codespace list 2>&1)",
+      "Bash(gh codespace rebuild --codespace ideal-space-fiesta-x55qq5wjw55fpqvr 2>&1)",
+      "Bash(printf '%s' \"$ANTHROPIC_API_KEY\" | head -c 10)",
+      "Bash(python3 -c \"import os; k=os.environ.get\\('ANTHROPIC_API_KEY',''\\); print\\(f'len={len\\(k\\)}, prefix={k[:10]}'\\)\")",
+      "Bash(pip install anthropic)",
+      "Bash(for f in *.json *.jsonld)",
+      "Bash(do echo \"=== $f ===\")",
+      "Read(//workspaces/aether/**)",
+      "Bash(done)",
+      "Bash(cd /workspaces/aether && rm -rf examples/domain-sap-cap-v1.0.0-f3a13b48 && python cli.py ingest-research input/domain-sap-cap-research.md \"domain-sap-cap\" --output ./examples)",
+      "Bash(ls -d examples/domain-sap-cap*)"
     ]
   }
 }
