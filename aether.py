@@ -220,6 +220,8 @@ class Capsule:
         if aug.get("persona"):
             parts.append(f"Tone: {aug['persona'].get('tone', 'neutral')}")
 
+        parts.append("\nIMPORTANT: Use exact figures, dates, and names from the provided knowledge. Do not round, approximate, or paraphrase numerical values. Cite precisely.")
+
         if aug.get("kb"):
             parts.append("\nKnowledge:")
             for kb in aug["kb"]:
