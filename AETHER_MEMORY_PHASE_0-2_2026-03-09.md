@@ -1,5 +1,5 @@
 # AETHER Project Memory Document
-## Phase 0-2 Complete | 2026-03-05 19:45 UTC
+## Phase 0-2 Complete | Updated 2026-03-09
 
 ---
 
@@ -7,7 +7,7 @@
 
 **AETHER** = Adaptive Embodied Thinking Holistic Evolutionary Runtime
 
-A minimal agent framework in ~1,500 lines of Python. No frameworks. Standard library only. The `anthropic` SDK is the only optional external dependency.
+A minimal agent framework in ~2,400 lines of Python across 10 modules. No frameworks. Standard library only. The `anthropic` SDK is the only optional external dependency.
 
 **Repository**: https://github.com/jeff0926/aether.git
 **Author**: Jeff Conn (jeff0926, jeff.m.conn@gmail.com)
@@ -35,21 +35,22 @@ A **capsule** is a folder containing exactly 5 files that define an agent's iden
 
 ---
 
-## Architecture: 7 Core Files
+## Architecture: 10 Core Files
 
 | File | Lines | Purpose |
 |------|-------|---------|
-| `aether.py` | ~280 | Capsule class, 4-stage pipeline, telemetry |
-| `aec.py` | ~250 | Entailment checking, verification gate |
-| `kg.py` | ~180 | JSON-LD loader, 5 origin types |
-| `stamper.py` | ~140 | Capsule folder factory |
-| `habitat.py` | ~135 | Capsule registry, message routing |
-| `llm.py` | ~120 | LLM wrapper, token counting, cost estimation |
-| `cli.py` | ~270 | Command-line interface |
+| `aether.py` | 325 | Capsule class, 4-stage pipeline, telemetry |
+| `education.py` | 370 | Failure queue, self-education loop |
+| `report.py` | 298 | ASCII execution report |
+| `cli.py` | 272 | Command-line interface |
+| `aec.py` | 255 | Entailment checking, verification gate |
+| `kg.py` | 219 | JSON-LD loader, 5 origin types |
+| `stamper.py` | 170 | Capsule folder factory |
+| `llm.py` | 153 | LLM wrapper, token counting, cost estimation |
+| `habitat.py` | 134 | Capsule registry, message routing |
 
-**Supporting Files**:
-- `education.py` (~250 lines) - Failure queue, self-education loop
-- `report.py` (~220 lines) - ASCII execution report
+**Test Files**:
+- `tests/test_aec_standalone.py` (198 lines) - Standalone AEC verification tests
 
 ---
 
@@ -193,10 +194,12 @@ Pipeline tracks timing and counts in `ctx["telemetry"]`:
 
 Located in `examples/`:
 
-1. **test-agent-v1.0.0-24f8476e** - Minimal test capsule for framework testing
-2. **jefferson** - Thomas Jefferson scholar (historical facts, birth dates)
-3. **scholar-buffett** - Warren Buffett investment scholar (financial data, acquisitions)
-4. **aether-validator-v1.0.0-d5a16071** - Validation-only agent (generate disabled, threshold 1.0)
+| Capsule | Purpose | Generate | Threshold |
+|---------|---------|----------|-----------|
+| `test-agent-v1.0.0-24f8476e` | Minimal test capsule for framework testing | enabled | 0.8 |
+| `jefferson` | Thomas Jefferson scholar (historical facts, birth dates) | enabled | 0.8 |
+| `scholar-buffett` | Warren Buffett investment scholar (financial data, acquisitions) | enabled | 0.8 |
+| `aether-validator-v1.0.0-d5a16071` | Validation-only agent (no generation, strict verification) | disabled | 1.0 |
 
 ---
 
@@ -303,6 +306,19 @@ EOF
 
 git push
 ```
+
+## Commit History
+
+| Commit | Description |
+|--------|-------------|
+| `8cb807c` | Add Phase 0-2 memory document |
+| `26b8441` | Add verify command, validator agent, magnitude extraction, example capsules |
+| `0713540` | Phase 2: Pipeline integration, telemetry, and self-education |
+| `ef7d5be` | Update ID format: {slug}-v{version}-{uid8} |
+| `ee4be03` | Change file naming convention: {folder}-{type}.{ext} |
+| `252e7d7` | Add comprehensive README |
+| `19655f4` | Complete AETHER framework: 7 files, 1,147 lines |
+| `b1ecad8` | Initial commit: aether.py and aec.py |
 
 ---
 
