@@ -285,11 +285,38 @@ _STUB_DEFINITION = {"agent_type": "scholar", "agent_name": "Document Agent",
     "domain_boundaries": {"authoritative": [], "out_of_scope": []},
     "suggested_aec_gates": ["entity_matching"]}
 
+# Specialized skill extraction prompts (loaded from SKILL.md files)
+_SKILL_PROMPT_DIR = Path(__file__).parent / "input" / "skills"
+_KG_FROM_SKILL_PATH = _SKILL_PROMPT_DIR / "kg-extraction-from-skill" / "kg-from-skill-SKILL.md"
+_PERSONA_FROM_SKILL_PATH = _SKILL_PROMPT_DIR / "persona-extraction-from-skill" / "persona-from-skill-SKILL.md"
+_DEFINITION_FROM_SKILL_PATH = _SKILL_PROMPT_DIR / "definition-extraction-from-skill" / "definition-from-skill-SKILL.md"
+
+def _load_skill_prompt(path: Path) -> str:
+    """Load a SKILL.md file and return the body (after frontmatter) as the prompt."""
+    if not path.exists():
+        return ""
+    text = path.read_text(encoding="utf-8")
+    _, body = _parse_yaml_frontmatter(text)
+    return body
+
 def _llm_extract(llm_fn, prompt_template: str, doc: str, fallback: dict) -> dict:
     """Call LLM, parse JSON response, return fallback on failure."""
     prompt = prompt_template.format(doc=doc[:8000])  # Cap context size
     try:
         result = llm_fn(prompt)
+        text = result.get("text", result) if isinstance(result, dict) else result
+        data = _extract_json_block(str(text))
+        if isinstance(data, dict):
+            return data
+    except Exception:
+        pass
+    return fallback
+
+
+def _llm_extract_with_prompt(llm_fn, full_prompt: str, fallback: dict) -> dict:
+    """Call LLM with a complete prompt, parse JSON response, return fallback on failure."""
+    try:
+        result = llm_fn(full_prompt)
         text = result.get("text", result) if isinstance(result, dict) else result
         data = _extract_json_block(str(text))
         if isinstance(data, dict):
@@ -397,10 +424,35 @@ def ingest_skill(source_path: str | Path, output_path: str | Path,
             "trigger_text": description,
         }
     else:
-        # LLM mode - extract KG and persona from body
-        kg = _llm_extract(llm_fn, _KG_PROMPT, body, _STUB_KG)
-        persona = _llm_extract(llm_fn, _PERSONA_PROMPT, body, _STUB_PERSONA)
-        definition = _llm_extract(llm_fn, _DEFINITION_PROMPT, body, _STUB_DEFINITION)
+        # LLM mode - use specialized skill extraction prompts
+        # Load prompts from SKILL.md files (body after frontmatter)
+        persona_prompt = _load_skill_prompt(_PERSONA_FROM_SKILL_PATH)
+        kg_prompt = _load_skill_prompt(_KG_FROM_SKILL_PATH)
+        definition_prompt = _load_skill_prompt(_DEFINITION_FROM_SKILL_PATH)
+
+        # 1. Extract persona first (needs only skill body)
+        if persona_prompt:
+            persona_full = f"{persona_prompt}\n\n## Input\n\nSKILL.md:\n```\n{body[:8000]}\n```"
+            persona = _llm_extract_with_prompt(llm_fn, persona_full, _STUB_PERSONA)
+        else:
+            persona = _llm_extract(llm_fn, _PERSONA_PROMPT, body, _STUB_PERSONA)
+
+        # 2. Extract KG (needs skill body AND persona output)
+        persona_json = json.dumps(persona, indent=2)
+        if kg_prompt:
+            kg_full = (f"{kg_prompt}\n\n## Input\n\nSKILL.md:\n```\n{body[:6000]}\n```\n\n"
+                       f"persona.json:\n```json\n{persona_json}\n```")
+            kg = _llm_extract_with_prompt(llm_fn, kg_full, _STUB_KG)
+        else:
+            kg = _llm_extract(llm_fn, _KG_PROMPT, body, _STUB_KG)
+
+        # 3. Extract definition (needs only skill body)
+        if definition_prompt:
+            definition_full = f"{definition_prompt}\n\n## Input\n\nSKILL.md:\n```\n{body[:8000]}\n```"
+            definition = _llm_extract_with_prompt(llm_fn, definition_full, _STUB_DEFINITION)
+        else:
+            definition = _llm_extract(llm_fn, _DEFINITION_PROMPT, body, _STUB_DEFINITION)
+
         # Override with frontmatter values
         definition["agent_name"] = agent_name
         definition["agent_type"] = "skill"
