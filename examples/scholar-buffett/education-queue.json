@@ -276,5 +276,20 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-09T20-50-16-5c5374e5",
+    "timestamp": "2026-03-09T20:50:16.824015",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

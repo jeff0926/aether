@@ -36,5 +36,35 @@
     "status_updated": "2026-03-05T19:17:45.155980",
     "new_score": 1.0,
     "triples_added": 17
+  },
+  {
+    "id": "2026-03-09T20-50-16-489b1488",
+    "timestamp": "2026-03-09T20:50:16.806879",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-09T20-50-17-04b8ddb6",
+    "timestamp": "2026-03-09T20:50:17.435029",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

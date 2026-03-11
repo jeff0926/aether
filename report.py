@@ -178,7 +178,8 @@ def print_report(ctx: dict, aec_result: dict, capsule) -> None:
     if gaps:
         print(_subsection("Knowledge Gaps", w))
         for gap in gaps[:5]:
-            print(f"│    - {gap[:70]}".ljust(w - 1) + "│")
+            gap_text = gap.get('text', str(gap)) if isinstance(gap, dict) else str(gap)
+            print(f"│    - {gap_text[:70]}".ljust(w - 1) + "│")
 
     print(_box_bottom(w))
 

@@ -322,5 +322,93 @@ def ingest_document(source_path: str | Path, output_path: str | Path,
     return _stamp_capsule(output_path, agent_name, version, kb, kg, persona, definition)
 
 
+def _parse_yaml_frontmatter(text: str) -> tuple[dict, str]:
+    """Parse YAML frontmatter from markdown. Returns (frontmatter_dict, body)."""
+    if not text.startswith("---"):
+        return {}, text
+
+    # Find the closing ---
+    end_match = re.search(r'\n---\s*\n', text[3:])
+    if not end_match:
+        return {}, text
+
+    frontmatter_raw = text[3:end_match.start() + 3]
+    body = text[end_match.end() + 3:].strip()
+
+    # Parse YAML manually (no pyyaml dependency)
+    frontmatter = {}
+    current_key = None
+    current_value = []
+
+    for line in frontmatter_raw.strip().split('\n'):
+        # Check for key: value pattern
+        match = re.match(r'^(\w+):\s*(.*)$', line)
+        if match:
+            # Save previous key if exists
+            if current_key:
+                frontmatter[current_key] = '\n'.join(current_value).strip()
+            current_key = match.group(1)
+            current_value = [match.group(2)] if match.group(2) else []
+        elif current_key:
+            # Continuation of previous value
+            current_value.append(line)
+
+    # Save last key
+    if current_key:
+        frontmatter[current_key] = '\n'.join(current_value).strip()
+
+    return frontmatter, body
+
+
+def ingest_skill(source_path: str | Path, output_path: str | Path,
+                 version: str = "1.0.0", llm_fn=None) -> Path:
+    """Ingest a SKILL.md file with YAML frontmatter into a capsule.
+
+    Frontmatter fields:
+    - name: Used as agent name in manifest
+    - description: Used as trigger_text and primary_function in definition
+
+    Body (after frontmatter) becomes kb.md.
+    KG and persona are extracted via LLM or use stubs.
+    """
+    source_path = Path(source_path)
+    output_path = Path(output_path)
+
+    raw = source_path.read_text(encoding="utf-8")
+    frontmatter, body = _parse_yaml_frontmatter(raw)
+
+    # Extract name and description from frontmatter
+    agent_name = frontmatter.get("name", source_path.stem)
+    description = frontmatter.get("description", "")
+
+    # Body becomes the knowledge base
+    kb = _clean_gemini(body)
+
+    # Build definition with trigger_text and primary_function from description
+    if llm_fn is None:
+        # Stub mode
+        kg = _STUB_KG
+        persona = {**_STUB_PERSONA, "persona_name": f"{agent_name} Skill"}
+        definition = {
+            **_STUB_DEFINITION,
+            "agent_type": "skill",
+            "agent_name": agent_name,
+            "primary_function": description or f"Skill agent for {agent_name}",
+            "trigger_text": description,
+        }
+    else:
+        # LLM mode - extract KG and persona from body
+        kg = _llm_extract(llm_fn, _KG_PROMPT, body, _STUB_KG)
+        persona = _llm_extract(llm_fn, _PERSONA_PROMPT, body, _STUB_PERSONA)
+        definition = _llm_extract(llm_fn, _DEFINITION_PROMPT, body, _STUB_DEFINITION)
+        # Override with frontmatter values
+        definition["agent_name"] = agent_name
+        definition["agent_type"] = "skill"
+        definition["primary_function"] = description or definition.get("primary_function", "")
+        definition["trigger_text"] = description
+
+    return _stamp_capsule(output_path, agent_name, version, kb, kg, persona, definition)
+
+
 if __name__ == "__main__":
-    print("ingest.py loaded — ingest_research, ingest_document")
+    print("ingest.py loaded — ingest_research, ingest_document, ingest_skill")

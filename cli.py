@@ -11,7 +11,7 @@ from stamper import stamp_empty, stamp_from_source, validate_capsule
 from llm import make_llm_fn
 from kg import load_kg, stats as kg_stats
 from education import queue_stats, get_pending, get_oldest_pending, educate
-from ingest import ingest_research, ingest_document
+from ingest import ingest_research, ingest_document, ingest_skill
 
 
 def cmd_stamp(args):
@@ -244,6 +244,24 @@ def cmd_ingest(args):
     print(f"Valid: {validate_capsule(path)['valid']}")
 
 
+def cmd_ingest_skill(args):
+    """Ingest a SKILL.md file with YAML frontmatter into a capsule."""
+    source = Path(args.source)
+    if not source.exists():
+        print(f"Source not found: {source}")
+        return
+    output = Path(args.output)
+    output.mkdir(parents=True, exist_ok=True)
+    llm_fn = make_llm_fn(provider=args.provider, model=args.model) if args.provider != "stub" else None
+    path = ingest_skill(source, output, version=args.version, llm_fn=llm_fn)
+    print(f"Ingested skill: {path}")
+    from stamper import validate_capsule
+    result = validate_capsule(path)
+    print(f"Valid: {result['valid']}")
+    if not result['valid']:
+        print(f"Errors: {result.get('errors', [])}")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="aether", description="Aether Capsule Framework")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -313,6 +331,15 @@ def main():
     p_ingest.add_argument("--provider", default="stub", help="LLM provider")
     p_ingest.add_argument("--model", help="Model name")
     p_ingest.set_defaults(func=cmd_ingest)
+
+    # ingest-skill
+    p_ingest_skill = subparsers.add_parser("ingest-skill", help="Ingest SKILL.md file into capsule")
+    p_ingest_skill.add_argument("source", help="Path to SKILL.md file with YAML frontmatter")
+    p_ingest_skill.add_argument("--output", default="./examples", help="Output directory")
+    p_ingest_skill.add_argument("--version", default="1.0.0", help="Version string")
+    p_ingest_skill.add_argument("--provider", default="stub", help="LLM provider (stub for no-LLM)")
+    p_ingest_skill.add_argument("--model", help="Model name")
+    p_ingest_skill.set_defaults(func=cmd_ingest_skill)
 
     args = parser.parse_args()
     args.func(args)
