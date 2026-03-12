@@ -4,7 +4,14 @@ CLI - Command-line interface for Aether.
 
 import argparse
 import json
+import sys
+import io
 from pathlib import Path
+
+# Fix Windows console encoding for Unicode output
+if sys.platform == "win32":
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from aether import Capsule, validate_folder, get_required_files
 from stamper import stamp_empty, stamp_from_source, validate_capsule
