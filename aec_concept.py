@@ -283,16 +283,24 @@ def compile_kg(kg_nodes: list) -> dict:
     Compile KG into executable detector structures.
     Called ONCE at capsule load. All runtime matching uses the compiled output.
 
+    Layer 1: Node pattern detectors and antipattern blacklist
+    Layer 3: Edge policy checkers (avoids, requires, contradicts)
+
     Returns:
         {
             'detectors': [...],      # compiled pattern detectors
             'blacklist': set,        # anti-pattern forbidden tokens
             'blacklist_map': dict,   # token -> node_id mapping for violation attribution
+            'edge_policies': [...],  # Layer 3: compiled edge policies
+            'node_lookup': dict,     # Layer 3: @id -> node for edge resolution
         }
     """
     detectors = []
     blacklist = set()
     blacklist_map = {}  # token -> {'node_id': ..., 'label': ...}
+
+    # Layer 3: Build node lookup for edge resolution
+    node_lookup = {node.get('@id', ''): node for node in kg_nodes if node.get('@id')}
 
     for node in kg_nodes:
         ntype = node.get('@type', '')
@@ -343,11 +351,143 @@ def compile_kg(kg_nodes: list) -> dict:
                     if len(term) > 2:
                         blacklist.add(term)
                         blacklist_map[term] = {'node_id': node_id, 'label': label}
+
+    # Layer 3: COMPILE edge policies
+    edge_policies = []
+    EDGE_PREDICATES = {
+        'skill:avoids': 'avoids',
+        'skill:requires': 'requires',
+        'skill:contradicts': 'contradicts',
+    }
+
+    for node in kg_nodes:
+        source_id = node.get('@id', '')
+        source_label = node.get('rdfs:label', '')
+        source_patterns = tokenize(source_label)
+
+        if not source_id or not source_patterns:
+            continue
+
+        for prop_key, edge_type in EDGE_PREDICATES.items():
+            targets = node.get(prop_key)
+            if not targets:
+                continue
+            if isinstance(targets, str):
+                targets = [targets]
+
+            for target_id in targets:
+                if not isinstance(target_id, str):
+                    continue
+                target_node = node_lookup.get(target_id)
+                if not target_node:
+                    continue
+
+                target_label = target_node.get('rdfs:label', '')
+                target_patterns = tokenize(target_label)
+
+                # Extract blacklist tokens from target (for avoids edges)
+                target_blacklist = set()
+                if edge_type == 'avoids':
+                    # Get parentheses terms
+                    paren_terms = re.findall(r'\(([^)]+)\)', target_label)
+                    for match in paren_terms:
+                        for term in re.split(r'[,/]', match):
+                            term = term.strip().lower()
+                            if len(term) > 2:
+                                target_blacklist.add(term)
+                    # Also add significant words from target patterns
+                    target_blacklist |= {w for w in target_patterns if len(w) > 3}
+
+                edge_policies.append({
+                    'source_id': source_id,
+                    'source_label': source_label,
+                    'source_patterns': source_patterns,
+                    'target_id': target_id,
+                    'target_label': target_label,
+                    'target_patterns': target_patterns,
+                    'target_blacklist': target_blacklist,
+                    'edge_type': edge_type,
+                })
+
     return {
         'detectors': detectors,
         'blacklist': blacklist,
         'blacklist_map': blacklist_map,
+        'edge_policies': edge_policies,
+        'node_lookup': node_lookup,
     }
+
+
+# -----------------------------------------------------------------------------
+# Layer 3: Compiled Edge Policy Execution
+# -----------------------------------------------------------------------------
+
+def execute_edge_policies(stmt_tokens: set, matched_node_ids: list, compiled: dict) -> list:
+    """
+    Execute compiled edge policies for matched nodes.
+
+    For each edge policy where the source node was matched by Layer 1/2:
+      - avoids: check if statement also contains target's forbidden tokens → VIOLATION
+      - contradicts: check if statement also matches target patterns → CONTRADICTION
+      - requires: informational only in v1 (logged but not scored)
+
+    Returns: List of violation dicts
+    """
+    violations = []
+    matched_set = set(matched_node_ids)
+    edge_policies = compiled.get('edge_policies', [])
+
+    for policy in edge_policies:
+        # Only fire policies where source node was matched by Layer 1/2
+        if policy['source_id'] not in matched_set:
+            continue
+
+        if policy['edge_type'] == 'avoids':
+            # Check if statement contains target's forbidden tokens
+            hits = stmt_tokens & policy['target_blacklist']
+            if hits:
+                violations.append({
+                    'type': 'edge_avoids_violation',
+                    'source_id': policy['source_id'],
+                    'source_label': policy['source_label'],
+                    'target_id': policy['target_id'],
+                    'target_label': policy['target_label'],
+                    'path': f"{policy['source_id']} --avoids--> {policy['target_id']}",
+                    'evidence': list(hits),
+                    'severity': 'high',
+                    'explanation': (
+                        f"Statement addresses '{policy['source_label']}' "
+                        f"but contains '{', '.join(hits)}' which is avoided per "
+                        f"'{policy['target_label']}'"
+                    ),
+                })
+
+        elif policy['edge_type'] == 'contradicts':
+            # Check if statement matches BOTH source and target patterns
+            target_overlap = stmt_tokens & policy['target_patterns']
+            coverage = len(target_overlap) / len(policy['target_patterns']) if policy['target_patterns'] else 0
+            if coverage > 0.4:
+                violations.append({
+                    'type': 'edge_contradicts_violation',
+                    'source_id': policy['source_id'],
+                    'source_label': policy['source_label'],
+                    'target_id': policy['target_id'],
+                    'target_label': policy['target_label'],
+                    'path': f"{policy['source_id']} --contradicts--> {policy['target_id']}",
+                    'evidence': list(target_overlap),
+                    'severity': 'medium',
+                    'explanation': (
+                        f"Statement matches '{policy['source_label']}' "
+                        f"which contradicts '{policy['target_label']}'"
+                    ),
+                })
+
+        elif policy['edge_type'] == 'requires':
+            # Informational only in v1 — log but don't score
+            # Future: check if target technique/rule is present in full response
+            pass
+
+    return violations
 
 
 def check_violation(stmt_tokens: set, compiled: dict) -> dict | None:
@@ -475,6 +615,7 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None,
 
     Layer 1: Compiled deterministic matching (always runs)
     Layer 2: LLM type-driven verification (only for ambiguous/persona, requires llm_fn)
+    Layer 3: Compiled edge policy execution (fires on matched nodes)
 
     If compiled dict is provided (from capsule load), uses it directly.
     Otherwise compiles on the fly (for standalone verify).
@@ -492,6 +633,7 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None,
     details = []
     gaps = []
     llm_calls = 0
+    edge_violations = []
 
     for stmt in statements:
         stmt_tokens = tokenize(stmt)
@@ -501,6 +643,32 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None,
         if result.get('llm_result'):
             llm_calls += 1
 
+        # Layer 3: Execute edge policies on matched nodes
+        matched_ids = [m['node_id'] for m in result.get('matches', [])]
+        if matched_ids and compiled.get('edge_policies'):
+            e_violations = execute_edge_policies(stmt_tokens, matched_ids, compiled)
+            if e_violations:
+                # Edge violation overrides any grounded classification
+                edge_violations.extend(e_violations)
+                ungrounded += 1
+                top_v = e_violations[0]
+                details.append({
+                    'statement': stmt,
+                    'category': 'ungrounded',
+                    'method': f"edge:{top_v['type']}",
+                    'path': top_v['path'],
+                    'evidence': top_v['evidence'],
+                    'explanation': top_v['explanation'],
+                    'severity': top_v['severity'],
+                })
+                gaps.append({
+                    'text': top_v['explanation'],
+                    'node_id': top_v['target_id'],
+                    'violation_type': top_v['type'],
+                })
+                continue  # Edge violation processed — don't double-count
+
+        # Standard classification (no edge violation)
         if result['category'] == 'concept_grounded':
             grounded += 1
             top = result['matches'][0]
@@ -581,7 +749,8 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None,
         'total_statements': grounded + ungrounded + persona,
         'details': details,
         'gaps': gaps,
-        'method': 'concept_compiled',
+        'edge_violations': edge_violations,
+        'method': 'concept_3layer_compiled',
         'llm_calls': llm_calls,
     }
 
