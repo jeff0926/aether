@@ -309,7 +309,9 @@ class Capsule:
 
         # Run AEC verification against augmented KG subgraph
         # Pass compiled KG for concept-level matching on skill agents
-        aec_result = aec_verify(response_text, kg_nodes, threshold, compiled_kg=self._compiled_kg)
+        # Pass llm_fn for Layer 2 type-driven verification
+        aec_result = aec_verify(response_text, kg_nodes, threshold,
+                                compiled_kg=self._compiled_kg, llm_fn=self.llm_fn)
 
         # Queue failures for education
         queued = False

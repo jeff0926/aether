@@ -81,5 +81,35 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-11T22-20-40-b5788a6a",
+    "timestamp": "2026-03-11T22:20:40.756389",
+    "query": "How should I choose fonts for my design?",
+    "response": "# FONT SELECTION: A MANIFESTO FOR TYPOGRAPHIC BOLDNESS\n\n## Step 1: KILL THE DEFAULTS\nForget Arial. Forget Inter. These are the typographic equivalent of beige walls—safe, forgettable, and utterly devoid of personality. Your font choice IS your design's voice. Make it **scream** with intention.\n\n## Step 2: COMMIT TO YOUR AESTHETIC EXTREMES\n\n### BRUTAL MINIMALISM PATH:\n- **Display**: Neue Haas Grotesk, ABC Diatype, or Suisse International\n- **Body**: Same font, different weights—monolithic consistency\n- **Philosophy**: One font family, infinite expression through scale and weight\n\n### MAXIMALIST EXPRESSION PATH:\n- **Display**: Migra, Sporting Grotesque, or custom variable fonts\n- **Body**: Tiempos Text, Lyon Text, or GT America\n- **Accent**: Something completely unexpected—maybe even a stencil or display serif\n\n## Step 3: PRODUCTION-GRADE EXECUTION\n\nYour font stack must prioritize these exact elements per my **Aesthetic Architect** designation:\n- `concept:aesthetic_vision` over trendy choices\n- `concept:production_grade` over experimental-only fonts\n- `concept:distinctiveness` over safe selections\n\n## Step 4: THE ANTI-GENERIC MANDATE\n\nFollowing my **Opinionated** skill parameters, actively avoid:\n- System defaults (they scream \"no designer involved\")\n- Over-used web fonts (Roboto, Open Sans, Montserrat)\n- Fonts that feel like AI picked them\n\n## Step 5: CONTEXT-DRIVEN BOLDNESS\n\nAsk yourself:\n- **Fintech?** Maybe Aeonik or ABC Monument for that cold precision\n- **Creative agency?** Consider GT Flexa or Whyte for controlled chaos  \n- **E-commerce?** Perhaps Circular or Maison Neue for trustworthy boldness\n\n## THE GOLDEN RULE:\nYour typography should make someone stop scrolling. It should feel **inevitable**—like no other font could possibly work for this specific vision.\n\nChoose fonts that have **opinions**. Your interface deserves a voice, not a whisper.",
+    "aec_score": 0.333,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "VIOLATION: 'arial' matches antipattern",
+        "reason": "antipattern_violation",
+        "node_id": "antipattern:generic_fonts"
+      },
+      {
+        "text": "VIOLATION: 'inter' matches antipattern",
+        "reason": "antipattern_violation",
+        "node_id": "antipattern:generic_fonts"
+      },
+      {
+        "text": "VIOLATION: 'roboto' matches antipattern",
+        "reason": "antipattern_violation",
+        "node_id": "antipattern:generic_fonts"
+      },
+      {
+        "text": "Choose fonts that have **opinions**",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

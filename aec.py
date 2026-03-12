@@ -169,7 +169,7 @@ def deterministic_gate(statement: str, kg_nodes: list[dict]) -> dict:
 
 
 def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRESHOLD,
-           compiled_kg: dict = None) -> dict:
+           compiled_kg: dict = None, llm_fn=None) -> dict:
     """
     Verify response against KG subgraph.
 
@@ -184,6 +184,9 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
     If compiled_kg is provided (typed KG with Rule/Technique/AntiPattern nodes),
     always runs concept matching and merges results. Concept takes priority over
     factual name-only matches; factual takes priority for numbers/dates.
+
+    If llm_fn is provided, Layer 2 type-driven LLM verification runs for
+    ambiguous/persona statements against Rules, AntiPatterns, and Techniques.
     """
     statements = split_statements(response)
 
@@ -220,9 +223,9 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
             stmt = factual["text"]
             factual_method = factual.get("method", "")
 
-            # Run concept matching on this statement
+            # Run concept matching on this statement (Layer 1 + optional Layer 2)
             stmt_tokens = tokenize(stmt)
-            concept_result = match_statement(stmt_tokens, stmt, compiled_kg)
+            concept_result = match_statement(stmt_tokens, stmt, compiled_kg, llm_fn=llm_fn)
 
             # Merge logic: decide which result to use
             # Hard facts (numbers, dates, percentages) → factual wins
@@ -239,20 +242,34 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
                 results.append(factual)
                 grounded += 1
             elif concept_result['category'] == 'concept_grounded':
-                # Concept found a match
-                top = concept_result['matches'][0]
+                # Concept found a match (Layer 1 or Layer 2 LLM)
                 grounded += 1
-                results.append({
-                    "text": stmt,
-                    "grounded": True,
-                    "method": f"concept:{top['node_type']}",
-                    "category": "grounded",
-                    "matched_node": top['node_id'],
-                    "matched_label": top['label'],
-                    "coverage": top['coverage'],
-                })
+                llm_res = concept_result.get('llm_result')
+                if llm_res and llm_res.get('category') == 'grounded':
+                    # Layer 2 LLM found a grounded match
+                    results.append({
+                        "text": stmt,
+                        "grounded": True,
+                        "method": llm_res.get('method', 'llm_grounded'),
+                        "category": "grounded",
+                        "matched_node": llm_res.get('node_id', ''),
+                        "matched_label": llm_res.get('node_label', ''),
+                        "reasoning": llm_res.get('reasoning', ''),
+                    })
+                else:
+                    # Layer 1 compiled pattern match
+                    top = concept_result['matches'][0]
+                    results.append({
+                        "text": stmt,
+                        "grounded": True,
+                        "method": f"concept:{top['node_type']}",
+                        "category": "grounded",
+                        "matched_node": top['node_id'],
+                        "matched_label": top['label'],
+                        "coverage": top['coverage'],
+                    })
             elif concept_result['category'] == 'antipattern_violation':
-                # Concept found a violation
+                # Concept found a violation (Layer 1 blacklist)
                 v = concept_result['violation']
                 ungrounded += 1
                 results.append({
@@ -268,6 +285,24 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
                     "text": f"VIOLATION: '{', '.join(v['hits'])}' matches antipattern",
                     "reason": "antipattern_violation",
                     "node_id": v['node_id'],
+                })
+            elif concept_result['category'] == 'concept_ungrounded':
+                # Layer 2 LLM found a violation
+                llm_res = concept_result.get('llm_result', {})
+                ungrounded += 1
+                results.append({
+                    "text": stmt,
+                    "grounded": False,
+                    "method": llm_res.get('method', 'llm_violation'),
+                    "category": "ungrounded",
+                    "matched_node": llm_res.get('node_id', ''),
+                    "matched_label": llm_res.get('node_label', ''),
+                    "reasoning": llm_res.get('reasoning', ''),
+                })
+                gaps.append({
+                    "text": f"LLM VIOLATION: {llm_res.get('reasoning', '')}",
+                    "reason": "llm_violation",
+                    "node_id": llm_res.get('node_id', ''),
                 })
             else:
                 # Concept didn't match - fall back to factual or persona

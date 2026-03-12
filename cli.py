@@ -212,8 +212,13 @@ def cmd_verify(args):
     # Compile KG for concept matching if it has typed nodes
     compiled_kg = compile_kg(nodes) if has_typed_nodes(nodes) else None
 
+    # Create LLM function for Layer 2 if provider is not stub
+    llm_fn = None
+    if args.provider != "stub":
+        llm_fn = make_llm_fn(provider=args.provider, model=args.model)
+
     threshold = args.threshold or 0.8
-    result = verify(text, nodes, threshold, compiled_kg=compiled_kg)
+    result = verify(text, nodes, threshold, compiled_kg=compiled_kg, llm_fn=llm_fn)
 
     print(f"AEC Score: {result['score']} (threshold: {result['threshold']})")
     print(f"Passed: {result['passed']}")
@@ -221,6 +226,8 @@ def cmd_verify(args):
     print(f"Persona Ratio: {result['persona_ratio']}")
     if result.get('concept_applied'):
         print("Concept matching: applied")
+    if llm_fn:
+        print("Layer 2 LLM: enabled")
     if result['gaps']:
         print(f"\nGaps ({len(result['gaps'])}):")
         for g in result['gaps']:
@@ -324,6 +331,8 @@ def main():
     p_verify.add_argument("text", help="Text to verify (or path to text file)")
     p_verify.add_argument("--reference", "-r", required=True, help="Reference KG file (.jsonld)")
     p_verify.add_argument("--threshold", "-t", type=float, default=0.8)
+    p_verify.add_argument("--provider", default="stub", help="LLM provider for Layer 2 (default: stub)")
+    p_verify.add_argument("--model", help="Model name for Layer 2")
     p_verify.set_defaults(func=cmd_verify)
 
     # ingest-research

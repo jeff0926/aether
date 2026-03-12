@@ -27,6 +27,59 @@ TYPE_CONFIG = {
     'traits':       {'match_threshold': 0.70, 'weight': 0.2},
 }
 
+# Layer 2: Type-driven verification operators
+TYPE_OPERATORS = {
+    'Rule': {
+        'strategy': 'compliance',
+        'llm_prompt_template': (
+            'You are a strict compliance evaluator.\n\n'
+            'RULE: "{label}"\n'
+            'STATEMENT: "{statement}"\n\n'
+            'Does the statement FOLLOW, VIOLATE, or have NO RELATION to the rule?\n\n'
+            'Reasoning steps:\n'
+            '1. What does the rule require or forbid?\n'
+            '2. What does the statement do?\n'
+            '3. Is there direct compliance or violation?\n\n'
+            'If the statement is merely "good advice" but not explicitly supported by the rule, classify as UNRELATED.\n\n'
+            'Return ONLY one JSON object:\n'
+            '{{"classification": "FOLLOW"|"VIOLATE"|"UNRELATED", "reasoning": "one sentence"}}'
+        ),
+    },
+    'AntiPattern': {
+        'strategy': 'violation_detect',
+        'llm_prompt_template': (
+            'You are a strict violation detector.\n\n'
+            'FORBIDDEN PATTERN: "{label}"\n'
+            'STATEMENT: "{statement}"\n\n'
+            'Does the statement USE or RECOMMEND what the forbidden pattern describes?\n\n'
+            'If the statement explicitly uses, recommends, or includes elements described '
+            'in the forbidden pattern, classify as VIOLATES.\n'
+            'If the statement avoids or does not mention the forbidden elements, classify as CLEAN.\n'
+            'If there is no connection, classify as UNRELATED.\n\n'
+            'Return ONLY one JSON object:\n'
+            '{{"classification": "VIOLATES"|"CLEAN"|"UNRELATED", "reasoning": "one sentence"}}'
+        ),
+    },
+    'Technique': {
+        'strategy': 'application',
+        'llm_prompt_template': (
+            'You are a strict technique evaluator.\n\n'
+            'TECHNIQUE: "{label}"\n'
+            'STATEMENT: "{statement}"\n\n'
+            'Does the statement APPLY, REFERENCE, or have NO RELATION to this technique?\n\n'
+            'APPLY means the statement describes using this technique or recommends it.\n'
+            'REFERENCE means it mentions the technique in passing.\n'
+            'UNRELATED means no meaningful connection.\n\n'
+            'Return ONLY one JSON object:\n'
+            '{{"classification": "APPLY"|"REFERENCE"|"UNRELATED", "reasoning": "one sentence"}}'
+        ),
+    },
+    # Concept, Tool, Trait — no LLM, handled by Layer 1 only
+    'Concept': {'strategy': 'relevance', 'llm_prompt_template': None},
+    'Tool': {'strategy': 'usage', 'llm_prompt_template': None},
+    'Trait': {'strategy': 'tone', 'llm_prompt_template': None},
+}
+
 
 def tokenize(text: str) -> set:
     """Extract content words as lowercase set, minus stopwords."""
@@ -44,6 +97,185 @@ def dice_bigram(s1: str, s2: str) -> float:
     intersection = sum((bg1 & bg2).values())
     total = sum(bg1.values()) + sum(bg2.values())
     return (2 * intersection) / total if total > 0 else 0.0
+
+
+# -----------------------------------------------------------------------------
+# Layer 2: Type-Driven Verification
+# -----------------------------------------------------------------------------
+
+def get_type_operator(node_type: str) -> dict | None:
+    """Get the verification operator for a node type."""
+    for type_key, operator in TYPE_OPERATORS.items():
+        if type_key in node_type:
+            return operator
+    return None
+
+
+def _extract_json_block(text: str) -> dict | None:
+    """Extract JSON object from LLM response text."""
+    import json
+    # Try direct parse first
+    text = text.strip()
+    if text.startswith('{'):
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            pass
+    # Try to find JSON in markdown code block
+    match = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
+    if match:
+        try:
+            return json.loads(match.group(1))
+        except json.JSONDecodeError:
+            pass
+    # Try to find any JSON object
+    match = re.search(r'\{[^{}]*"classification"[^{}]*\}', text)
+    if match:
+        try:
+            return json.loads(match.group(0))
+        except json.JSONDecodeError:
+            pass
+    return None
+
+
+def llm_classify_statement(statement: str, node: dict, llm_fn) -> dict:
+    """
+    Use LLM to classify statement against a specific KG node.
+    Only called when Layer 1 is ambiguous.
+
+    Returns: {'classification': str, 'category': str, 'reasoning': str, 'node_id': str, ...}
+    """
+    node_type = node.get('@type', '')
+    node_id = node.get('@id', '')
+    label = node.get('rdfs:label', '')
+
+    operator = get_type_operator(node_type)
+    if not operator or not operator.get('llm_prompt_template'):
+        return {
+            'classification': 'UNRELATED',
+            'category': 'persona',
+            'reasoning': 'No LLM operator for this type',
+            'node_id': node_id,
+            'node_label': label,
+            'method': 'no_operator',
+        }
+
+    prompt = operator['llm_prompt_template'].format(
+        label=label,
+        statement=statement,
+    )
+
+    try:
+        result = llm_fn(prompt)
+        text = result.get('text', result) if isinstance(result, dict) else str(result)
+
+        parsed = _extract_json_block(text)
+        if isinstance(parsed, dict):
+            classification = parsed.get('classification', 'UNRELATED').upper()
+            reasoning = parsed.get('reasoning', '')
+
+            # Normalize classification to category
+            if classification in ('FOLLOW', 'APPLY', 'REFERENCE', 'CLEAN'):
+                category = 'grounded'
+            elif classification in ('VIOLATE', 'VIOLATES'):
+                category = 'ungrounded'
+            else:
+                category = 'persona'
+
+            return {
+                'classification': classification,
+                'category': category,
+                'reasoning': reasoning,
+                'node_id': node_id,
+                'node_label': label,
+                'method': f'llm_type:{node_type}',
+            }
+    except Exception:
+        pass
+
+    return {
+        'classification': 'UNRELATED',
+        'category': 'persona',
+        'reasoning': 'LLM call failed',
+        'node_id': node_id,
+        'node_label': label,
+        'method': 'llm_error',
+    }
+
+
+def type_driven_check(statement: str, stmt_tokens: set, layer1_result: dict,
+                      compiled: dict, llm_fn) -> dict:
+    """
+    Layer 2: Type-driven verification for ambiguous Layer 1 results.
+
+    Only runs when:
+    - Layer 1 classified as 'concept_persona' (no match found)
+    - AND there are ambiguous candidates or we find candidates via broader search
+
+    Returns updated result dict with LLM classification.
+    """
+    if not llm_fn:
+        return layer1_result
+
+    # Collect candidates for LLM checking
+    candidates = []
+
+    # From Layer 1 ambiguous matches (dice 0.3-0.7)
+    for match in layer1_result.get('ambiguous', []):
+        dice = match.get('dice', 0)
+        if 0.3 <= dice <= 0.7:
+            candidates.append(match)
+
+    # If no ambiguous candidates, do broader search against Rules/AntiPatterns/Techniques
+    if not candidates:
+        for detector in compiled['detectors']:
+            if detector['node_type'] not in ('rules', 'antipatterns', 'techniques'):
+                continue
+            # Check keyword coverage
+            overlap = stmt_tokens & detector['patterns']
+            coverage = len(overlap) / detector['pattern_count'] if detector['pattern_count'] > 0 else 0
+            # Broad threshold for LLM candidates - let LLM decide relevance
+            dice = dice_bigram(statement, detector['label'])
+            if dice > 0.08 or coverage > 0.12 or len(overlap) >= 1:
+                candidates.append({
+                    'node_id': detector['node_id'],
+                    'label': detector['label'],
+                    'node_type': detector['node_type'],
+                    'dice': dice,
+                    'coverage': coverage,
+                    'node': detector['node'],
+                })
+        # Keep top 3 by combined score (dice + coverage)
+        candidates = sorted(candidates, key=lambda c: c.get('dice', 0) + c.get('coverage', 0), reverse=True)[:3]
+
+    if not candidates:
+        return layer1_result
+
+    # Run LLM classification against candidates
+    best_result = None
+    for candidate in candidates:
+        node = candidate.get('node', {})
+        if not node or '@type' not in node:
+            continue
+
+        llm_result = llm_classify_statement(statement, node, llm_fn)
+
+        if llm_result['category'] == 'grounded':
+            best_result = llm_result
+            break  # First grounded match wins
+        elif llm_result['category'] == 'ungrounded' and not best_result:
+            best_result = llm_result  # Record violation, but keep checking for grounded
+
+    if best_result:
+        return {
+            'category': f"concept_{best_result['category']}",
+            'matches': layer1_result.get('matches', []),
+            'violation': best_result if best_result['category'] == 'ungrounded' else None,
+            'ambiguous': [],
+            'llm_result': best_result,
+        }
+
+    return layer1_result
 
 
 def compile_kg(kg_nodes: list) -> dict:
@@ -146,12 +378,12 @@ def check_violation(stmt_tokens: set, compiled: dict) -> dict | None:
     }
 
 
-def match_statement(stmt_tokens: set, statement: str, compiled: dict) -> dict:
+def match_statement(stmt_tokens: set, statement: str, compiled: dict, llm_fn=None) -> dict:
     """
     Match a single statement against compiled KG detectors.
 
-    Primary: set intersection (O(1) per detector)
-    Secondary: Dice bigram (only when set overlap is in ambiguous range)
+    Layer 1: set intersection (O(1) per detector) + Dice bigram for ambiguous
+    Layer 2: LLM type-driven verification (only for persona results with candidates)
 
     Returns:
         {
@@ -159,6 +391,7 @@ def match_statement(stmt_tokens: set, statement: str, compiled: dict) -> dict:
             'matches': [...],
             'violation': {...} or None,
             'ambiguous': [...]  # candidates for Layer 2 LLM check
+            'llm_result': {...} or None  # Layer 2 result if invoked
         }
     """
     # Step 1: Anti-pattern violation check (highest priority, fastest)
@@ -220,17 +453,28 @@ def match_statement(stmt_tokens: set, statement: str, compiled: dict) -> dict:
                 'ambiguous': ambiguous,
             }
 
-    return {
+    # Layer 1 result: persona (no high-confidence match)
+    layer1_result = {
         'category': 'concept_persona',
         'matches': matches,
         'violation': None,
         'ambiguous': sorted(ambiguous, key=lambda a: a.get('dice', 0), reverse=True)[:3],
     }
 
+    # Step 4: Layer 2 — Type-driven LLM verification for persona results
+    if llm_fn and layer1_result['category'] == 'concept_persona':
+        return type_driven_check(statement, stmt_tokens, layer1_result, compiled, llm_fn)
 
-def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None) -> dict:
+    return layer1_result
+
+
+def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None,
+                   llm_fn=None) -> dict:
     """
     Run concept-level AEC on a response.
+
+    Layer 1: Compiled deterministic matching (always runs)
+    Layer 2: LLM type-driven verification (only for ambiguous/persona, requires llm_fn)
 
     If compiled dict is provided (from capsule load), uses it directly.
     Otherwise compiles on the fly (for standalone verify).
@@ -247,10 +491,15 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None) ->
     persona = 0
     details = []
     gaps = []
+    llm_calls = 0
 
     for stmt in statements:
         stmt_tokens = tokenize(stmt)
-        result = match_statement(stmt_tokens, stmt, compiled)
+        result = match_statement(stmt_tokens, stmt, compiled, llm_fn=llm_fn)
+
+        # Track LLM calls
+        if result.get('llm_result'):
+            llm_calls += 1
 
         if result['category'] == 'concept_grounded':
             grounded += 1
@@ -262,7 +511,7 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None) ->
                 'matched_node': top['node_id'],
                 'matched_label': top['label'],
                 'coverage': top['coverage'],
-                'overlap_tokens': top['overlap_tokens'],
+                'overlap_tokens': top.get('overlap_tokens', []),
             })
         elif result['category'] == 'antipattern_violation':
             ungrounded += 1
@@ -273,23 +522,53 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None) ->
                 'method': 'antipattern_violation',
                 'matched_node': v['node_id'],
                 'matched_label': v['label'],
-                'violation_terms': v['hits'],
+                'violation_terms': v.get('hits', []),
             })
             gaps.append({
-                'text': f"VIOLATION: '{', '.join(v['hits'])}' matches antipattern '{v['label']}'",
+                'text': f"VIOLATION: '{', '.join(v.get('hits', []))}' matches antipattern '{v['label']}'",
                 'node_id': v['node_id'],
             })
-        else:
-            persona += 1
+        elif result['category'] == 'concept_ungrounded':
+            # Layer 2 found a violation via LLM
+            ungrounded += 1
+            llm_res = result.get('llm_result', {})
             details.append({
                 'statement': stmt,
-                'category': 'persona',
-                'method': 'no_concept_match',
-                'ambiguous_candidates': [
-                    {'node_id': a['node_id'], 'dice': a.get('dice', 0)}
-                    for a in result.get('ambiguous', [])
-                ],
+                'category': 'ungrounded',
+                'method': llm_res.get('method', 'llm_violation'),
+                'matched_node': llm_res.get('node_id', ''),
+                'matched_label': llm_res.get('node_label', ''),
+                'reasoning': llm_res.get('reasoning', ''),
             })
+            gaps.append({
+                'text': f"LLM VIOLATION: {llm_res.get('reasoning', '')}",
+                'node_id': llm_res.get('node_id', ''),
+            })
+        else:
+            # Check if Layer 2 upgraded to grounded
+            llm_res = result.get('llm_result')
+            if llm_res and llm_res.get('category') == 'grounded':
+                grounded += 1
+                details.append({
+                    'statement': stmt,
+                    'category': 'grounded',
+                    'method': llm_res.get('method', 'llm_grounded'),
+                    'matched_node': llm_res.get('node_id', ''),
+                    'matched_label': llm_res.get('node_label', ''),
+                    'reasoning': llm_res.get('reasoning', ''),
+                })
+            else:
+                # Pure persona
+                persona += 1
+                details.append({
+                    'statement': stmt,
+                    'category': 'persona',
+                    'method': 'no_concept_match',
+                    'ambiguous_candidates': [
+                        {'node_id': a['node_id'], 'dice': a.get('dice', 0)}
+                        for a in result.get('ambiguous', [])
+                    ],
+                })
 
     total = grounded + ungrounded
     score = grounded / total if total > 0 else 1.0
@@ -303,6 +582,7 @@ def concept_verify(response_text: str, kg_nodes: list, compiled: dict = None) ->
         'details': details,
         'gaps': gaps,
         'method': 'concept_compiled',
+        'llm_calls': llm_calls,
     }
 
 
