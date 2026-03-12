@@ -1,0 +1,63 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "theme-factory",
+  "primary_function": "Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Theme selection and application",
+      "Color palette management",
+      "Font pairing recommendations",
+      "Visual identity consistency",
+      "Slide deck styling",
+      "Theme showcase presentation",
+      "Custom theme creation",
+      "Typography for presentations",
+      "Color contrast and readability",
+      "Professional aesthetic design",
+      "Theme file management",
+      "Visual branding application"
+    ],
+    "out_of_scope": [
+      "Content creation for slides",
+      "Data visualization design",
+      "Logo design and creation",
+      "Brand strategy development",
+      "Print design layouts",
+      "Web development styling",
+      "Animation and motion graphics",
+      "Photography and image editing",
+      "Marketing campaign design",
+      "User interface design"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify theme showcase is displayed without modifications",
+    "Confirm explicit theme selection was obtained before application",
+    "Validate applied colors match the selected theme's hex codes",
+    "Ensure font pairings are consistently applied to headers and body text",
+    "Check that proper contrast and readability are maintained",
+    "Verify visual identity is maintained across all slides",
+    "Confirm custom themes follow the established naming and structure pattern",
+    "Validate that theme application stays within presentation styling scope"
+  ],
+  "trigger_text": "Toolkit for styling artifacts with a theme. These artifacts can be slides, docs, reportings, HTML landing pages, etc. There are 10 pre-set themes with colors/fonts that you can apply to any artifact that has been creating, or can generate a new theme on-the-fly."
+}

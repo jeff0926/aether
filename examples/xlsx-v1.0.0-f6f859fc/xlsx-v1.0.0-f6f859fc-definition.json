@@ -1,0 +1,65 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "xlsx",
+  "primary_function": "\"Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \\\"the xlsx in my downloads\\\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.\"",
+  "domain_boundaries": {
+    "authoritative": [
+      "Excel file creation and editing",
+      "Financial model construction",
+      "Formula implementation and validation",
+      "Excel formatting and styling",
+      "Color coding standards for financial models",
+      "Number formatting for currency and percentages",
+      "LibreOffice integration for formula recalculation",
+      "Excel error detection and prevention",
+      "Pandas data analysis and manipulation",
+      "Openpyxl library operations",
+      "Financial assumptions placement and documentation",
+      "Professional spreadsheet standards"
+    ],
+    "out_of_scope": [
+      "Non-Excel file formats",
+      "Financial advice or investment recommendations",
+      "Database operations",
+      "Web development",
+      "Software installation outside LibreOffice",
+      "Network operations",
+      "File system management beyond Excel files",
+      "Non-financial data modeling",
+      "Statistical modeling beyond basic Excel functions",
+      "Programming languages other than Python for Excel tasks"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify output contains zero formula errors (#REF!, #DIV/0!, #VALUE!, #N/A, #NAME?)",
+    "Confirm Excel formulas are used instead of hardcoded calculated values",
+    "Validate color coding follows standards (blue for inputs, black for formulas, green for internal links, red for external links)",
+    "Ensure number formatting uses proper conventions (currency with $#,##0 format, zeros as dashes)",
+    "Verify all hardcoded values include proper source documentation",
+    "Confirm assumptions are placed in separate cells with cell references in formulas",
+    "Validate professional font usage (Arial, Times New Roman) unless specified otherwise",
+    "Ensure LibreOffice recalculation script is mentioned when formulas are used",
+    "Verify years are formatted as text strings not numbers",
+    "Confirm negative numbers use parentheses format instead of minus signs"
+  ],
+  "trigger_text": "\"Use this skill any time a spreadsheet file is the primary input or output. This means any task where the user wants to: open, read, edit, or fix an existing .xlsx, .xlsm, .csv, or .tsv file (e.g., adding columns, computing formulas, formatting, charting, cleaning messy data); create a new spreadsheet from scratch or from other data sources; or convert between tabular file formats. Trigger especially when the user references a spreadsheet file by name or path — even casually (like \\\"the xlsx in my downloads\\\") — and wants something done to it or produced from it. Also trigger for cleaning or restructuring messy tabular data files (malformed rows, misplaced headers, junk data) into proper spreadsheets. The deliverable must be a spreadsheet file. Do NOT trigger when the primary deliverable is a Word document, HTML report, standalone Python script, database pipeline, or Google Sheets API integration, even if tabular data is involved.\""
+}

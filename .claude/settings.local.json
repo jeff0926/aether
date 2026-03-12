@@ -13,7 +13,10 @@
       "Bash(git rm:*)",
       "Bash(git mv:*)",
       "Bash(git pull:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(netstat:*)",
+      "Bash(xargs:*)",
+      "Bash(curl:*)"
     ]
   }
 }

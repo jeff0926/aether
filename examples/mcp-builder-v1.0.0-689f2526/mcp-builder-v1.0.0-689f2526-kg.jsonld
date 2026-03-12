@@ -1,0 +1,572 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:protocol_engineer",
+      "@type": "skill:Trait",
+      "rdfs:label": "Protocol Engineer",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:quality",
+        "concept:systematic_methodology",
+        "concept:comprehensive_implementation"
+      ],
+      "skill:contains": [
+        "trait:methodical",
+        "trait:technical",
+        "trait:detail_oriented",
+        "trait:analytical",
+        "trait:quality_focused",
+        "trait:comprehensive",
+        "trait:structured"
+      ]
+    },
+    {
+      "@id": "trait:methodical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Methodical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:four_phase_workflow",
+        "technique:structured_planning"
+      ]
+    },
+    {
+      "@id": "trait:technical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Technical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:protocol_implementation",
+        "concept:framework_selection"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail Oriented",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:comprehensive_api_coverage",
+        "rule:clear_tool_naming"
+      ]
+    },
+    {
+      "@id": "trait:analytical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Analytical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:deep_research",
+        "concept:evaluation"
+      ]
+    },
+    {
+      "@id": "trait:quality_focused",
+      "@type": "skill:Trait",
+      "rdfs:label": "Quality Focused",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:quality_measurement",
+        "concept:testing"
+      ]
+    },
+    {
+      "@id": "trait:comprehensive",
+      "@type": "skill:Trait",
+      "rdfs:label": "Comprehensive",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:comprehensive_api_coverage",
+        "concept:full_type_coverage"
+      ]
+    },
+    {
+      "@id": "trait:structured",
+      "@type": "skill:Trait",
+      "rdfs:label": "Structured",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:four_phase_workflow",
+        "concept:project_structure"
+      ]
+    },
+    {
+      "@id": "concept:mcp_server_development",
+      "@type": "skill:Concept",
+      "rdfs:label": "MCP Server Development",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:mcp_protocol",
+        "concept:tool_design",
+        "concept:implementation",
+        "concept:evaluation"
+      ],
+      "skill:rules": [
+        "rule:quality_measurement"
+      ],
+      "skill:techniques": [
+        "technique:four_phase_workflow"
+      ]
+    },
+    {
+      "@id": "concept:quality_measurement",
+      "@type": "skill:Concept",
+      "rdfs:label": "Quality Measurement",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:quality_measurement",
+      "@type": "skill:Rule",
+      "rdfs:label": "Quality of MCP server is measured by how well it enables LLMs to accomplish real-world tasks",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:four_phase_workflow",
+      "@type": "skill:Technique",
+      "rdfs:label": "Four Phase Workflow",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:deep_research",
+        "concept:implementation",
+        "concept:testing",
+        "concept:evaluation"
+      ]
+    },
+    {
+      "@id": "concept:deep_research",
+      "@type": "skill:Concept",
+      "rdfs:label": "Deep Research and Planning",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:modern_mcp_design",
+        "concept:protocol_study",
+        "concept:framework_documentation",
+        "concept:implementation_planning"
+      ],
+      "skill:techniques": [
+        "technique:structured_planning"
+      ]
+    },
+    {
+      "@id": "concept:modern_mcp_design",
+      "@type": "skill:Concept",
+      "rdfs:label": "Modern MCP Design",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:api_coverage_balance",
+        "concept:tool_naming",
+        "concept:context_management",
+        "concept:error_messaging"
+      ],
+      "skill:rules": [
+        "rule:comprehensive_api_coverage",
+        "rule:clear_tool_naming",
+        "rule:concise_tool_descriptions",
+        "rule:actionable_error_messages"
+      ]
+    },
+    {
+      "@id": "concept:api_coverage_balance",
+      "@type": "skill:Concept",
+      "rdfs:label": "API Coverage vs Workflow Tools Balance",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:comprehensive_api_coverage",
+        "rule:prioritize_comprehensive_coverage"
+      ]
+    },
+    {
+      "@id": "rule:comprehensive_api_coverage",
+      "@type": "skill:Rule",
+      "rdfs:label": "Balance comprehensive API endpoint coverage with specialized workflow tools",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:prioritize_comprehensive_coverage",
+      "@type": "skill:Rule",
+      "rdfs:label": "When uncertain, prioritize comprehensive API coverage",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:tool_naming",
+      "@type": "skill:Concept",
+      "rdfs:label": "Tool Naming and Discoverability",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:clear_tool_naming",
+        "rule:consistent_prefixes",
+        "rule:action_oriented_naming"
+      ]
+    },
+    {
+      "@id": "rule:clear_tool_naming",
+      "@type": "skill:Rule",
+      "rdfs:label": "Clear, descriptive tool names help agents find the right tools quickly",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:consistent_prefixes",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use consistent prefixes (e.g., github_create_issue, github_list_repos)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:action_oriented_naming",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use action-oriented naming",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:context_management",
+      "@type": "skill:Concept",
+      "rdfs:label": "Context Management",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:concise_tool_descriptions",
+        "rule:filter_paginate_results",
+        "rule:focused_relevant_data"
+      ]
+    },
+    {
+      "@id": "rule:concise_tool_descriptions",
+      "@type": "skill:Rule",
+      "rdfs:label": "Agents benefit from concise tool descriptions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:filter_paginate_results",
+      "@type": "skill:Rule",
+      "rdfs:label": "Design tools with ability to filter/paginate results",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:focused_relevant_data",
+      "@type": "skill:Rule",
+      "rdfs:label": "Design tools that return focused, relevant data",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:error_messaging",
+      "@type": "skill:Concept",
+      "rdfs:label": "Actionable Error Messages",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:actionable_error_messages"
+      ]
+    },
+    {
+      "@id": "rule:actionable_error_messages",
+      "@type": "skill:Rule",
+      "rdfs:label": "Error messages should guide agents toward solutions with specific suggestions and next steps",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:protocol_study",
+      "@type": "skill:Concept",
+      "rdfs:label": "MCP Protocol Documentation Study",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:sitemap_navigation",
+        "technique:markdown_fetching"
+      ],
+      "skill:contains": [
+        "concept:specification",
+        "concept:transport_mechanisms",
+        "concept:definitions"
+      ]
+    },
+    {
+      "@id": "technique:sitemap_navigation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Start with sitemap to find relevant pages",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:markdown_fetching",
+      "@type": "skill:Technique",
+      "rdfs:label": "Fetch specific pages with .md suffix for markdown format",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:framework_selection",
+      "@type": "skill:Concept",
+      "rdfs:label": "Framework Selection",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:recommended_stack",
+        "rule:typescript_preference",
+        "rule:transport_selection"
+      ]
+    },
+    {
+      "@id": "rule:recommended_stack",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use TypeScript with streamable HTTP for remote servers, stdio for local servers",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:typescript_preference",
+      "@type": "skill:Rule",
+      "rdfs:label": "TypeScript preferred for high-quality SDK support and good compatibility in execution environments",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:transport_selection",
+      "@type": "skill:Rule",
+      "rdfs:label": "Streamable HTTP for remote servers using stateless JSON, stdio for local servers",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:implementation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Implementation",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:project_structure",
+        "concept:core_infrastructure",
+        "concept:tool_implementation"
+      ],
+      "skill:techniques": [
+        "technique:project_setup",
+        "technique:infrastructure_creation",
+        "technique:tool_implementation"
+      ]
+    },
+    {
+      "@id": "concept:core_infrastructure",
+      "@type": "skill:Concept",
+      "rdfs:label": "Core Infrastructure",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:api_client",
+        "concept:error_handling",
+        "concept:response_formatting",
+        "concept:pagination_support"
+      ]
+    },
+    {
+      "@id": "concept:tool_implementation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Tool Implementation",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:input_schema_requirements",
+        "rule:output_schema_definition",
+        "rule:async_implementation",
+        "rule:annotation_usage"
+      ],
+      "skill:contains": [
+        "concept:input_schema",
+        "concept:output_schema",
+        "concept:tool_description",
+        "concept:implementation_patterns",
+        "concept:annotations"
+      ]
+    },
+    {
+      "@id": "rule:input_schema_requirements",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use Zod (TypeScript) or Pydantic (Python) with constraints and clear descriptions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:output_schema_definition",
+      "@type": "skill:Rule",
+      "rdfs:label": "Define outputSchema where possible for structured data, use structuredContent in tool responses",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:async_implementation",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use async/await for I/O operations with proper error handling",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:annotation_usage",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use readOnlyHint, destructiveHint, idempotentHint, openWorldHint annotations",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:testing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Review and Test",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:code_quality",
+        "concept:build_test"
+      ],
+      "skill:rules": [
+        "rule:dry_principle",
+        "rule:consistent_error_handling",
+        "rule:full_type_coverage",
+        "rule:clear_tool_descriptions"
+      ]
+    },
+    {
+      "@id": "rule:dry_principle",
+      "@type": "skill:Rule",
+      "rdfs:label": "No duplicated code (DRY principle)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:consistent_error_handling",
+      "@type": "skill:Rule",
+      "rdfs:label": "Maintain consistent error handling",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:full_type_coverage",
+      "@type": "skill:Concept",
+      "rdfs:label": "Full Type Coverage",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:full_type_coverage",
+      "@type": "skill:Rule",
+      "rdfs:label": "Ensure full type coverage",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:clear_tool_descriptions",
+      "@type": "skill:Rule",
+      "rdfs:label": "Maintain clear tool descriptions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:evaluation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Create Evaluations",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:evaluation_purpose",
+        "concept:evaluation_questions"
+      ],
+      "skill:rules": [
+        "rule:comprehensive_evaluations",
+        "rule:test_llm_effectiveness"
+      ]
+    },
+    {
+      "@id": "rule:comprehensive_evaluations",
+      "@type": "skill:Rule",
+      "rdfs:label": "Create comprehensive evaluations to test MCP server effectiveness",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:test_llm_effectiveness",
+      "@type": "skill:Rule",
+      "rdfs:label": "Test whether LLMs can effectively use MCP server to answer realistic, complex questions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:evaluation_questions",
+      "@type": "skill:Concept",
+      "rdfs:label": "Evaluation Questions",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:tool_inspection",
+        "technique:content_exploration",
+        "technique:question_generation"
+      ],
+      "skill:rules": [
+        "rule:create_ten_evaluations",
+        "rule:complex_realistic_questions"
+      ]
+    },
+    {
+      "@id": "rule:create_ten_evaluations",
+      "@type": "skill:Rule",
+      "rdfs:label": "Create 10 evaluation questions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:complex_realistic_questions",
+      "@type": "skill:Rule",
+      "rdfs:label": "Create complex, realistic questions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:tool_inspection",
+      "@type": "skill:Technique",
+      "rdfs:label": "Tool Inspection - List available tools and understand their capabilities",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:content_exploration",
+      "@type": "skill:Technique",
+      "rdfs:label": "Content Exploration - Use READ-ONLY operations to explore available data",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:question_generation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Question Generation - Create complex, realistic evaluation questions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:typescript",
+      "@type": "skill:Tool",
+      "rdfs:label": "TypeScript",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:zod",
+        "tool:mcp_inspector"
+      ]
+    },
+    {
+      "@id": "tool:python",
+      "@type": "skill:Tool",
+      "rdfs:label": "Python",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:pydantic",
+        "tool:mcp_inspector"
+      ]
+    },
+    {
+      "@id": "tool:zod",
+      "@type": "skill:Tool",
+      "rdfs:label": "Zod",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:pydantic",
+      "@type": "skill:Tool",
+      "rdfs:label": "Pydantic",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:mcp_inspector",
+      "@type": "skill:Tool",
+      "rdfs:label": "MCP Inspector",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:systematic_methodology",
+      "@type": "skill:Concept",
+      "rdfs:label": "Systematic Methodology",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:four_phase_workflow",
+        "concept:structured_approach"
+      ]
+    },
+    {
+      "@id": "concept:comprehensive_implementation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Comprehensive Implementation",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:comprehensive_api_coverage",
+        "rule:full_type_coverage",
+        "rule:comprehensive_evaluations"
+      ]
+    }
+  ]
+}

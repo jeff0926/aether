@@ -1,0 +1,63 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "mcp-builder",
+  "primary_function": "Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).",
+  "domain_boundaries": {
+    "authoritative": [
+      "MCP protocol specification and architecture",
+      "TypeScript MCP server implementation",
+      "Python MCP server implementation",
+      "Tool design and naming conventions",
+      "API endpoint coverage planning",
+      "MCP server project structure",
+      "Error handling and response formatting",
+      "Authentication and client configuration",
+      "Pagination and data filtering",
+      "MCP evaluation creation",
+      "Transport mechanisms (HTTP/stdio)",
+      "Schema definition with Zod/Pydantic"
+    ],
+    "out_of_scope": [
+      "Frontend client development",
+      "Database design and optimization",
+      "Infrastructure deployment and scaling",
+      "Non-MCP API development",
+      "Mobile app development",
+      "DevOps pipeline configuration",
+      "Security penetration testing",
+      "Performance benchmarking tools",
+      "UI/UX design principles"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify implementation follows four-phase workflow: research, implementation, review, evaluation",
+    "Confirm TypeScript projects use recommended stack with streamable HTTP transport",
+    "Ensure tools have clear, action-oriented naming with consistent prefixes",
+    "Validate proper schema definition using Zod for TypeScript or Pydantic for Python",
+    "Check that error messages are actionable with specific suggestions",
+    "Verify comprehensive API coverage is prioritized over limited workflow tools",
+    "Confirm evaluation includes 10 independent, read-only, complex questions",
+    "Ensure proper tool annotations (readOnlyHint, destructiveHint, etc.) are included",
+    "Validate structured content and output schemas are defined where applicable"
+  ],
+  "trigger_text": "Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK)."
+}

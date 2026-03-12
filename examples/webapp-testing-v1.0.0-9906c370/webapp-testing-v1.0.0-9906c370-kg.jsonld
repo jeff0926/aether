@@ -1,0 +1,502 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:automation_architect",
+      "@type": "skill:Trait",
+      "rdfs:label": "Automation Architect",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:systematic_testing",
+        "concept:reconnaissance_pattern",
+        "concept:black_box_scripts"
+      ],
+      "skill:contains": [
+        "trait:methodical",
+        "trait:systematic",
+        "trait:technical",
+        "trait:cautious",
+        "trait:detail_oriented",
+        "trait:opinionated",
+        "trait:analytical"
+      ]
+    },
+    {
+      "@id": "trait:methodical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Methodical approach",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:decision_tree_approach"
+      ]
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:reconnaissance_then_action"
+      ]
+    },
+    {
+      "@id": "trait:technical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Technical",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "tool:playwright",
+        "concept:selectors"
+      ]
+    },
+    {
+      "@id": "trait:cautious",
+      "@type": "skill:Trait",
+      "rdfs:label": "Cautious",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:always_run_help_first",
+        "rule:wait_for_networkidle"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail oriented",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:proper_waits",
+        "concept:descriptive_selectors"
+      ]
+    },
+    {
+      "@id": "trait:opinionated",
+      "@type": "skill:Trait",
+      "rdfs:label": "Opinionated",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:use_headless_mode",
+        "rule:close_browser_when_done"
+      ]
+    },
+    {
+      "@id": "trait:analytical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Analytical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:dom_inspection",
+        "technique:selector_identification"
+      ]
+    },
+    {
+      "@id": "concept:web_application_testing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Web Application Testing",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:playwright"
+      ],
+      "skill:contains": [
+        "concept:systematic_testing",
+        "concept:reconnaissance_pattern",
+        "concept:black_box_scripts"
+      ]
+    },
+    {
+      "@id": "concept:systematic_testing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Systematic Testing",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:decision_tree_approach",
+        "technique:reconnaissance_then_action"
+      ],
+      "skill:rules": [
+        "rule:always_run_help_first"
+      ]
+    },
+    {
+      "@id": "concept:black_box_scripts",
+      "@type": "skill:Concept",
+      "rdfs:label": "Black Box Scripts",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:with_server_script"
+      ],
+      "skill:rules": [
+        "rule:use_scripts_as_black_boxes",
+        "rule:dont_read_source_until_necessary"
+      ],
+      "skill:avoids": [
+        "antipattern:context_window_pollution"
+      ]
+    },
+    {
+      "@id": "concept:reconnaissance_pattern",
+      "@type": "skill:Concept",
+      "rdfs:label": "Reconnaissance Pattern",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:reconnaissance_then_action"
+      ],
+      "skill:rules": [
+        "rule:wait_for_networkidle_before_inspection"
+      ]
+    },
+    {
+      "@id": "concept:server_lifecycle",
+      "@type": "skill:Concept",
+      "rdfs:label": "Server Lifecycle Management",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:with_server_script"
+      ],
+      "skill:techniques": [
+        "technique:single_server_management",
+        "technique:multiple_server_management"
+      ]
+    },
+    {
+      "@id": "concept:selectors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Selectors",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:descriptive_selectors"
+      ],
+      "skill:techniques": [
+        "technique:selector_identification",
+        "technique:dom_inspection"
+      ]
+    },
+    {
+      "@id": "concept:descriptive_selectors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Descriptive Selectors",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:text_selectors",
+        "technique:role_selectors",
+        "technique:css_selectors",
+        "technique:id_selectors"
+      ]
+    },
+    {
+      "@id": "concept:proper_waits",
+      "@type": "skill:Concept",
+      "rdfs:label": "Proper Waits",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:networkidle_wait",
+        "technique:selector_wait",
+        "technique:timeout_wait"
+      ],
+      "skill:rules": [
+        "rule:wait_for_networkidle"
+      ]
+    },
+    {
+      "@id": "tool:playwright",
+      "@type": "skill:Tool",
+      "rdfs:label": "Python Playwright",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:sync_playwright_usage"
+      ],
+      "skill:enables": [
+        "concept:web_application_testing"
+      ]
+    },
+    {
+      "@id": "tool:with_server_script",
+      "@type": "skill:Tool",
+      "rdfs:label": "scripts/with_server.py",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:server_lifecycle"
+      ],
+      "skill:techniques": [
+        "technique:single_server_management",
+        "technique:multiple_server_management"
+      ]
+    },
+    {
+      "@id": "tool:chromium_browser",
+      "@type": "skill:Tool",
+      "rdfs:label": "Chromium Browser",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:use_headless_mode"
+      ]
+    },
+    {
+      "@id": "technique:decision_tree_approach",
+      "@type": "skill:Technique",
+      "rdfs:label": "Decision Tree Approach",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:static_html_detection",
+        "technique:dynamic_webapp_handling"
+      ]
+    },
+    {
+      "@id": "technique:static_html_detection",
+      "@type": "skill:Technique",
+      "rdfs:label": "Static HTML Detection",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:direct_html_reading"
+      ]
+    },
+    {
+      "@id": "technique:direct_html_reading",
+      "@type": "skill:Technique",
+      "rdfs:label": "Direct HTML File Reading",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:selector_identification"
+      ]
+    },
+    {
+      "@id": "technique:dynamic_webapp_handling",
+      "@type": "skill:Technique",
+      "rdfs:label": "Dynamic Web App Handling",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:server_status_check"
+      ],
+      "skill:enables": [
+        "technique:reconnaissance_then_action"
+      ]
+    },
+    {
+      "@id": "technique:server_status_check",
+      "@type": "skill:Technique",
+      "rdfs:label": "Server Status Check",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:single_server_management",
+        "technique:multiple_server_management"
+      ]
+    },
+    {
+      "@id": "technique:single_server_management",
+      "@type": "skill:Technique",
+      "rdfs:label": "Single Server Management",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:with_server_script"
+      ]
+    },
+    {
+      "@id": "technique:multiple_server_management",
+      "@type": "skill:Technique",
+      "rdfs:label": "Multiple Server Management",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:with_server_script"
+      ]
+    },
+    {
+      "@id": "technique:reconnaissance_then_action",
+      "@type": "skill:Technique",
+      "rdfs:label": "Reconnaissance-Then-Action Pattern",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:dom_inspection",
+        "technique:selector_identification",
+        "technique:action_execution"
+      ],
+      "skill:requires": [
+        "rule:wait_for_networkidle_before_inspection"
+      ]
+    },
+    {
+      "@id": "technique:dom_inspection",
+      "@type": "skill:Technique",
+      "rdfs:label": "DOM Inspection",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:screenshot_capture",
+        "technique:content_extraction",
+        "technique:element_enumeration"
+      ]
+    },
+    {
+      "@id": "technique:screenshot_capture",
+      "@type": "skill:Technique",
+      "rdfs:label": "Screenshot Capture",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:content_extraction",
+      "@type": "skill:Technique",
+      "rdfs:label": "Content Extraction",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:element_enumeration",
+      "@type": "skill:Technique",
+      "rdfs:label": "Element Enumeration",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:selector_identification",
+      "@type": "skill:Technique",
+      "rdfs:label": "Selector Identification",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:action_execution"
+      ]
+    },
+    {
+      "@id": "technique:action_execution",
+      "@type": "skill:Technique",
+      "rdfs:label": "Action Execution",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:descriptive_selectors"
+      ]
+    },
+    {
+      "@id": "technique:sync_playwright_usage",
+      "@type": "skill:Technique",
+      "rdfs:label": "Synchronous Playwright Usage",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:close_browser_when_done"
+      ]
+    },
+    {
+      "@id": "technique:text_selectors",
+      "@type": "skill:Technique",
+      "rdfs:label": "Text Selectors (text=)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:role_selectors",
+      "@type": "skill:Technique",
+      "rdfs:label": "Role Selectors (role=)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:css_selectors",
+      "@type": "skill:Technique",
+      "rdfs:label": "CSS Selectors",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:id_selectors",
+      "@type": "skill:Technique",
+      "rdfs:label": "ID Selectors",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:networkidle_wait",
+      "@type": "skill:Technique",
+      "rdfs:label": "Network Idle Wait",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:dom_inspection"
+      ]
+    },
+    {
+      "@id": "technique:selector_wait",
+      "@type": "skill:Technique",
+      "rdfs:label": "Selector Wait",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:timeout_wait",
+      "@type": "skill:Technique",
+      "rdfs:label": "Timeout Wait",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:always_run_help_first",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always run scripts with --help first to see usage",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:context_window_pollution"
+      ]
+    },
+    {
+      "@id": "rule:dont_read_source_until_necessary",
+      "@type": "skill:Rule",
+      "rdfs:label": "Do not read source until you try running the script first and find that a customized solution is absolutely necessary",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:context_window_pollution"
+      ]
+    },
+    {
+      "@id": "rule:use_scripts_as_black_boxes",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use bundled scripts as black boxes - scripts exist to be called directly rather than ingested into context window",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:context_window_pollution"
+      ]
+    },
+    {
+      "@id": "rule:wait_for_networkidle",
+      "@type": "skill:Rule",
+      "rdfs:label": "Wait for page.wait_for_load_state('networkidle') on dynamic apps",
+      "aether:origin": "core",
+      "skill:contradicts": [
+        "antipattern:inspect_dom_before_networkidle"
+      ]
+    },
+    {
+      "@id": "rule:wait_for_networkidle_before_inspection",
+      "@type": "skill:Rule",
+      "rdfs:label": "Wait for networkidle before DOM inspection",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:inspect_dom_before_networkidle"
+      ]
+    },
+    {
+      "@id": "rule:use_headless_mode",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always launch chromium in headless mode",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:close_browser_when_done",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always close the browser when done",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_descriptive_selectors",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use descriptive selectors: text=, role=, CSS selectors, or IDs",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:add_appropriate_waits",
+      "@type": "skill:Rule",
+      "rdfs:label": "Add appropriate waits: page.wait_for_selector() or page.wait_for_timeout()",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:context_window_pollution",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Context Window Pollution",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:inspect_dom_before_networkidle",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Inspect DOM before waiting for networkidle on dynamic apps",
+      "aether:origin": "core"
+    }
+  ]
+}

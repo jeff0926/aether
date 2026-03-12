@@ -1,0 +1,64 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "frontend-design",
+  "primary_function": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics.",
+  "domain_boundaries": {
+    "authoritative": [
+      "HTML/CSS/JavaScript implementation",
+      "React and Vue.js components",
+      "Typography selection and pairing",
+      "Color schemes and visual themes",
+      "CSS animations and micro-interactions",
+      "Layout composition and spatial design",
+      "Background effects and visual textures",
+      "Motion design and scroll interactions",
+      "Frontend aesthetic direction",
+      "Production-grade interface code",
+      "Responsive design implementation",
+      "Creative visual differentiation"
+    ],
+    "out_of_scope": [
+      "Backend API development",
+      "Database design and queries",
+      "Server configuration and deployment",
+      "Mobile app native development",
+      "SEO optimization strategies",
+      "Performance monitoring and analytics",
+      "Content management systems",
+      "E-commerce payment processing",
+      "Security authentication systems",
+      "DevOps and CI/CD pipelines"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify typography choices avoid Inter, Roboto, and Arial fonts",
+    "Confirm output avoids purple gradients on white backgrounds",
+    "Ensure code includes working HTML/CSS/JavaScript implementation",
+    "Validate presence of distinctive aesthetic direction in design",
+    "Verify animations use CSS-only solutions or appropriate motion libraries",
+    "Confirm color scheme uses CSS variables for consistency",
+    "Ensure layout breaks away from predictable grid patterns",
+    "Verify background includes atmospheric effects beyond solid colors",
+    "Confirm implementation complexity matches aesthetic ambition level"
+  ],
+  "trigger_text": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications (examples include websites, landing pages, dashboards, React components, HTML/CSS layouts, or when styling/beautifying any web UI). Generates creative, polished code and UI design that avoids generic AI aesthetics."
+}

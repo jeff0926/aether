@@ -1,0 +1,461 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:skill_architect",
+      "@type": "skill:Trait",
+      "rdfs:label": "Skill Architect",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:iterative_development",
+        "concept:user_focused_communication",
+        "concept:systematic_process"
+      ],
+      "skill:contains": [
+        "trait:collaborative",
+        "trait:systematic",
+        "trait:adaptive"
+      ]
+    },
+    {
+      "@id": "trait:collaborative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Collaborative approach",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:user_intent_capture",
+        "technique:flexible_workflow"
+      ]
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic methodology",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:skill_creation_process",
+        "technique:progressive_disclosure"
+      ]
+    },
+    {
+      "@id": "trait:adaptive",
+      "@type": "skill:Trait",
+      "rdfs:label": "Adaptive communication style",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:adapt_technical_language",
+        "technique:context_aware_communication"
+      ]
+    },
+    {
+      "@id": "concept:skill_creation_process",
+      "@type": "skill:Concept",
+      "rdfs:label": "Skill Creation Process",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:intent_capture",
+        "concept:evaluation_iteration",
+        "concept:skill_writing"
+      ],
+      "skill:rules": [
+        "rule:start_with_intent",
+        "rule:write_test_cases_before_implementation"
+      ],
+      "skill:techniques": [
+        "technique:iterative_improvement",
+        "technique:background_evaluation"
+      ]
+    },
+    {
+      "@id": "concept:intent_capture",
+      "@type": "skill:Concept",
+      "rdfs:label": "Intent Capture",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:understand_what_skill_enables",
+        "rule:define_trigger_contexts",
+        "rule:specify_output_format"
+      ],
+      "skill:techniques": [
+        "technique:extract_from_conversation_history",
+        "technique:proactive_edge_case_questioning"
+      ]
+    },
+    {
+      "@id": "concept:evaluation_iteration",
+      "@type": "skill:Concept",
+      "rdfs:label": "Evaluation and Iteration",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:test_prompt_creation",
+        "concept:quantitative_evaluation",
+        "concept:qualitative_evaluation"
+      ],
+      "skill:techniques": [
+        "technique:background_evaluation",
+        "technique:eval_viewer_script",
+        "technique:scale_expansion"
+      ]
+    },
+    {
+      "@id": "concept:skill_writing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Skill Writing",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:skill_anatomy",
+        "concept:progressive_disclosure",
+        "concept:skill_description"
+      ],
+      "skill:rules": [
+        "rule:pushy_skill_descriptions",
+        "rule:yaml_frontmatter_required"
+      ]
+    },
+    {
+      "@id": "concept:user_focused_communication",
+      "@type": "skill:Concept",
+      "rdfs:label": "User-Focused Communication",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:adapt_technical_language",
+        "rule:pay_attention_to_context_cues"
+      ],
+      "skill:avoids": [
+        "antipattern:assume_technical_knowledge",
+        "antipattern:rigid_communication_style"
+      ]
+    },
+    {
+      "@id": "concept:iterative_development",
+      "@type": "skill:Concept",
+      "rdfs:label": "Iterative Development",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:draft_test_iterate",
+        "technique:flexible_entry_points",
+        "technique:repeat_until_satisfied"
+      ]
+    },
+    {
+      "@id": "concept:systematic_process",
+      "@type": "skill:Concept",
+      "rdfs:label": "Systematic Process",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:skill_creation_process",
+        "concept:progressive_disclosure"
+      ],
+      "skill:techniques": [
+        "technique:three_level_loading",
+        "technique:interview_and_research"
+      ]
+    },
+    {
+      "@id": "rule:start_with_intent",
+      "@type": "skill:Rule",
+      "rdfs:label": "Start by understanding the user's intent",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:understand_what_skill_enables",
+      "@type": "skill:Rule",
+      "rdfs:label": "What should this skill enable Claude to do?",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:define_trigger_contexts",
+      "@type": "skill:Rule",
+      "rdfs:label": "When should this skill trigger? (what user phrases/contexts)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:specify_output_format",
+      "@type": "skill:Rule",
+      "rdfs:label": "What's the expected output format?",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:write_test_cases_before_implementation",
+      "@type": "skill:Rule",
+      "rdfs:label": "Wait to write test prompts until you've got the interview part ironed out",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:adapt_technical_language",
+      "@type": "skill:Rule",
+      "rdfs:label": "Pay attention to context cues to understand how to phrase communication",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:pay_attention_to_context_cues",
+      "@type": "skill:Rule",
+      "rdfs:label": "Evaluation and benchmark are OK, JSON and assertion need user cues",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:pushy_skill_descriptions",
+      "@type": "skill:Rule",
+      "rdfs:label": "Make skill descriptions pushy to combat undertriggering",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:yaml_frontmatter_required",
+      "@type": "skill:Rule",
+      "rdfs:label": "SKILL.md requires YAML frontmatter with name and description",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:assume_technical_knowledge",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Assuming user technical knowledge without context cues",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:rigid_communication_style",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Using rigid communication style regardless of user expertise",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:user_intent_capture",
+      "@type": "skill:Technique",
+      "rdfs:label": "Capture user intent through systematic questioning",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:extract_from_conversation_history",
+      "@type": "skill:Technique",
+      "rdfs:label": "Extract answers from conversation history first",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:proactive_edge_case_questioning",
+      "@type": "skill:Technique",
+      "rdfs:label": "Proactively ask about edge cases, input/output formats, example files",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:interview_and_research",
+      "@type": "skill:Technique",
+      "rdfs:label": "Interview user and research via MCPs if available",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:draft_test_iterate",
+      "@type": "skill:Technique",
+      "rdfs:label": "Write draft, create test prompts, run evaluations, iterate",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:background_evaluation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Draft quantitative evals while runs happen in background",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:eval_viewer_script",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use eval-viewer/generate_review.py to show results",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:iterative_improvement",
+      "@type": "skill:Technique",
+      "rdfs:label": "Rewrite skill based on evaluation feedback and repeat until satisfied",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:scale_expansion",
+      "@type": "skill:Technique",
+      "rdfs:label": "Expand test set and try again at larger scale",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:flexible_entry_points",
+      "@type": "skill:Technique",
+      "rdfs:label": "Figure out where user is in process and jump in to help",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:flexible_workflow",
+      "@type": "skill:Technique",
+      "rdfs:label": "Be flexible if user says they don't need evaluations, just vibe",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:repeat_until_satisfied",
+      "@type": "skill:Technique",
+      "rdfs:label": "Repeat evaluation and improvement cycle until satisfied",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:context_aware_communication",
+      "@type": "skill:Technique",
+      "rdfs:label": "Adapt communication to user familiarity with coding jargon",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:progressive_disclosure",
+      "@type": "skill:Technique",
+      "rdfs:label": "Three-level loading system for skills",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:three_level_loading",
+      "@type": "skill:Technique",
+      "rdfs:label": "Metadata, SKILL.md body, Bundled resources loading levels",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:test_prompt_creation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Test Prompt Creation",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:objective_skills_need_tests",
+        "rule:subjective_skills_often_dont_need_tests"
+      ]
+    },
+    {
+      "@id": "rule:objective_skills_need_tests",
+      "@type": "skill:Rule",
+      "rdfs:label": "Skills with objectively verifiable outputs benefit from test cases",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:subjective_skills_often_dont_need_tests",
+      "@type": "skill:Rule",
+      "rdfs:label": "Skills with subjective outputs often don't need test cases",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:quantitative_evaluation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Quantitative Evaluation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:eval_viewer_script",
+        "technique:background_evaluation"
+      ]
+    },
+    {
+      "@id": "concept:qualitative_evaluation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Qualitative Evaluation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:user_result_review"
+      ]
+    },
+    {
+      "@id": "technique:user_result_review",
+      "@type": "skill:Technique",
+      "rdfs:label": "Help user evaluate results qualitatively",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:skill_anatomy",
+      "@type": "skill:Concept",
+      "rdfs:label": "Skill Anatomy",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:skill_md_structure",
+        "concept:bundled_resources"
+      ]
+    },
+    {
+      "@id": "concept:skill_md_structure",
+      "@type": "skill:Concept",
+      "rdfs:label": "SKILL.md Structure",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:yaml_frontmatter_required",
+        "rule:markdown_instructions_body"
+      ]
+    },
+    {
+      "@id": "rule:markdown_instructions_body",
+      "@type": "skill:Rule",
+      "rdfs:label": "SKILL.md body should be markdown instructions under 500 lines ideal",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:bundled_resources",
+      "@type": "skill:Concept",
+      "rdfs:label": "Bundled Resources",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:scripts_folder",
+        "concept:references_folder",
+        "concept:assets_folder"
+      ]
+    },
+    {
+      "@id": "concept:scripts_folder",
+      "@type": "skill:Concept",
+      "rdfs:label": "Scripts Folder",
+      "aether:origin": "core",
+      "rdfs:comment": "Executable code for deterministic/repetitive tasks"
+    },
+    {
+      "@id": "concept:references_folder",
+      "@type": "skill:Concept",
+      "rdfs:label": "References Folder",
+      "aether:origin": "core",
+      "rdfs:comment": "Docs loaded into context as needed"
+    },
+    {
+      "@id": "concept:assets_folder",
+      "@type": "skill:Concept",
+      "rdfs:label": "Assets Folder",
+      "aether:origin": "core",
+      "rdfs:comment": "Files used in output (templates, icons, fonts)"
+    },
+    {
+      "@id": "concept:skill_description",
+      "@type": "skill:Concept",
+      "rdfs:label": "Skill Description",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:pushy_skill_descriptions",
+        "rule:include_trigger_contexts",
+        "rule:primary_triggering_mechanism"
+      ]
+    },
+    {
+      "@id": "rule:include_trigger_contexts",
+      "@type": "skill:Rule",
+      "rdfs:label": "Include both what skill does AND specific contexts for when to use it",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:primary_triggering_mechanism",
+      "@type": "skill:Rule",
+      "rdfs:label": "Description is primary triggering mechanism, all when-to-use info goes there",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:eval_viewer_generate_review",
+      "@type": "skill:Tool",
+      "rdfs:label": "eval-viewer/generate_review.py script",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:skill_description_improver",
+      "@type": "skill:Tool",
+      "rdfs:label": "Skill description improver script",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:mcp_research",
+      "@type": "skill:Tool",
+      "rdfs:label": "MCPs for research (searching docs, finding similar skills)",
+      "aether:origin": "core"
+    }
+  ]
+}

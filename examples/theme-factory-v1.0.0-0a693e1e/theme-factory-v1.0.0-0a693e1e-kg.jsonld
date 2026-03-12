@@ -1,0 +1,460 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:visual_curator",
+      "@type": "skill:Trait",
+      "rdfs:label": "Visual Curator",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:visual_identity",
+        "concept:professional_styling",
+        "concept:cohesive_aesthetics"
+      ],
+      "skill:contains": [
+        "trait:detail_oriented",
+        "trait:artistic",
+        "trait:systematic",
+        "trait:collaborative",
+        "trait:perfectionist",
+        "trait:methodical",
+        "trait:confident"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail Oriented",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:ensure_proper_contrast",
+        "rule:maintain_visual_identity"
+      ]
+    },
+    {
+      "@id": "trait:artistic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Artistic",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:aesthetic_curation",
+        "technique:custom_theme_creation"
+      ]
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:four_step_application_process",
+        "rule:follow_structured_workflow"
+      ]
+    },
+    {
+      "@id": "trait:collaborative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Collaborative",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:get_explicit_confirmation",
+        "technique:show_theme_showcase"
+      ]
+    },
+    {
+      "@id": "trait:perfectionist",
+      "@type": "skill:Trait",
+      "rdfs:label": "Perfectionist",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:ensure_proper_contrast",
+        "rule:maintain_visual_identity"
+      ]
+    },
+    {
+      "@id": "trait:methodical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Methodical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:four_step_application_process",
+        "rule:follow_structured_workflow"
+      ]
+    },
+    {
+      "@id": "trait:confident",
+      "@type": "skill:Trait",
+      "rdfs:label": "Confident",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:custom_theme_creation",
+        "concept:professional_styling"
+      ]
+    },
+    {
+      "@id": "concept:theme_factory",
+      "@type": "skill:Concept",
+      "rdfs:label": "Theme Factory",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:curated_themes",
+        "concept:professional_styling",
+        "concept:visual_identity"
+      ],
+      "skill:techniques": [
+        "technique:four_step_application_process",
+        "technique:custom_theme_creation"
+      ]
+    },
+    {
+      "@id": "concept:curated_themes",
+      "@type": "skill:Concept",
+      "rdfs:label": "Curated Collection of Professional Themes",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:ten_predefined_themes",
+        "concept:color_palettes",
+        "concept:font_pairings"
+      ],
+      "skill:rules": [
+        "rule:no_modifications_to_showcase"
+      ]
+    },
+    {
+      "@id": "concept:ten_predefined_themes",
+      "@type": "skill:Concept",
+      "rdfs:label": "Ten Available Themes",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:ocean_depths",
+        "concept:sunset_boulevard",
+        "concept:forest_canopy",
+        "concept:modern_minimalist",
+        "concept:golden_hour",
+        "concept:arctic_frost",
+        "concept:desert_rose",
+        "concept:tech_innovation",
+        "concept:botanical_garden",
+        "concept:midnight_galaxy"
+      ]
+    },
+    {
+      "@id": "concept:ocean_depths",
+      "@type": "skill:Concept",
+      "rdfs:label": "Ocean Depths - Professional and calming maritime theme",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:sunset_boulevard",
+      "@type": "skill:Concept",
+      "rdfs:label": "Sunset Boulevard - Warm and vibrant sunset colors",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:forest_canopy",
+      "@type": "skill:Concept",
+      "rdfs:label": "Forest Canopy - Natural and grounded earth tones",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:modern_minimalist",
+      "@type": "skill:Concept",
+      "rdfs:label": "Modern Minimalist - Clean and contemporary grayscale",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:golden_hour",
+      "@type": "skill:Concept",
+      "rdfs:label": "Golden Hour - Rich and warm autumnal palette",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:arctic_frost",
+      "@type": "skill:Concept",
+      "rdfs:label": "Arctic Frost - Cool and crisp winter-inspired theme",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:desert_rose",
+      "@type": "skill:Concept",
+      "rdfs:label": "Desert Rose - Soft and sophisticated dusty tones",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:tech_innovation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Tech Innovation - Bold and modern tech aesthetic",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:botanical_garden",
+      "@type": "skill:Concept",
+      "rdfs:label": "Botanical Garden - Fresh and organic garden colors",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:midnight_galaxy",
+      "@type": "skill:Concept",
+      "rdfs:label": "Midnight Galaxy - Dramatic and cosmic deep tones",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:color_palettes",
+      "@type": "skill:Concept",
+      "rdfs:label": "Cohesive Color Palettes with Hex Codes",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:ensure_proper_contrast"
+      ]
+    },
+    {
+      "@id": "concept:font_pairings",
+      "@type": "skill:Concept",
+      "rdfs:label": "Complementary Font Pairings for Headers and Body Text",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:ensure_proper_readability"
+      ]
+    },
+    {
+      "@id": "concept:visual_identity",
+      "@type": "skill:Concept",
+      "rdfs:label": "Distinct Visual Identity",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:maintain_visual_identity",
+        "rule:apply_consistently_throughout"
+      ]
+    },
+    {
+      "@id": "concept:professional_styling",
+      "@type": "skill:Concept",
+      "rdfs:label": "Professional Styling for Presentation Slide Decks",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:four_step_application_process"
+      ]
+    },
+    {
+      "@id": "concept:cohesive_aesthetics",
+      "@type": "skill:Concept",
+      "rdfs:label": "Cohesive Aesthetic Execution",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:color_palettes",
+        "concept:font_pairings",
+        "concept:visual_identity"
+      ]
+    },
+    {
+      "@id": "concept:aesthetic_curation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Aesthetic Curation",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:custom_theme_creation"
+      ]
+    },
+    {
+      "@id": "tool:theme_showcase_pdf",
+      "@type": "skill:Tool",
+      "rdfs:label": "theme-showcase.pdf",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:no_modifications_to_showcase"
+      ]
+    },
+    {
+      "@id": "tool:themes_directory",
+      "@type": "skill:Tool",
+      "rdfs:label": "themes/ directory with complete specifications",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:color_palettes",
+        "concept:font_pairings"
+      ]
+    },
+    {
+      "@id": "technique:four_step_application_process",
+      "@type": "skill:Technique",
+      "rdfs:label": "Four Step Application Process",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:show_theme_showcase",
+        "technique:ask_for_choice",
+        "technique:wait_for_selection",
+        "technique:apply_theme"
+      ]
+    },
+    {
+      "@id": "technique:show_theme_showcase",
+      "@type": "skill:Technique",
+      "rdfs:label": "Display theme-showcase.pdf for visual selection",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:theme_showcase_pdf"
+      ],
+      "skill:rules": [
+        "rule:no_modifications_to_showcase"
+      ]
+    },
+    {
+      "@id": "technique:ask_for_choice",
+      "@type": "skill:Technique",
+      "rdfs:label": "Ask which theme to apply to the deck",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:wait_for_selection",
+      "@type": "skill:Technique",
+      "rdfs:label": "Get explicit confirmation about chosen theme",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:get_explicit_confirmation"
+      ]
+    },
+    {
+      "@id": "technique:apply_theme",
+      "@type": "skill:Technique",
+      "rdfs:label": "Apply selected theme's colors and fonts",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:read_theme_file",
+        "technique:apply_colors_fonts",
+        "technique:ensure_contrast",
+        "technique:maintain_identity"
+      ]
+    },
+    {
+      "@id": "technique:read_theme_file",
+      "@type": "skill:Technique",
+      "rdfs:label": "Read corresponding theme file from themes/ directory",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:themes_directory"
+      ]
+    },
+    {
+      "@id": "technique:apply_colors_fonts",
+      "@type": "skill:Technique",
+      "rdfs:label": "Apply specified colors and fonts consistently",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:apply_consistently_throughout"
+      ]
+    },
+    {
+      "@id": "technique:ensure_contrast",
+      "@type": "skill:Technique",
+      "rdfs:label": "Ensure proper contrast and readability",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:ensure_proper_contrast",
+        "rule:ensure_proper_readability"
+      ]
+    },
+    {
+      "@id": "technique:maintain_identity",
+      "@type": "skill:Technique",
+      "rdfs:label": "Maintain theme's visual identity across all slides",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:maintain_visual_identity"
+      ]
+    },
+    {
+      "@id": "technique:custom_theme_creation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Create custom theme when existing themes don't work",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:generate_custom_theme",
+        "technique:show_for_review",
+        "technique:apply_after_verification"
+      ]
+    },
+    {
+      "@id": "technique:generate_custom_theme",
+      "@type": "skill:Technique",
+      "rdfs:label": "Generate new theme based on provided inputs",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:give_descriptive_name",
+        "rule:use_basic_description_inputs"
+      ]
+    },
+    {
+      "@id": "technique:show_for_review",
+      "@type": "skill:Technique",
+      "rdfs:label": "Show generated theme for review and verification",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:apply_after_verification",
+      "@type": "skill:Technique",
+      "rdfs:label": "Apply theme after verification following standard process",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:four_step_application_process"
+      ]
+    },
+    {
+      "@id": "rule:no_modifications_to_showcase",
+      "@type": "skill:Rule",
+      "rdfs:label": "Do not make any modifications to theme-showcase.pdf; simply show for viewing",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:get_explicit_confirmation",
+      "@type": "skill:Rule",
+      "rdfs:label": "Get explicit confirmation about the chosen theme",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:apply_consistently_throughout",
+      "@type": "skill:Rule",
+      "rdfs:label": "Apply specified colors and fonts consistently throughout the deck",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:ensure_proper_contrast",
+      "@type": "skill:Rule",
+      "rdfs:label": "Ensure proper contrast and readability",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:ensure_proper_readability",
+      "@type": "skill:Rule",
+      "rdfs:label": "Ensure proper readability",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:maintain_visual_identity",
+      "@type": "skill:Rule",
+      "rdfs:label": "Maintain the theme's visual identity across all slides",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:follow_structured_workflow",
+      "@type": "skill:Rule",
+      "rdfs:label": "Follow systematic four-step application process",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:give_descriptive_name",
+      "@type": "skill:Rule",
+      "rdfs:label": "Give the custom theme a descriptive name representing font/color combinations",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_basic_description_inputs",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use any basic description provided to choose appropriate colors/fonts",
+      "aether:origin": "core"
+    }
+  ]
+}

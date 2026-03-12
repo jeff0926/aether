@@ -1,0 +1,17 @@
+[
+  {
+    "id": "2026-03-09T20-50-16-367f550f",
+    "timestamp": "2026-03-09T20:50:16.846201",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
+  }
+]

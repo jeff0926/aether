@@ -1,0 +1,68 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "claude-api",
+  "primary_function": "\"Build apps with the Claude API or Anthropic SDK. TRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`/`claude_agent_sdk`, or user asks to use Claude API, Anthropic SDKs, or Agent SDK. DO NOT TRIGGER when: code imports `openai`/other AI SDK, general programming, or ML/data-science tasks.\"",
+  "domain_boundaries": {
+    "authoritative": [
+      "Claude API integration patterns",
+      "Language detection from project files",
+      "Surface selection (API vs Agent SDK vs Tool Use)",
+      "Python SDK implementation",
+      "TypeScript/JavaScript SDK implementation",
+      "Java SDK implementation",
+      "Go SDK implementation",
+      "Ruby SDK implementation",
+      "C# SDK implementation",
+      "PHP SDK implementation",
+      "cURL/HTTP API usage",
+      "Tool use configuration and patterns",
+      "Agent SDK setup and usage",
+      "Structured output configuration",
+      "Claude model version selection",
+      "Architecture decision guidance for LLM applications"
+    ],
+    "out_of_scope": [
+      "Non-Claude LLM providers (OpenAI, Cohere, etc.)",
+      "Frontend UI/UX design",
+      "Database design and optimization",
+      "Infrastructure deployment and DevOps",
+      "Authentication systems beyond API keys",
+      "Performance optimization unrelated to Claude",
+      "Business logic unrelated to LLM integration",
+      "Data science and ML model training",
+      "Mobile app development frameworks",
+      "Testing frameworks beyond API integration testing"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify language detection logic correctly maps file extensions to programming languages",
+    "Confirm surface recommendations match the complexity and requirements described",
+    "Ensure Claude model version defaults to claude-opus-4-6 unless user specifies otherwise",
+    "Validate that adaptive thinking is recommended for complex tasks",
+    "Confirm streaming is suggested for long input/output or high max_tokens scenarios",
+    "Verify tool use examples match the detected programming language",
+    "Ensure architecture guidance aligns with the four agent criteria (complexity, value, viability, cost of error)",
+    "Confirm SDK feature support table accuracy for each language",
+    "Validate that unsupported languages are directed to cURL examples or community SDKs"
+  ],
+  "trigger_text": "\"Build apps with the Claude API or Anthropic SDK. TRIGGER when: code imports `anthropic`/`@anthropic-ai/sdk`/`claude_agent_sdk`, or user asks to use Claude API, Anthropic SDKs, or Agent SDK. DO NOT TRIGGER when: code imports `openai`/other AI SDK, general programming, or ML/data-science tasks.\""
+}

@@ -1,0 +1,427 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:aesthetic_architect",
+      "@type": "skill:Trait",
+      "rdfs:label": "Aesthetic Architect",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:aesthetic_vision",
+        "concept:production_grade_quality"
+      ],
+      "skill:contains": [
+        "trait:bold_creative",
+        "trait:visionary_technical",
+        "trait:opinionated",
+        "trait:perfectionist"
+      ]
+    },
+    {
+      "@id": "trait:bold_creative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Bold and Creative Tone",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "trait:visionary_technical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Visionary Technical Style",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "trait:opinionated",
+      "@type": "skill:Trait",
+      "rdfs:label": "Opinionated",
+      "aether:origin": "core",
+      "skill:enables": "rule:avoid_generic_choices"
+    },
+    {
+      "@id": "trait:perfectionist",
+      "@type": "skill:Trait",
+      "rdfs:label": "Perfectionist",
+      "aether:origin": "core",
+      "skill:requires": "technique:pixel_perfect_execution"
+    },
+    {
+      "@id": "concept:aesthetic_vision",
+      "@type": "skill:Concept",
+      "rdfs:label": "Aesthetic Vision",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:typography",
+        "concept:color_theory",
+        "concept:motion",
+        "concept:spatial_composition"
+      ]
+    },
+    {
+      "@id": "concept:typography",
+      "@type": "skill:Concept",
+      "rdfs:label": "Typography",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:avoid_generic_fonts",
+        "rule:pair_display_with_body",
+        "rule:unexpected_characterful_fonts"
+      ],
+      "skill:avoids": "antipattern:inter_roboto_arial"
+    },
+    {
+      "@id": "rule:avoid_generic_fonts",
+      "@type": "skill:Rule",
+      "rdfs:label": "Avoid generic fonts like Arial and Inter",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:pair_display_with_body",
+      "@type": "skill:Rule",
+      "rdfs:label": "Pair a distinctive display font with a refined body font",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:unexpected_characterful_fonts",
+      "@type": "skill:Rule",
+      "rdfs:label": "Opt for unexpected, characterful font choices",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:inter_roboto_arial",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Overused fonts (Inter, Roboto, Arial, System Fonts)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:color_theory",
+      "@type": "skill:Concept",
+      "rdfs:label": "Color and Theme",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:use_css_variables",
+        "rule:dominant_colors_sharp_accents"
+      ],
+      "skill:avoids": "antipattern:purple_gradients_on_white"
+    },
+    {
+      "@id": "rule:use_css_variables",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use CSS variables for consistency",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:dominant_colors_sharp_accents",
+      "@type": "skill:Rule",
+      "rdfs:label": "Dominant colors with sharp accents outperform timid palettes",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:purple_gradients_on_white",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Purple gradients on white backgrounds",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:motion",
+      "@type": "skill:Concept",
+      "rdfs:label": "Motion and Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:staggered_reveals",
+        "technique:scroll_triggering",
+        "technique:css_only_animations"
+      ],
+      "skill:rules": "rule:intentional_motion"
+    },
+    {
+      "@id": "rule:intentional_motion",
+      "@type": "skill:Rule",
+      "rdfs:label": "Animations must serve specific aesthetic purpose",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:staggered_reveals",
+      "@type": "skill:Technique",
+      "rdfs:label": "Staggered reveals using animation-delay",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:scroll_triggering",
+      "@type": "skill:Technique",
+      "rdfs:label": "Scroll-triggering interactions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:css_only_animations",
+      "@type": "skill:Technique",
+      "rdfs:label": "Prioritize CSS-only solutions for HTML",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:spatial_composition",
+      "@type": "skill:Concept",
+      "rdfs:label": "Spatial Composition",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:asymmetry",
+        "technique:grid_breaking",
+        "technique:diagonal_flow",
+        "technique:controlled_density"
+      ],
+      "skill:avoids": "antipattern:predictable_layouts"
+    },
+    {
+      "@id": "technique:asymmetry",
+      "@type": "skill:Technique",
+      "rdfs:label": "Asymmetric layout composition",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:grid_breaking",
+      "@type": "skill:Technique",
+      "rdfs:label": "Grid-breaking elements and overlap",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:diagonal_flow",
+      "@type": "skill:Technique",
+      "rdfs:label": "Diagonal flow in composition",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:controlled_density",
+      "@type": "skill:Technique",
+      "rdfs:label": "Controlled density as alternative to generous whitespace",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:predictable_layouts",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Predictable layouts and cookie-cutter patterns",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:visual_details",
+      "@type": "skill:Concept",
+      "rdfs:label": "Backgrounds and Visual Details",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:gradient_meshes",
+        "technique:noise_textures",
+        "technique:grain_overlays",
+        "technique:dramatic_shadows"
+      ]
+    },
+    {
+      "@id": "technique:gradient_meshes",
+      "@type": "skill:Technique",
+      "rdfs:label": "Gradient meshes",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:noise_textures",
+      "@type": "skill:Technique",
+      "rdfs:label": "Noise textures",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:grain_overlays",
+      "@type": "skill:Technique",
+      "rdfs:label": "Grain overlays",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:dramatic_shadows",
+      "@type": "skill:Technique",
+      "rdfs:label": "Dramatic shadows and layered transparencies",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:react",
+      "@type": "skill:Tool",
+      "rdfs:label": "React",
+      "aether:origin": "core",
+      "skill:pairs_with": "tool:motion_library"
+    },
+    {
+      "@id": "tool:vue",
+      "@type": "skill:Tool",
+      "rdfs:label": "Vue.js",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:motion_library",
+      "@type": "skill:Tool",
+      "rdfs:label": "Motion library (Framer Motion)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:production_grade_quality",
+      "@type": "skill:Concept",
+      "rdfs:label": "Production-Grade Implementation",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:accessibility_considerations",
+        "rule:cross_browser_compatibility",
+        "rule:proper_code_structure"
+      ]
+    },
+    {
+      "@id": "rule:accessibility_considerations",
+      "@type": "skill:Rule",
+      "rdfs:label": "Ensure user interface accessibility",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:cross_browser_compatibility",
+      "@type": "skill:Rule",
+      "rdfs:label": "Maintain cross-browser compatibility",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:proper_code_structure",
+      "@type": "skill:Rule",
+      "rdfs:label": "Code must be production-ready with proper structure",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:break_conventional_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "Break conventional patterns with unexpected composition",
+      "aether:origin": "core",
+      "skill:contradicts": "antipattern:cookie_cutter_design"
+    },
+    {
+      "@id": "antipattern:cookie_cutter_design",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Cookie-cutter design lacking context-specific character",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:no_design_the_same",
+      "@type": "skill:Rule",
+      "rdfs:label": "Vary aesthetics; never converge on common choices",
+      "aether:origin": "core",
+      "skill:avoids": "antipattern:space_grotesk_convergence"
+    },
+    {
+      "@id": "antipattern:space_grotesk_convergence",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Convergence on Space Grotesk across generations",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:pixel_perfect_execution",
+      "@type": "skill:Technique",
+      "rdfs:label": "Pixel-perfect attention to detail",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:aesthetic_tones",
+      "@type": "skill:Concept",
+      "rdfs:label": "Aesthetic Tone Options",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tone:brutally_minimal",
+        "tone:maximalist_chaos",
+        "tone:retro_futuristic",
+        "tone:editorial_magazine"
+      ]
+    },
+    {
+      "@id": "tone:brutally_minimal",
+      "@type": "skill:Concept",
+      "rdfs:label": "Brutally Minimal",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tone:maximalist_chaos",
+      "@type": "skill:Concept",
+      "rdfs:label": "Maximalist Chaos",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tone:retro_futuristic",
+      "@type": "skill:Concept",
+      "rdfs:label": "Retro-Futuristic",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tone:editorial_magazine",
+      "@type": "skill:Concept",
+      "rdfs:label": "Editorial Magazine",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "aether:acquired/users",
+      "rdfs:label": "Users",
+      "are": "affluent consumers",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461126",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416",
+      "seek": "validation of refined taste",
+      "aether:updated": "2026-03-11T09:55:23.461137"
+    },
+    {
+      "@id": "aether:acquired/typography_strategy",
+      "rdfs:label": "Typography strategy",
+      "follows": "Sophisticated Maximalism",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461142",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416"
+    },
+    {
+      "@id": "aether:acquired/display_headlines",
+      "rdfs:label": "Display Headlines",
+      "use_font": "Didot",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461147",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416",
+      "aether:updated": "2026-03-11T09:55:23.461151"
+    },
+    {
+      "@id": "aether:acquired/body_text",
+      "rdfs:label": "Body Text",
+      "use_font": "Minion Pro",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461155",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416"
+    },
+    {
+      "@id": "aether:acquired/accent/cta",
+      "rdfs:label": "Accent/CTA",
+      "use_font": "Optima",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461158",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416"
+    },
+    {
+      "@id": "aether:acquired/design_approach",
+      "rdfs:label": "Design approach",
+      "avoids": "Open Sans",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461162",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416",
+      "aether:updated": "2026-03-11T09:55:23.461176"
+    },
+    {
+      "@id": "aether:acquired/design_philosophy",
+      "rdfs:label": "Design philosophy",
+      "follows": "No safe choices",
+      "aether:origin": "acquired",
+      "aether:confidence": 0.8,
+      "aether:acquired_date": "2026-03-11T09:55:23.461179",
+      "aether:aec_trigger": "2026-03-11T09-37-50-7633f416",
+      "aether:updated": "2026-03-11T09:55:23.461182"
+    }
+  ]
+}

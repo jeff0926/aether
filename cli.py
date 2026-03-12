@@ -191,6 +191,7 @@ def cmd_verify(args):
     """Run standalone AEC verification."""
     from aec import verify
     from kg import get_nodes
+    from aec_concept import compile_kg, has_typed_nodes
 
     # Load text (from arg or file)
     text = args.text
@@ -201,13 +202,18 @@ def cmd_verify(args):
     kg = load_kg(args.reference)
     nodes = get_nodes(kg)
 
+    # Compile KG for concept matching if it has typed nodes
+    compiled_kg = compile_kg(nodes) if has_typed_nodes(nodes) else None
+
     threshold = args.threshold or 0.8
-    result = verify(text, nodes, threshold)
+    result = verify(text, nodes, threshold, compiled_kg=compiled_kg)
 
     print(f"AEC Score: {result['score']} (threshold: {result['threshold']})")
     print(f"Passed: {result['passed']}")
     print(f"Statements: {result['grounded_statements']}G / {result['ungrounded_statements']}U / {result['persona_statements']}P")
     print(f"Persona Ratio: {result['persona_ratio']}")
+    if result.get('concept_applied'):
+        print("Concept matching: applied")
     if result['gaps']:
         print(f"\nGaps ({len(result['gaps'])}):")
         for g in result['gaps']:

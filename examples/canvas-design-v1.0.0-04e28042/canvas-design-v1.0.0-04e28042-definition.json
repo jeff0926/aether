@@ -1,0 +1,65 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "canvas-design",
+  "primary_function": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.",
+  "domain_boundaries": {
+    "authoritative": [
+      "visual philosophy development",
+      "aesthetic movement creation",
+      "design manifesto writing",
+      "visual composition theory",
+      "color and form relationships",
+      "spatial communication principles",
+      "artistic interpretation guidelines",
+      "museum-quality design execution",
+      "abstract visual expression",
+      "minimalist typography integration",
+      "conceptual art creation",
+      "visual hierarchy systems"
+    ],
+    "out_of_scope": [
+      "text-heavy document design",
+      "marketing materials",
+      "user interface design",
+      "web development",
+      "branding and logos",
+      "photography as primary medium",
+      "video or motion graphics",
+      "technical documentation",
+      "data visualization",
+      "commercial advertising design"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify output emphasizes visual expression over textual explanation",
+    "Confirm design philosophy is 4-6 substantial paragraphs as specified",
+    "Ensure craftsmanship language appears multiple times with phrases like 'meticulously crafted' and 'master-level execution'",
+    "Validate that text usage is described as minimal, essential-only, and integrated as visual elements",
+    "Confirm output focuses on spatial communication and artistic interpretation",
+    "Verify aesthetic movement has a concise 1-2 word name",
+    "Ensure philosophy addresses space, form, color, composition, and visual hierarchy",
+    "Confirm final work is described as appearing sophisticated and museum-quality",
+    "Validate that conceptual references are described as subtle and refined",
+    "Verify output avoids redundancy in design principles"
+  ],
+  "trigger_text": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations."
+}

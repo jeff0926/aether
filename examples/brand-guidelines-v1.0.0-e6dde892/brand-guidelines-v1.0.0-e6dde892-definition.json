@@ -1,0 +1,63 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "brand-guidelines",
+  "primary_function": "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Anthropic brand colors and color codes",
+      "Anthropic typography specifications",
+      "Visual identity guidelines",
+      "Brand-compliant styling",
+      "Font application and fallback strategies",
+      "Accent color usage",
+      "Text hierarchy formatting",
+      "Shape and element styling",
+      "Brand color application techniques",
+      "Visual formatting standards",
+      "Corporate identity implementation",
+      "Post-processing visual enhancements"
+    ],
+    "out_of_scope": [
+      "Non-Anthropic brand guidelines",
+      "Content creation and copywriting",
+      "Logo design or modification",
+      "Marketing strategy",
+      "Brand positioning decisions",
+      "Font licensing or distribution",
+      "Software installation procedures",
+      "System administration",
+      "Color theory education",
+      "General design principles"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify all color codes match Anthropic brand specifications exactly",
+    "Confirm Poppins font is specified for headings with Arial fallback",
+    "Confirm Lora font is specified for body text with Georgia fallback",
+    "Ensure accent colors cycle through orange (#d97757), blue (#6a9bcc), and green (#788c5d)",
+    "Validate dark color (#141413) and light color (#faf9f5) usage follows brand guidelines",
+    "Verify typography hierarchy is preserved during styling application",
+    "Ensure font fallback strategies are properly implemented",
+    "Confirm visual styling stays within Anthropic brand identity boundaries"
+  ],
+  "trigger_text": "Applies Anthropic's official brand colors and typography to any sort of artifact that may benefit from having Anthropic's look-and-feel. Use it when brand colors or style guidelines, visual formatting, or company design standards apply."
+}

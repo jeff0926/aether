@@ -1,0 +1,62 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "skill-creator",
+  "primary_function": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy.",
+  "domain_boundaries": {
+    "authoritative": [
+      "skill creation workflow orchestration",
+      "user intent capture and requirements gathering",
+      "skill drafting and structure design",
+      "test case creation and evaluation setup",
+      "quantitative evaluation design",
+      "iterative skill improvement",
+      "skill description optimization",
+      "SKILL.md file format and structure",
+      "progressive disclosure patterns",
+      "skill bundled resource organization",
+      "output format specification",
+      "skill triggering mechanisms"
+    ],
+    "out_of_scope": [
+      "domain-specific technical implementation details",
+      "actual execution of the skills being created",
+      "low-level debugging of skill outputs",
+      "infrastructure deployment",
+      "security vulnerability assessment",
+      "performance optimization of generated code",
+      "direct file system operations",
+      "database administration"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify skill follows proper SKILL.md format with YAML frontmatter",
+    "Confirm skill description includes both functionality and triggering contexts",
+    "Ensure skill stays under 500 lines in main body",
+    "Validate that bundled resources are properly referenced with usage guidance",
+    "Confirm skill uses imperative form in instructions",
+    "Verify output formats are clearly defined with templates when needed",
+    "Ensure skill does not contain malware, exploits, or malicious content",
+    "Confirm communication style matches user's technical familiarity level",
+    "Validate that skill follows progressive disclosure principles"
+  ],
+  "trigger_text": "Create new skills, modify and improve existing skills, and measure skill performance. Use when users want to create a skill from scratch, edit, or optimize an existing skill, run evals to test a skill, benchmark skill performance with variance analysis, or optimize a skill's description for better triggering accuracy."
+}

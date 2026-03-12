@@ -39,6 +39,7 @@ class Capsule:
         self.path = Path(path)
         self.llm_fn = llm_fn or (lambda p, **kw: f"[No LLM. Prompt: {len(p)} chars]")
         self.files = self._load_files()
+        self._compiled_kg = self._compile_kg_if_typed()
 
     def _load_files(self) -> dict:
         if not self.path.is_dir():
@@ -72,6 +73,14 @@ class Capsule:
             }
 
         return files
+
+    def _compile_kg_if_typed(self) -> dict | None:
+        """Compile KG for concept AEC if it has typed nodes (Rule, Technique, etc.)."""
+        from aec_concept import compile_kg, has_typed_nodes
+        kg_nodes = self.files["kg"].get("@graph", [])
+        if has_typed_nodes(kg_nodes):
+            return compile_kg(kg_nodes)
+        return None
 
     @property
     def id(self) -> str:
@@ -299,7 +308,8 @@ class Capsule:
         threshold = definition.get("review", {}).get("threshold", 0.8)
 
         # Run AEC verification against augmented KG subgraph
-        aec_result = aec_verify(response_text, kg_nodes, threshold)
+        # Pass compiled KG for concept-level matching on skill agents
+        aec_result = aec_verify(response_text, kg_nodes, threshold, compiled_kg=self._compiled_kg)
 
         # Queue failures for education
         queued = False

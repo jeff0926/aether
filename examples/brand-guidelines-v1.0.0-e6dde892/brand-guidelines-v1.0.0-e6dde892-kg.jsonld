@@ -1,0 +1,471 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:brand_curator",
+      "@type": "skill:Trait",
+      "rdfs:label": "Brand Curator",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:brand_identity",
+        "concept:visual_consistency",
+        "concept:color_accuracy"
+      ],
+      "skill:contains": [
+        "trait:precise",
+        "trait:systematic",
+        "trait:detail_oriented",
+        "trait:perfectionist",
+        "trait:conservative"
+      ]
+    },
+    {
+      "@id": "trait:precise",
+      "@type": "skill:Trait",
+      "rdfs:label": "Precise",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:use_exact_rgb_values",
+        "rule:maintain_color_fidelity"
+      ]
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:automatic_font_fallback",
+        "technique:smart_color_selection"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail Oriented",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:preserve_text_hierarchy",
+        "rule:maintain_readability"
+      ]
+    },
+    {
+      "@id": "trait:perfectionist",
+      "@type": "skill:Trait",
+      "rdfs:label": "Perfectionist",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:pre_install_fonts_for_best_results",
+        "concept:exacting_standards"
+      ]
+    },
+    {
+      "@id": "trait:conservative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Conservative",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:fallback_fonts",
+        "rule:no_font_installation_required"
+      ]
+    },
+    {
+      "@id": "concept:anthropic_brand_styling",
+      "@type": "skill:Concept",
+      "rdfs:label": "Anthropic Brand Styling",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:brand_colors",
+        "concept:typography",
+        "concept:smart_font_application",
+        "concept:text_styling",
+        "concept:shape_accent_colors"
+      ],
+      "skill:rules": [
+        "rule:use_exact_rgb_values",
+        "rule:maintain_color_fidelity"
+      ]
+    },
+    {
+      "@id": "concept:brand_identity",
+      "@type": "skill:Concept",
+      "rdfs:label": "Brand Identity",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:visual_identity",
+        "concept:corporate_identity"
+      ],
+      "skill:techniques": [
+        "technique:brand_matching"
+      ]
+    },
+    {
+      "@id": "concept:visual_consistency",
+      "@type": "skill:Concept",
+      "rdfs:label": "Visual Consistency",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:color_accuracy",
+        "concept:typography"
+      ],
+      "skill:rules": [
+        "rule:preserve_text_hierarchy",
+        "rule:maintain_visual_interest"
+      ]
+    },
+    {
+      "@id": "concept:brand_colors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Brand Colors",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:main_colors",
+        "concept:accent_colors"
+      ],
+      "skill:rules": [
+        "rule:use_exact_rgb_values",
+        "rule:maintain_color_fidelity"
+      ]
+    },
+    {
+      "@id": "concept:main_colors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Main Colors",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:dark_color",
+        "tool:light_color",
+        "tool:mid_gray",
+        "tool:light_gray"
+      ]
+    },
+    {
+      "@id": "concept:accent_colors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Accent Colors",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:orange_accent",
+        "tool:blue_accent",
+        "tool:green_accent"
+      ],
+      "skill:techniques": [
+        "technique:cycle_through_accents"
+      ]
+    },
+    {
+      "@id": "concept:typography",
+      "@type": "skill:Concept",
+      "rdfs:label": "Typography",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:poppins_for_headings",
+        "rule:lora_for_body",
+        "rule:arial_fallback_headings",
+        "rule:georgia_fallback_body"
+      ],
+      "skill:techniques": [
+        "technique:automatic_font_fallback"
+      ]
+    },
+    {
+      "@id": "concept:smart_font_application",
+      "@type": "skill:Concept",
+      "rdfs:label": "Smart Font Application",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:poppins_24pt_larger",
+        "rule:lora_body_text",
+        "rule:preserve_readability"
+      ],
+      "skill:techniques": [
+        "technique:automatic_font_fallback"
+      ]
+    },
+    {
+      "@id": "concept:text_styling",
+      "@type": "skill:Concept",
+      "rdfs:label": "Text Styling",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:poppins_24pt_larger",
+        "rule:lora_body_text",
+        "rule:preserve_text_hierarchy"
+      ],
+      "skill:techniques": [
+        "technique:smart_color_selection"
+      ]
+    },
+    {
+      "@id": "concept:shape_accent_colors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Shape and Accent Colors",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:non_text_shapes_use_accents",
+        "rule:maintain_visual_interest"
+      ],
+      "skill:techniques": [
+        "technique:cycle_through_accents"
+      ]
+    },
+    {
+      "@id": "concept:font_management",
+      "@type": "skill:Concept",
+      "rdfs:label": "Font Management",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:no_font_installation_required",
+        "rule:pre_install_fonts_for_best_results"
+      ],
+      "skill:techniques": [
+        "technique:system_installed_fonts",
+        "technique:automatic_font_fallback"
+      ]
+    },
+    {
+      "@id": "concept:color_application",
+      "@type": "skill:Concept",
+      "rdfs:label": "Color Application",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:use_exact_rgb_values",
+        "rule:maintain_color_fidelity"
+      ],
+      "skill:techniques": [
+        "technique:python_pptx_rgb",
+        "technique:brand_matching"
+      ]
+    },
+    {
+      "@id": "concept:color_accuracy",
+      "@type": "skill:Concept",
+      "rdfs:label": "Color Accuracy",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:python_pptx",
+        "technique:python_pptx_rgb"
+      ],
+      "skill:rules": [
+        "rule:use_exact_rgb_values",
+        "rule:maintain_color_fidelity"
+      ]
+    },
+    {
+      "@id": "concept:exacting_standards",
+      "@type": "skill:Concept",
+      "rdfs:label": "Exacting Standards",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:color_accuracy",
+        "concept:typography",
+        "concept:visual_consistency"
+      ]
+    },
+    {
+      "@id": "rule:poppins_for_headings",
+      "@type": "skill:Rule",
+      "rdfs:label": "Headings use Poppins font",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:lora_for_body",
+      "@type": "skill:Rule",
+      "rdfs:label": "Body text uses Lora font",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:arial_fallback_headings",
+      "@type": "skill:Rule",
+      "rdfs:label": "Arial fallback for headings",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:georgia_fallback_body",
+      "@type": "skill:Rule",
+      "rdfs:label": "Georgia fallback for body text",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:poppins_24pt_larger",
+      "@type": "skill:Rule",
+      "rdfs:label": "Apply Poppins font to headings 24pt and larger",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:lora_body_text",
+      "@type": "skill:Rule",
+      "rdfs:label": "Apply Lora font to body text",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:preserve_readability",
+      "@type": "skill:Rule",
+      "rdfs:label": "Preserve readability across all systems",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:preserve_text_hierarchy",
+      "@type": "skill:Rule",
+      "rdfs:label": "Preserve text hierarchy and formatting",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:non_text_shapes_use_accents",
+      "@type": "skill:Rule",
+      "rdfs:label": "Non-text shapes use accent colors",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:maintain_visual_interest",
+      "@type": "skill:Rule",
+      "rdfs:label": "Maintain visual interest while staying on-brand",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_exact_rgb_values",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use RGB color values for precise brand matching",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:maintain_color_fidelity",
+      "@type": "skill:Rule",
+      "rdfs:label": "Maintain color fidelity across different systems",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:no_font_installation_required",
+      "@type": "skill:Rule",
+      "rdfs:label": "No font installation required - works with existing system fonts",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:pre_install_fonts_for_best_results",
+      "@type": "skill:Rule",
+      "rdfs:label": "For best results, pre-install Poppins and Lora fonts in your environment",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:automatic_font_fallback",
+      "@type": "skill:Technique",
+      "rdfs:label": "Automatic fallback to Arial/Georgia if custom fonts unavailable",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:smart_color_selection",
+      "@type": "skill:Technique",
+      "rdfs:label": "Smart color selection based on background",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:cycle_through_accents",
+      "@type": "skill:Technique",
+      "rdfs:label": "Cycle through orange, blue, and green accents",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:system_installed_fonts",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use system-installed Poppins and Lora fonts when available",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:python_pptx_rgb",
+      "@type": "skill:Technique",
+      "rdfs:label": "Applied via python-pptx's RGBColor class",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:brand_matching",
+      "@type": "skill:Technique",
+      "rdfs:label": "Brand matching",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:dark_color",
+      "@type": "skill:Tool",
+      "rdfs:label": "Dark (#141413) - Primary text and dark backgrounds",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:light_color",
+      "@type": "skill:Tool",
+      "rdfs:label": "Light (#faf9f5) - Light backgrounds and text on dark",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:mid_gray",
+      "@type": "skill:Tool",
+      "rdfs:label": "Mid Gray (#b0aea5) - Secondary elements",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:light_gray",
+      "@type": "skill:Tool",
+      "rdfs:label": "Light Gray (#e8e6dc) - Subtle backgrounds",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:orange_accent",
+      "@type": "skill:Tool",
+      "rdfs:label": "Orange (#d97757) - Primary accent",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:blue_accent",
+      "@type": "skill:Tool",
+      "rdfs:label": "Blue (#6a9bcc) - Secondary accent",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:green_accent",
+      "@type": "skill:Tool",
+      "rdfs:label": "Green (#788c5d) - Tertiary accent",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:poppins",
+      "@type": "skill:Tool",
+      "rdfs:label": "Poppins font",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:arial_fallback"
+      ]
+    },
+    {
+      "@id": "tool:lora",
+      "@type": "skill:Tool",
+      "rdfs:label": "Lora font",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:georgia_fallback"
+      ]
+    },
+    {
+      "@id": "tool:arial_fallback",
+      "@type": "skill:Tool",
+      "rdfs:label": "Arial fallback font",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:georgia_fallback",
+      "@type": "skill:Tool",
+      "rdfs:label": "Georgia fallback font",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:python_pptx",
+      "@type": "skill:Tool",
+      "rdfs:label": "python-pptx library",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:python_pptx_rgb"
+      ]
+    }
+  ]
+}

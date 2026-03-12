@@ -1,0 +1,506 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:api_integration_specialist",
+      "@type": "skill:Trait",
+      "rdfs:label": "API Integration Specialist",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:systematic_approach",
+        "concept:language_detection",
+        "concept:architecture_alignment"
+      ],
+      "skill:contains": [
+        "trait:methodical",
+        "trait:technical",
+        "trait:systematic",
+        "trait:detail_oriented",
+        "trait:analytical",
+        "trait:cautious",
+        "trait:conservative",
+        "trait:collaborative"
+      ]
+    },
+    {
+      "@id": "trait:methodical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Methodical approach to problem-solving",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:decision_tree_approach",
+        "technique:structured_selection"
+      ]
+    },
+    {
+      "@id": "trait:technical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Technical expertise in API integration",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:sdk_knowledge",
+        "concept:language_detection"
+      ]
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic workflow execution",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:step_by_step_detection",
+        "rule:follow_decision_tree"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Attention to implementation details",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:check_project_files",
+        "rule:detect_multiple_languages"
+      ]
+    },
+    {
+      "@id": "concept:claude_application_building",
+      "@type": "skill:Concept",
+      "rdfs:label": "Building LLM-Powered Applications with Claude",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:surface_selection",
+        "concept:language_detection",
+        "concept:claude_defaults"
+      ],
+      "skill:rules": [
+        "rule:start_simple",
+        "rule:choose_right_surface",
+        "rule:detect_project_language"
+      ]
+    },
+    {
+      "@id": "concept:claude_defaults",
+      "@type": "skill:Concept",
+      "rdfs:label": "Claude Default Configuration",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:use_claude_opus_4_6",
+        "rule:default_adaptive_thinking",
+        "rule:default_streaming"
+      ]
+    },
+    {
+      "@id": "rule:use_claude_opus_4_6",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use Claude Opus 4.6 with exact model string claude-opus-4-6",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:default_adaptive_thinking",
+      "@type": "skill:Rule",
+      "rdfs:label": "Default to adaptive thinking for anything remotely complicated",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:default_streaming",
+      "@type": "skill:Rule",
+      "rdfs:label": "Default to streaming for long input, long output, or high max_tokens",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:language_detection",
+      "@type": "skill:Concept",
+      "rdfs:label": "Programming Language Detection",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:look_at_project_files",
+        "rule:handle_multiple_languages",
+        "rule:handle_undetectable_language",
+        "rule:handle_unsupported_language"
+      ],
+      "skill:techniques": [
+        "technique:file_pattern_matching",
+        "technique:ask_user_question_fallback"
+      ]
+    },
+    {
+      "@id": "rule:look_at_project_files",
+      "@type": "skill:Rule",
+      "rdfs:label": "Look at project files to infer the language before reading code examples",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:file_pattern_matching"
+      ]
+    },
+    {
+      "@id": "rule:handle_multiple_languages",
+      "@type": "skill:Rule",
+      "rdfs:label": "If multiple languages detected, check which relates to user's current question or ask for clarification",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:handle_undetectable_language",
+      "@type": "skill:Rule",
+      "rdfs:label": "If language can't be inferred, use AskUserQuestion with options or default to Python",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:handle_unsupported_language",
+      "@type": "skill:Rule",
+      "rdfs:label": "If unsupported language detected, suggest cURL examples and note community SDKs may exist",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:file_pattern_matching",
+      "@type": "skill:Technique",
+      "rdfs:label": "File Pattern Matching for Language Detection",
+      "aether:origin": "core",
+      "skill:contains": [
+        "rule:python_patterns",
+        "rule:typescript_patterns",
+        "rule:java_patterns",
+        "rule:go_patterns",
+        "rule:ruby_patterns",
+        "rule:csharp_patterns",
+        "rule:php_patterns"
+      ]
+    },
+    {
+      "@id": "rule:python_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.py, requirements.txt, pyproject.toml, setup.py, Pipfile indicates Python",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:typescript_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.ts, *.tsx, package.json, tsconfig.json indicates TypeScript",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:java_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.java, pom.xml, build.gradle indicates Java",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:kotlin_uses_java_sdk",
+      "@type": "skill:Rule",
+      "rdfs:label": "Kotlin and Scala use the Java SDK",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:go_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.go, go.mod indicates Go",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:ruby_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.rb, Gemfile indicates Ruby",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:csharp_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.cs, *.csproj indicates C#",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:php_patterns",
+      "@type": "skill:Rule",
+      "rdfs:label": "*.php, composer.json indicates PHP",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:surface_selection",
+      "@type": "skill:Concept",
+      "rdfs:label": "Claude Surface Selection",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:start_simple",
+        "rule:follow_decision_tree"
+      ],
+      "skill:contains": [
+        "concept:single_llm_call",
+        "concept:workflow_tier",
+        "concept:agent_tier"
+      ]
+    },
+    {
+      "@id": "rule:start_simple",
+      "@type": "skill:Rule",
+      "rdfs:label": "Start simple - default to the simplest tier that meets your needs",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:follow_decision_tree",
+      "@type": "skill:Rule",
+      "rdfs:label": "Follow the decision tree to match solutions with use cases",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:single_llm_call",
+      "@type": "skill:Concept",
+      "rdfs:label": "Single LLM Call Tier",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:claude_api_direct"
+      ],
+      "skill:pairs_with": [
+        "concept:classification",
+        "concept:summarization",
+        "concept:extraction",
+        "concept:qa"
+      ]
+    },
+    {
+      "@id": "concept:workflow_tier",
+      "@type": "skill:Concept",
+      "rdfs:label": "Workflow Tier",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:claude_api_tool_use"
+      ],
+      "skill:pairs_with": [
+        "concept:multi_step_pipelines",
+        "concept:custom_agent"
+      ]
+    },
+    {
+      "@id": "concept:agent_tier",
+      "@type": "skill:Concept",
+      "rdfs:label": "Agent Tier",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:agent_sdk"
+      ],
+      "skill:pairs_with": [
+        "concept:file_web_terminal_access",
+        "concept:agentic_coding",
+        "concept:built_in_permissions"
+      ]
+    },
+    {
+      "@id": "technique:claude_api_direct",
+      "@type": "skill:Technique",
+      "rdfs:label": "Direct Claude API calls",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:claude_api_tool_use",
+      "@type": "skill:Technique",
+      "rdfs:label": "Claude API with tool use for workflows",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:agent_sdk",
+      "@type": "skill:Technique",
+      "rdfs:label": "Agent SDK for built-in tools and safety",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:language_feature_support",
+      "@type": "skill:Concept",
+      "rdfs:label": "Language-Specific Feature Support",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:tool_runner_support",
+        "concept:agent_sdk_support"
+      ]
+    },
+    {
+      "@id": "concept:tool_runner_support",
+      "@type": "skill:Concept",
+      "rdfs:label": "Tool Runner Support by Language",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:python_full_support",
+        "rule:typescript_full_support",
+        "rule:java_beta_support",
+        "rule:go_beta_support",
+        "rule:ruby_beta_support",
+        "rule:csharp_no_tool_runner",
+        "rule:php_no_tool_runner"
+      ]
+    },
+    {
+      "@id": "rule:python_full_support",
+      "@type": "skill:Rule",
+      "rdfs:label": "Python has full support with @beta_tool decorator",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:typescript_full_support",
+      "@type": "skill:Rule",
+      "rdfs:label": "TypeScript has full support with betaZodTool + Zod",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:java_beta_support",
+      "@type": "skill:Rule",
+      "rdfs:label": "Java has beta tool use with annotated classes",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:go_beta_support",
+      "@type": "skill:Rule",
+      "rdfs:label": "Go has BetaToolRunner in toolrunner package",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:ruby_beta_support",
+      "@type": "skill:Rule",
+      "rdfs:label": "Ruby has BaseTool + tool_runner in beta",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:csharp_no_tool_runner",
+      "@type": "skill:Rule",
+      "rdfs:label": "C# has official SDK but no tool runner",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:php_no_tool_runner",
+      "@type": "skill:Rule",
+      "rdfs:label": "PHP has official SDK but no tool runner",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:agent_sdk_support",
+      "@type": "skill:Concept",
+      "rdfs:label": "Agent SDK Support by Language",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:python_typescript_agent_sdk",
+        "rule:other_languages_no_agent_sdk"
+      ]
+    },
+    {
+      "@id": "rule:python_typescript_agent_sdk",
+      "@type": "skill:Rule",
+      "rdfs:label": "Only Python and TypeScript have Agent SDK support",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:other_languages_no_agent_sdk",
+      "@type": "skill:Rule",
+      "rdfs:label": "Java, Go, Ruby, C#, PHP do not have Agent SDK",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:decision_tree_approach",
+      "@type": "skill:Technique",
+      "rdfs:label": "Decision tree approach for surface selection",
+      "aether:origin": "core",
+      "skill:contains": [
+        "rule:single_call_check",
+        "rule:file_web_terminal_check"
+      ]
+    },
+    {
+      "@id": "rule:single_call_check",
+      "@type": "skill:Rule",
+      "rdfs:label": "If single LLM call needed, use Claude API",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:file_web_terminal_check",
+      "@type": "skill:Rule",
+      "rdfs:label": "If Claude needs file/web/terminal access, use Agent SDK",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:ask_user_question_fallback",
+      "@type": "skill:Technique",
+      "rdfs:label": "Ask user question when language cannot be inferred",
+      "aether:origin": "core",
+      "skill:contains": [
+        "rule:offer_language_options",
+        "rule:python_default_fallback"
+      ]
+    },
+    {
+      "@id": "rule:offer_language_options",
+      "@type": "skill:Rule",
+      "rdfs:label": "Offer options: Python, TypeScript, Java, Go, Ruby, cURL/raw HTTP, C#, PHP",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:python_default_fallback",
+      "@type": "skill:Rule",
+      "rdfs:label": "If AskUserQuestion unavailable, default to Python examples",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:complex_when_simple_suffices",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Using complex solutions when simple ones suffice",
+      "aether:origin": "core",
+      "skill:contradicts": [
+        "rule:start_simple"
+      ]
+    },
+    {
+      "@id": "tool:claude_api",
+      "@type": "skill:Tool",
+      "rdfs:label": "Claude API",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "concept:single_llm_call",
+        "concept:workflow_tier"
+      ]
+    },
+    {
+      "@id": "tool:agent_sdk",
+      "@type": "skill:Tool",
+      "rdfs:label": "Agent SDK",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "concept:agent_tier"
+      ]
+    },
+    {
+      "@id": "concept:systematic_approach",
+      "@type": "skill:Concept",
+      "rdfs:label": "Systematic methodology for API integration",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:structured_selection",
+        "technique:step_by_step_detection"
+      ]
+    },
+    {
+      "@id": "technique:structured_selection",
+      "@type": "skill:Technique",
+      "rdfs:label": "Structured technology selection process",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:step_by_step_detection",
+      "@type": "skill:Technique",
+      "rdfs:label": "Step-by-step language detection methodology",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:architecture_alignment",
+      "@type": "skill:Concept",
+      "rdfs:label": "Alignment between solutions and architectural needs",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:match_tier_to_use_case"
+      ]
+    },
+    {
+      "@id": "rule:match_tier_to_use_case",
+      "@type": "skill:Rule",
+      "rdfs:label": "Match the appropriate tier to the specific use case requirements",
+      "aether:origin": "core"
+    }
+  ]
+}

@@ -313,10 +313,10 @@ def _llm_extract(llm_fn, prompt_template: str, doc: str, fallback: dict) -> dict
     return fallback
 
 
-def _llm_extract_with_prompt(llm_fn, full_prompt: str, fallback: dict) -> dict:
+def _llm_extract_with_prompt(llm_fn, full_prompt: str, fallback: dict, max_tokens: int = 1024) -> dict:
     """Call LLM with a complete prompt, parse JSON response, return fallback on failure."""
     try:
-        result = llm_fn(full_prompt)
+        result = llm_fn(full_prompt, max_tokens=max_tokens)
         text = result.get("text", result) if isinstance(result, dict) else result
         data = _extract_json_block(str(text))
         if isinstance(data, dict):
@@ -437,12 +437,12 @@ def ingest_skill(source_path: str | Path, output_path: str | Path,
         else:
             persona = _llm_extract(llm_fn, _PERSONA_PROMPT, body, _STUB_PERSONA)
 
-        # 2. Extract KG (needs skill body AND persona output)
+        # 2. Extract KG (needs skill body AND persona output) - use higher max_tokens for large KG
         persona_json = json.dumps(persona, indent=2)
         if kg_prompt:
             kg_full = (f"{kg_prompt}\n\n## Input\n\nSKILL.md:\n```\n{body[:6000]}\n```\n\n"
                        f"persona.json:\n```json\n{persona_json}\n```")
-            kg = _llm_extract_with_prompt(llm_fn, kg_full, _STUB_KG)
+            kg = _llm_extract_with_prompt(llm_fn, kg_full, _STUB_KG, max_tokens=8192)
         else:
             kg = _llm_extract(llm_fn, _KG_PROMPT, body, _STUB_KG)
 

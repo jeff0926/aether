@@ -1,0 +1,475 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:algorithmic_visionary",
+      "@type": "skill:Trait",
+      "rdfs:label": "Algorithmic Visionary",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:algorithmic_philosophy",
+        "concept:computational_beauty",
+        "concept:craftsmanship"
+      ],
+      "skill:contains": [
+        "trait:perfectionist",
+        "trait:innovative",
+        "trait:artistic",
+        "trait:technical",
+        "trait:opinionated",
+        "trait:experimental",
+        "trait:detail_oriented"
+      ]
+    },
+    {
+      "@id": "trait:perfectionist",
+      "@type": "skill:Trait",
+      "rdfs:label": "Perfectionist",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:emphasize_craftsmanship_repeatedly",
+        "rule:appear_countless_hours_development"
+      ]
+    },
+    {
+      "@id": "trait:innovative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Innovative",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:create_computational_aesthetic_movements",
+        "concept:emergent_behavior"
+      ]
+    },
+    {
+      "@id": "trait:artistic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Artistic",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "trait:technical"
+      ],
+      "skill:prioritizes": [
+        "concept:mathematical_beauty",
+        "concept:aesthetic_movement"
+      ]
+    },
+    {
+      "@id": "trait:technical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Technical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:p5js_implementation",
+        "technique:algorithmic_expression"
+      ]
+    },
+    {
+      "@id": "concept:algorithmic_philosophy",
+      "@type": "skill:Concept",
+      "rdfs:label": "Algorithmic Philosophy",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:two_step_process",
+        "rule:algorithmic_not_static",
+        "rule:four_to_six_paragraphs"
+      ],
+      "skill:contains": [
+        "concept:computational_aesthetic_movement",
+        "concept:generative_art_movement"
+      ],
+      "skill:techniques": [
+        "technique:name_movement",
+        "technique:articulate_philosophy"
+      ]
+    },
+    {
+      "@id": "concept:computational_aesthetic_movement",
+      "@type": "skill:Concept",
+      "rdfs:label": "Computational Aesthetic Movement",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:algorithmic_expression",
+        "concept:emergent_behavior"
+      ],
+      "skill:techniques": [
+        "technique:express_through_code"
+      ]
+    },
+    {
+      "@id": "concept:algorithmic_expression",
+      "@type": "skill:Concept",
+      "rdfs:label": "Algorithmic Expression",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:computational_processes",
+        "concept:mathematical_relationships",
+        "concept:noise_functions",
+        "concept:particle_behaviors",
+        "concept:temporal_evolution"
+      ],
+      "skill:avoids": [
+        "antipattern:static_images",
+        "antipattern:templates"
+      ]
+    },
+    {
+      "@id": "concept:computational_processes",
+      "@type": "skill:Concept",
+      "rdfs:label": "Computational Processes",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "concept:mathematical_relationships"
+      ],
+      "skill:enables": [
+        "concept:emergent_behavior"
+      ]
+    },
+    {
+      "@id": "concept:mathematical_relationships",
+      "@type": "skill:Concept",
+      "rdfs:label": "Mathematical Relationships",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:mathematical_beauty"
+      ],
+      "skill:techniques": [
+        "technique:golden_ratios",
+        "technique:harmonic_motion"
+      ]
+    },
+    {
+      "@id": "concept:noise_functions",
+      "@type": "skill:Concept",
+      "rdfs:label": "Noise Functions",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:perlin_noise",
+        "concept:randomness_patterns"
+      ],
+      "skill:techniques": [
+        "technique:layered_noise_octaves",
+        "technique:noise_perturbations"
+      ]
+    },
+    {
+      "@id": "concept:particle_behaviors",
+      "@type": "skill:Concept",
+      "rdfs:label": "Particle Behaviors",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:field_dynamics",
+        "concept:particle_systems"
+      ],
+      "skill:techniques": [
+        "technique:particle_flow_fields",
+        "technique:particle_interference"
+      ]
+    },
+    {
+      "@id": "concept:temporal_evolution",
+      "@type": "skill:Concept",
+      "rdfs:label": "Temporal Evolution",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "concept:system_states"
+      ],
+      "skill:enables": [
+        "concept:process_over_product"
+      ]
+    },
+    {
+      "@id": "concept:emergent_behavior",
+      "@type": "skill:Concept",
+      "rdfs:label": "Emergent Behavior",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:computational_processes"
+      ],
+      "skill:enables": [
+        "concept:computational_beauty"
+      ]
+    },
+    {
+      "@id": "concept:mathematical_beauty",
+      "@type": "skill:Concept",
+      "rdfs:label": "Mathematical Beauty",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:seeded_randomness",
+        "concept:controlled_chaos"
+      ]
+    },
+    {
+      "@id": "concept:seeded_randomness",
+      "@type": "skill:Concept",
+      "rdfs:label": "Seeded Randomness",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "concept:controlled_chaos"
+      ],
+      "skill:enables": [
+        "concept:parametric_variation"
+      ]
+    },
+    {
+      "@id": "concept:controlled_chaos",
+      "@type": "skill:Concept",
+      "rdfs:label": "Controlled Chaos",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:parametric_variation"
+      ]
+    },
+    {
+      "@id": "concept:parametric_variation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Parametric Variation",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:emergent_complexity"
+      ],
+      "skill:rules": [
+        "rule:ninety_percent_algorithmic"
+      ]
+    },
+    {
+      "@id": "concept:craftsmanship",
+      "@type": "skill:Concept",
+      "rdfs:label": "Craftsmanship",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:emphasize_craftsmanship_repeatedly",
+        "rule:appear_countless_hours_development",
+        "rule:master_level_implementation"
+      ],
+      "skill:requires": [
+        "concept:computational_expertise"
+      ]
+    },
+    {
+      "@id": "concept:computational_expertise",
+      "@type": "skill:Concept",
+      "rdfs:label": "Computational Expertise",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:painstaking_optimization",
+        "technique:meticulously_crafted_algorithms"
+      ]
+    },
+    {
+      "@id": "concept:process_over_product",
+      "@type": "skill:Concept",
+      "rdfs:label": "Process Over Product",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:beauty_lives_in_process",
+        "rule:each_run_unique"
+      ],
+      "skill:contradicts": [
+        "antipattern:static_final_frame"
+      ]
+    },
+    {
+      "@id": "rule:two_step_process",
+      "@type": "skill:Rule",
+      "rdfs:label": "Two step process: Algorithmic Philosophy Creation then p5.js Expression",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:algorithmic_not_static",
+      "@type": "skill:Rule",
+      "rdfs:label": "Create algorithmic philosophy not static images or templates",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:static_images",
+        "antipattern:templates"
+      ]
+    },
+    {
+      "@id": "rule:four_to_six_paragraphs",
+      "@type": "skill:Rule",
+      "rdfs:label": "Philosophy must be 4-6 paragraphs concise but complete",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:avoid_redundancy",
+      "@type": "skill:Rule",
+      "rdfs:label": "Avoid redundancy - each algorithmic aspect mentioned once",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:repeating_concepts"
+      ]
+    },
+    {
+      "@id": "rule:emphasize_craftsmanship_repeatedly",
+      "@type": "skill:Rule",
+      "rdfs:label": "Emphasize craftsmanship repeatedly - stress meticulously crafted algorithms",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:craftsmanship_phrases"
+      ]
+    },
+    {
+      "@id": "rule:leave_creative_space",
+      "@type": "skill:Rule",
+      "rdfs:label": "Leave creative space for implementation choices at high craftsmanship level",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:appear_countless_hours_development",
+      "@type": "skill:Rule",
+      "rdfs:label": "Algorithm should appear as though it took countless hours to develop",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:master_level_implementation",
+      "@type": "skill:Rule",
+      "rdfs:label": "Come from someone at the absolute top of their field",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:ninety_percent_algorithmic",
+      "@type": "skill:Rule",
+      "rdfs:label": "p5.js sketches are 90% algorithmic generation, 10% essential parameters",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:beauty_lives_in_process",
+      "@type": "skill:Rule",
+      "rdfs:label": "Beauty lives in the process, not the final frame",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:each_run_unique",
+      "@type": "skill:Rule",
+      "rdfs:label": "Each run produces unique beauty - process over product",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:static_images",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Static images",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:templates",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Templates",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:repeating_concepts",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Repeating concepts about noise theory, particle dynamics, mathematical principles",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:static_final_frame",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Focusing on static final frame instead of process",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:name_movement",
+      "@type": "skill:Technique",
+      "rdfs:label": "Name the movement (1-2 words)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:articulate_philosophy",
+      "@type": "skill:Technique",
+      "rdfs:label": "Articulate the philosophy through algorithmic manifestation",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:computational_processes",
+        "concept:noise_functions",
+        "concept:particle_behaviors",
+        "concept:temporal_evolution",
+        "concept:parametric_variation"
+      ]
+    },
+    {
+      "@id": "technique:express_through_code",
+      "@type": "skill:Technique",
+      "rdfs:label": "Express philosophy through p5.js generative art",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:p5js"
+      ]
+    },
+    {
+      "@id": "technique:craftsmanship_phrases",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use phrases like 'meticulously crafted algorithm', 'deep computational expertise', 'painstaking optimization', 'master-level implementation'",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:particle_flow_fields",
+      "@type": "skill:Technique",
+      "rdfs:label": "Flow fields driven by layered Perlin noise with particle trails",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:perlin_noise"
+      ]
+    },
+    {
+      "@id": "technique:particle_interference",
+      "@type": "skill:Technique",
+      "rdfs:label": "Particles with phase values exhibiting wave-like interference patterns",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:recursive_subdivision",
+      "@type": "skill:Technique",
+      "rdfs:label": "Branching structures with recursive subdivision and golden ratios",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:stochastic_crystallization",
+      "@type": "skill:Technique",
+      "rdfs:label": "Random processes crystallizing through circle packing or Voronoi tessellation",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:vector_field_visualization",
+      "@type": "skill:Technique",
+      "rdfs:label": "Invisible forces made visible through particle traces",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:p5js",
+      "@type": "skill:Tool",
+      "rdfs:label": "p5.js",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:perlin_noise",
+      "@type": "skill:Tool",
+      "rdfs:label": "Perlin Noise",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:html_files",
+      "@type": "skill:Tool",
+      "rdfs:label": "HTML files (interactive viewer)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:js_files",
+      "@type": "skill:Tool",
+      "rdfs:label": "JavaScript files (generative algorithms)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:md_files",
+      "@type": "skill:Tool",
+      "rdfs:label": "Markdown files (philosophy)",
+      "aether:origin": "core"
+    }
+  ]
+}

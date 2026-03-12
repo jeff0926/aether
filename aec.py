@@ -168,7 +168,8 @@ def deterministic_gate(statement: str, kg_nodes: list[dict]) -> dict:
     }
 
 
-def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRESHOLD) -> dict:
+def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRESHOLD,
+           compiled_kg: dict = None) -> dict:
     """
     Verify response against KG subgraph.
 
@@ -179,6 +180,10 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
 
     Score = grounded / (grounded + ungrounded)
     PERSONA statements excluded from ratio - they're expected behavior.
+
+    If compiled_kg is provided (typed KG with Rule/Technique/AntiPattern nodes),
+    always runs concept matching and merges results. Concept takes priority over
+    factual name-only matches; factual takes priority for numbers/dates.
     """
     statements = split_statements(response)
 
@@ -190,29 +195,111 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
             "statements": [], "gaps": [{"text": response[:100], "reason": "no_statements"}],
         }
 
-    results, gaps = [], []
-    grounded, ungrounded, persona = 0, 0, 0
-
+    # Phase 1: Run factual AEC on all statements
+    factual_results = []
     for stmt in statements:
         gate = deterministic_gate(stmt, kg_nodes)
-
         if gate["values_found"] == 0:
-            # PERSONA: no extractable values
-            persona += 1
-            results.append({"text": stmt, "grounded": None, "method": "persona", "category": "persona"})
+            factual_results.append({"text": stmt, "grounded": None, "method": "persona", "category": "persona"})
         elif gate["matched"]:
-            # GROUNDED: values match KG
-            grounded += 1
-            results.append({"text": stmt, "grounded": True, "method": gate["method"], "category": "grounded"})
+            factual_results.append({"text": stmt, "grounded": True, "method": gate["method"], "category": "grounded"})
         else:
-            # UNGROUNDED: values don't match KG
-            ungrounded += 1
-            results.append({"text": stmt, "grounded": False, "method": gate["method"], "category": "ungrounded"})
-            gaps.append({"text": stmt, "reason": "values_not_in_kg"})
+            factual_results.append({"text": stmt, "grounded": False, "method": gate["method"], "category": "ungrounded"})
 
-    # Score excludes persona statements
+    # Phase 2: If typed KG, always run concept matching and merge
+    concept_applied = False
+    if compiled_kg is not None:
+        concept_applied = True
+        from aec_concept import tokenize, match_statement
+
+        results = []
+        gaps = []
+        grounded, ungrounded, persona = 0, 0, 0
+
+        for factual in factual_results:
+            stmt = factual["text"]
+            factual_method = factual.get("method", "")
+
+            # Run concept matching on this statement
+            stmt_tokens = tokenize(stmt)
+            concept_result = match_statement(stmt_tokens, stmt, compiled_kg)
+
+            # Merge logic: decide which result to use
+            # Hard facts (numbers, dates, percentages) → factual wins
+            # Name-only matches, persona, ungrounded → concept can override
+            use_factual = False
+            if factual["category"] == "grounded":
+                # Check if factual matched on hard facts (not just names)
+                hard_fact_methods = ("deterministic_number", "deterministic_date", "deterministic_percentage")
+                if factual_method in hard_fact_methods:
+                    use_factual = True  # Hard facts take priority
+
+            if use_factual:
+                # Keep factual result
+                results.append(factual)
+                grounded += 1
+            elif concept_result['category'] == 'concept_grounded':
+                # Concept found a match
+                top = concept_result['matches'][0]
+                grounded += 1
+                results.append({
+                    "text": stmt,
+                    "grounded": True,
+                    "method": f"concept:{top['node_type']}",
+                    "category": "grounded",
+                    "matched_node": top['node_id'],
+                    "matched_label": top['label'],
+                    "coverage": top['coverage'],
+                })
+            elif concept_result['category'] == 'antipattern_violation':
+                # Concept found a violation
+                v = concept_result['violation']
+                ungrounded += 1
+                results.append({
+                    "text": stmt,
+                    "grounded": False,
+                    "method": "antipattern_violation",
+                    "category": "ungrounded",
+                    "matched_node": v['node_id'],
+                    "matched_label": v.get('label', ''),
+                    "violation_terms": v['hits'],
+                })
+                gaps.append({
+                    "text": f"VIOLATION: '{', '.join(v['hits'])}' matches antipattern",
+                    "reason": "antipattern_violation",
+                    "node_id": v['node_id'],
+                })
+            else:
+                # Concept didn't match - fall back to factual or persona
+                if factual["category"] == "grounded":
+                    # Factual had a name match, concept didn't find anything stronger
+                    # Keep as grounded but note it was name-only
+                    grounded += 1
+                    results.append({**factual, "method": f"{factual_method}(weak)"})
+                elif factual["category"] == "ungrounded":
+                    # Factual found values but no match, concept also no match
+                    ungrounded += 1
+                    results.append(factual)
+                    gaps.append({"text": stmt, "reason": "values_not_in_kg"})
+                else:
+                    # Pure persona
+                    persona += 1
+                    results.append(factual)
+
+    else:
+        # No compiled KG - use factual results only
+        results = factual_results
+        gaps = []
+        grounded = sum(1 for r in results if r["category"] == "grounded")
+        ungrounded = sum(1 for r in results if r["category"] == "ungrounded")
+        persona = sum(1 for r in results if r["category"] == "persona")
+        for r in results:
+            if r["category"] == "ungrounded":
+                gaps.append({"text": r["text"], "reason": "values_not_in_kg"})
+
+    # Calculate final score
     verifiable = grounded + ungrounded
-    score = grounded / verifiable if verifiable > 0 else 1.0  # All-persona = pass
+    score = grounded / verifiable if verifiable > 0 else 1.0
     persona_ratio = persona / len(statements) if statements else 0.0
 
     return {
@@ -226,6 +313,7 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
         "persona_ratio": round(persona_ratio, 3),
         "statements": results,
         "gaps": gaps,
+        "concept_applied": concept_applied,
     }
 
 

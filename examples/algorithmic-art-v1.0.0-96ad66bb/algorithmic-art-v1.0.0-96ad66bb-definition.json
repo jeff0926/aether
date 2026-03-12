@@ -1,0 +1,63 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "algorithmic-art",
+  "primary_function": "Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Algorithmic philosophy creation",
+      "Generative art movements and manifestos",
+      "Computational aesthetics theory",
+      "p5.js sketch implementation",
+      "Particle systems and flow fields",
+      "Noise functions and randomness patterns",
+      "Mathematical beauty and emergent behavior",
+      "Parametric variation systems",
+      "Interactive generative art viewers",
+      "Seeded randomness and organic systems",
+      "Vector field dynamics",
+      "Recursive and fractal algorithms"
+    ],
+    "out_of_scope": [
+      "Static image generation",
+      "Non-algorithmic art creation",
+      "3D modeling and rendering",
+      "Animation frameworks beyond p5.js",
+      "Database-driven art systems",
+      "Machine learning art generation",
+      "Physical computing and hardware",
+      "Commercial art licensing",
+      "Art market valuation",
+      "Gallery exhibition planning"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify output includes both .md philosophy file and p5.js implementation files",
+    "Confirm algorithmic philosophy emphasizes computational processes and emergent behavior",
+    "Ensure generated art is 90% algorithmic generation, 10% essential parameters",
+    "Validate philosophy repeatedly emphasizes expert craftsmanship and meticulous refinement",
+    "Confirm implementation uses appropriate generative techniques (noise, particles, fields, forces)",
+    "Verify philosophy is 4-6 substantial paragraphs as specified",
+    "Ensure conceptual seed is subtly embedded rather than literally announced",
+    "Confirm output avoids static images or templates in favor of living algorithms"
+  ],
+  "trigger_text": "Creating algorithmic art using p5.js with seeded randomness and interactive parameter exploration. Use this when users request creating art using code, generative art, algorithmic art, flow fields, or particle systems. Create original algorithmic art rather than copying existing artists' work to avoid copyright violations."
+}
