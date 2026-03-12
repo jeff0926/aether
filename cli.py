@@ -26,15 +26,20 @@ def cmd_stamp(args):
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=True)
 
+    psi = getattr(args, 'psi', False)
+
     if args.source:
-        path = stamp_from_source(args.name, args.source, output, args.version)
+        path = stamp_from_source(args.name, args.source, output, args.version, psi=psi)
         print(f"Stamped from source: {path}")
     else:
-        path = stamp_empty(args.name, output, args.version)
+        path = stamp_empty(args.name, output, args.version, psi=psi)
         print(f"Stamped empty: {path}")
 
     validation = validate_capsule(path)
     print(f"Valid: {validation['valid']}")
+
+    if psi:
+        print(f"PSI enabled: {path.name}-psi.jsonld + pulse-map.json created")
 
 
 def cmd_run(args):
@@ -99,6 +104,68 @@ def cmd_validate(args):
         print(f"Missing: {result['missing']}")
     if result["errors"]:
         print(f"Errors: {result['errors']}")
+
+    # PSI IRI cross-reference validation (warnings only)
+    capsule_path = Path(args.capsule)
+    prefix = capsule_path.name
+    psi_path = capsule_path / f"{prefix}-psi.jsonld"
+
+    if psi_path.exists():
+        try:
+            with open(psi_path, "r", encoding="utf-8") as f:
+                psi_data = json.load(f)
+
+            # Load KG for cross-reference
+            kg_path = capsule_path / f"{prefix}-kg.jsonld"
+            kg_ids = set()
+            kg_deprecated = {}  # id -> replacedBy (if any)
+
+            if kg_path.exists():
+                with open(kg_path, "r", encoding="utf-8") as f:
+                    kg_data = json.load(f)
+                for node in kg_data.get("@graph", []):
+                    node_id = node.get("@id", "")
+                    kg_ids.add(node_id)
+                    if node.get("aether:status") == "deprecated":
+                        kg_deprecated[node_id] = node.get("aether:replacedBy")
+
+            # Check PSI projections for orphaned IRIs
+            projections = psi_data.get("psi:projections", [])
+            orphaned = []
+            deprecated_refs = []
+            valid_count = 0
+
+            for proj in projections:
+                binds_to = proj.get("psi:binds_to_kg", "")
+                if binds_to:
+                    if binds_to not in kg_ids:
+                        orphaned.append(binds_to)
+                    elif binds_to in kg_deprecated:
+                        replacement = kg_deprecated[binds_to]
+                        deprecated_refs.append((binds_to, replacement))
+                    else:
+                        valid_count += 1
+
+            # Print PSI validation results
+            if orphaned:
+                print(f"\n\u26a0 psi.jsonld \u2014 {len(orphaned)} orphaned IRIs:")
+                for iri in orphaned:
+                    print(f"    {iri} \u2192 not found in kg.jsonld")
+
+            if deprecated_refs:
+                for iri, replacement in deprecated_refs:
+                    if replacement:
+                        print(f"    {iri} \u2192 deprecated (see {replacement})")
+                    else:
+                        print(f"    {iri} \u2192 deprecated")
+
+            if valid_count > 0 or (not orphaned and not deprecated_refs and projections):
+                print(f"\u2713 psi.jsonld \u2014 {len(projections)} projections valid")
+            elif not projections:
+                print(f"\u2713 psi.jsonld \u2014 empty projection graph")
+
+        except (json.JSONDecodeError, IOError) as e:
+            print(f"\u26a0 psi.jsonld \u2014 could not parse: {e}")
 
 
 def cmd_info(args):
@@ -382,6 +449,8 @@ def main():
     p_stamp.add_argument("--source", help="Source file (.md, .json, .jsonld)")
     p_stamp.add_argument("--output", default="./capsules", help="Output directory")
     p_stamp.add_argument("--version", default="1.0.0", help="Version string")
+    p_stamp.add_argument("--psi", action="store_true",
+        help="Create PSI projection files (psi.jsonld + pulse-map.json)")
     p_stamp.set_defaults(func=cmd_stamp)
 
     # run

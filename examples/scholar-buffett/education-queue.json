@@ -291,5 +291,110 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-36-07-1cb442a9",
+    "timestamp": "2026-03-12T10:36:07.112898",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-50-24-169d4e91",
+    "timestamp": "2026-03-12T10:50:24.520762",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T11-10-39-5ea26db1",
+    "timestamp": "2026-03-12T11:10:39.516416",
+    "query": "Knowledge gap: that $1,000 would've",
+    "response": "Agent produced ungrounded claims about that $1,000 would've",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "But that $1,000 would've grown to around $300,000 in the index",
+        "reason": "refine_candidate"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T11-11-09-40f4fd0e",
+    "timestamp": "2026-03-12T11:11:09.600855",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T12-11-59-925e312d",
+    "timestamp": "2026-03-12T12:11:59.969847",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T12-12-10-54255fd1",
+    "timestamp": "2026-03-12T12:12:10.429881",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T14-34-25-b0a38e98",
+    "timestamp": "2026-03-12T14:34:25.032848",
+    "query": "How much did Berkshire pay for See's Candies?",
+    "response": "[Stub response for 1746 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1746 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

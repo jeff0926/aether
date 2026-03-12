@@ -66,5 +66,215 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-23-35-20fc480d",
+    "timestamp": "2026-03-12T10:23:35.474754",
+    "query": "Who was Thomas Jefferson?",
+    "response": "[Stub response for 1518 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1518 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-23-48-33d64d96",
+    "timestamp": "2026-03-12T10:23:48.330105",
+    "query": "Who was Thomas Jefferson?",
+    "response": "[No LLM. Prompt: 1518 chars]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "Prompt: 1518 chars]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-36-07-230e1f41",
+    "timestamp": "2026-03-12T10:36:07.107513",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-36-07-d4cf8fe7",
+    "timestamp": "2026-03-12T10:36:07.489870",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-50-24-db40f395",
+    "timestamp": "2026-03-12T10:50:24.487435",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T10-50-24-1b29d0a5",
+    "timestamp": "2026-03-12T10:50:24.954673",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T11-11-09-d1796e23",
+    "timestamp": "2026-03-12T11:11:09.571444",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T11-11-09-70ac2c72",
+    "timestamp": "2026-03-12T11:11:09.949215",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T12-11-59-c1c4fff2",
+    "timestamp": "2026-03-12T12:11:59.937039",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T12-12-00-ec988015",
+    "timestamp": "2026-03-12T12:12:00.415366",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T12-12-10-9de31a9e",
+    "timestamp": "2026-03-12T12:12:10.419893",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T12-12-10-719a16d2",
+    "timestamp": "2026-03-12T12:12:10.766416",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T14-34-24-741466c5",
+    "timestamp": "2026-03-12T14:34:24.994141",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-12T14-34-25-058a9514",
+    "timestamp": "2026-03-12T14:34:25.379037",
+    "query": "When was Jefferson born?",
+    "response": "[Stub response for 1517 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1517 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

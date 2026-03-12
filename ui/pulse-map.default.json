@@ -1,0 +1,40 @@
+{
+  "_comment": "AETHER default pulse map. Override per design system via capsule pulse-map.json.",
+  "_version": "1.0.0",
+  "discovery": {
+    "--kinetic-tempo": "400ms",
+    "--kinetic-scale": "1.0",
+    "--surface-accent": "#2196F3",
+    "--surface-opacity": "0.85"
+  },
+  "deliberation": {
+    "--kinetic-tempo": "200ms",
+    "--kinetic-scale": "1.0",
+    "--surface-accent": "#FF9800",
+    "--surface-opacity": "0.90"
+  },
+  "validation": {
+    "--kinetic-tempo": "100ms",
+    "--kinetic-scale": "1.0",
+    "--surface-accent": "#9C27B0",
+    "--surface-opacity": "0.95"
+  },
+  "delivery": {
+    "--kinetic-tempo": "0ms",
+    "--kinetic-scale": "1.0",
+    "--surface-accent": "#4CAF50",
+    "--surface-opacity": "1.0"
+  },
+  "ghost": {
+    "--kinetic-tempo": "600ms",
+    "--kinetic-scale": "0.95",
+    "--surface-accent": "#9E9E9E",
+    "--surface-opacity": "0.60"
+  },
+  "recovering": {
+    "--kinetic-tempo": "300ms",
+    "--kinetic-scale": "1.0",
+    "--surface-accent": "#2196F3",
+    "--surface-opacity": "0.70"
+  }
+}

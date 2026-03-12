@@ -20,6 +20,22 @@ DEFAULT_KG = {
     "@graph": [],
 }
 
+# PSI projection graph default structure (optional 6th file)
+DEFAULT_PSI = {
+    "@context": {
+        "aether": "http://aether.dev/ontology#",
+        "psi": "http://aether.dev/projection#"
+    },
+    "@type": "psi:ProjectionGraph",
+    "psi:capsule": "",  # Will be set to capsule-id
+    "psi:version": "1.0.0",
+    "psi:projections": []
+}
+
+# PSI projection limits
+PSI_PROJECTION_WARN_LIMIT = 80
+PSI_PROJECTION_MAX_LIMIT = 100
+
 
 def _parse_claude_md(content: str) -> dict:
     """
@@ -143,8 +159,8 @@ def _write_json(path: Path, data: dict) -> None:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
 
-def stamp_empty(name: str, path: str | Path, version: str = "1.0.0") -> Path:
-    """Create a new empty capsule folder with all 5 required files."""
+def stamp_empty(name: str, path: str | Path, version: str = "1.0.0", psi: bool = False) -> Path:
+    """Create a new empty capsule folder with all 5 required files (+ optional PSI files)."""
     path = Path(path)
     capsule_id = generate_id(name, version)
     capsule_path = path / capsule_id
@@ -160,16 +176,40 @@ def stamp_empty(name: str, path: str | Path, version: str = "1.0.0") -> Path:
     (capsule_path / f"{prefix}-kb.md").write_text(DEFAULT_KB, encoding="utf-8")
     _write_json(capsule_path / f"{prefix}-kg.jsonld", DEFAULT_KG)
 
+    # Optional PSI files (6th file + pulse-map)
+    if psi:
+        psi_data = DEFAULT_PSI.copy()
+        psi_data["psi:capsule"] = capsule_id
+        _write_json(capsule_path / f"{prefix}-psi.jsonld", psi_data)
+
+        # Copy default pulse-map to capsule
+        ui_dir = Path(__file__).parent / "ui"
+        default_pulse_map = ui_dir / "pulse-map.default.json"
+        if default_pulse_map.exists():
+            shutil.copy(default_pulse_map, capsule_path / "pulse-map.json")
+        else:
+            # Fallback: write inline default
+            _write_json(capsule_path / "pulse-map.json", {
+                "_comment": "AETHER pulse map. Override per design system.",
+                "_version": "1.0.0",
+                "discovery": {"--kinetic-tempo": "400ms", "--surface-accent": "#2196F3"},
+                "deliberation": {"--kinetic-tempo": "200ms", "--surface-accent": "#FF9800"},
+                "validation": {"--kinetic-tempo": "100ms", "--surface-accent": "#9C27B0"},
+                "delivery": {"--kinetic-tempo": "0ms", "--surface-accent": "#4CAF50"},
+                "ghost": {"--kinetic-tempo": "600ms", "--surface-accent": "#9E9E9E"},
+                "recovering": {"--kinetic-tempo": "300ms", "--surface-accent": "#2196F3"}
+            })
+
     return capsule_path
 
 
-def stamp_from_source(name: str, source_path: str | Path, output_path: str | Path, version: str = "1.0.0") -> Path:
+def stamp_from_source(name: str, source_path: str | Path, output_path: str | Path, version: str = "1.0.0", psi: bool = False) -> Path:
     """Create capsule from source file. .md→kb, .jsonld→kg, .json→kg or definition."""
     source_path, output_path = Path(source_path), Path(output_path)
     if not source_path.exists():
         raise FileNotFoundError(f"Source not found: {source_path}")
 
-    capsule_path = stamp_empty(name, output_path, version)
+    capsule_path = stamp_empty(name, output_path, version, psi=psi)
     prefix = capsule_path.name  # Folder name is the prefix
     suffix = source_path.suffix.lower()
     content = source_path.read_text(encoding="utf-8")
