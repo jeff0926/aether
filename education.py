@@ -306,6 +306,253 @@ def get_oldest_pending(capsule_path: str | Path) -> dict | None:
     return pending[0]
 
 
+def refine_session(capsule_path: str | Path, n: int = 50, auto_queue: bool = False) -> dict:
+    """
+    Analyze education queue and surface KG improvement candidates.
+
+    Separates persona gaps (not KG-groundable) from factual gaps,
+    clusters factual gaps by subject, and identifies unresolved failures.
+
+    Args:
+        capsule_path: Path to capsule folder
+        n: Number of most recent records to analyze (default 50)
+        auto_queue: If True, auto-queue high-priority candidates
+
+    Returns:
+        Result dict with candidates, unresolved failures, and summary
+    """
+    capsule_path = Path(capsule_path)
+
+    # Initialize result
+    result = {
+        "capsule_path": str(capsule_path),
+        "analyzed": 0,
+        "timestamp": datetime.now().isoformat(),
+        "persona_gaps_filtered": 0,
+        "factual_gaps_found": 0,
+        "candidates": [],
+        "unresolved_failures": [],
+        "summary": "",
+        "auto_queued": 0,
+    }
+
+    # Step 1: Load records
+    queue = _load_queue(capsule_path)
+    if not queue:
+        result["summary"] = "No records in education queue. Run some queries to populate it."
+        return result
+
+    # Sort by timestamp descending, take n most recent
+    queue.sort(key=lambda r: r.get("timestamp", ""), reverse=True)
+    records = queue[:max(1, n)]
+    result["analyzed"] = len(records)
+
+    # Persona markers to filter out
+    PERSONA_MARKERS = {
+        "i", "we", "my", "our", "you", "me",
+        "think", "feel", "believe", "smile", "love", "hate", "say", "told",
+        "called", "like", "sweet", "wonderful", "beautiful", "great", "best",
+        "joke", "dream", "happy", "sad", "amazing", "incredible", "absolutely"
+    }
+
+    # Factual relationship markers
+    FACTUAL_MARKERS = {
+        "acquired", "founded", "paid", "born", "invested", "cost", "earned",
+        "purchased", "built", "sold", "grew", "generated", "returned", "bought",
+        "worth", "valued", "priced", "totaled", "reached", "hit"
+    }
+
+    def is_persona_gap(text: str) -> bool:
+        """Filter gap as persona (not KG-groundable)."""
+        text_lower = text.lower()
+        words = text_lower.split()
+
+        # Too short
+        if len(words) < 8:
+            return True
+
+        # Contains persona markers
+        if any(marker in words for marker in PERSONA_MARKERS):
+            return True
+
+        # No numbers, years, or dollar amounts
+        has_number = bool(re.search(r'\d', text))
+        has_dollar = '$' in text
+
+        # No capitalized proper nouns (excluding first word)
+        words_original = text.split()
+        has_proper_noun = any(
+            w[0].isupper() and w.isalpha() and i > 0
+            for i, w in enumerate(words_original)
+        )
+
+        # If no verifiable content, it's persona
+        if not has_number and not has_dollar and not has_proper_noun:
+            return True
+
+        return False
+
+    def is_factual_gap(text: str) -> bool:
+        """Identify gap as factual (potentially KG-groundable)."""
+        text_lower = text.lower()
+
+        # Has number, year, or dollar amount
+        if re.search(r'\$[\d,]+|\d{4}|\d+\s*(million|billion|percent|%)', text_lower):
+            return True
+
+        # Has factual relationship marker
+        if any(marker in text_lower for marker in FACTUAL_MARKERS):
+            return True
+
+        # Has capitalized entity (not at start)
+        words = text.split()
+        if any(w[0].isupper() and w.isalpha() and i > 0 for i, w in enumerate(words)):
+            # Also has some concrete content
+            if re.search(r'\d', text) or any(m in text_lower for m in FACTUAL_MARKERS):
+                return True
+
+        return False
+
+    def extract_subject(text: str) -> str:
+        """Extract subject from gap text (first capitalized entity or first 3 meaningful words)."""
+        # Skip common sentence starters and pronouns
+        skip_words = {
+            "The", "This", "That", "These", "Those", "It", "He", "She", "They", "We", "You", "I",
+            "His", "Her", "Its", "Their", "Our", "Your", "My", "And", "But", "Or", "So", "If",
+            "Now", "Well", "Back", "For", "In", "On", "At", "To", "From", "With", "By",
+            "What", "When", "Where", "Why", "How", "Here", "There", "Some", "All", "Any",
+            "Just", "Even", "Only", "Best", "Most", "Very", "Really", "Actually"
+        }
+
+        # Find capitalized word sequences that are proper nouns (not skip words)
+        for match in re.finditer(r'([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)', text):
+            candidate = match.group(1)
+            first_word = candidate.split()[0]
+            if first_word not in skip_words:
+                return candidate
+
+        # Fallback: first 3 content words (skip articles/prepositions)
+        words = text.split()
+        content_words = [w for w in words if w.lower() not in {
+            "the", "a", "an", "is", "are", "was", "were", "be", "been", "being",
+            "to", "of", "in", "for", "on", "with", "at", "by", "from", "and", "or", "but"
+        }][:3]
+        return " ".join(content_words) if content_words else " ".join(words[:3])
+
+    # Step 2 & 3: Separate persona from factual gaps and cluster by subject
+    subject_clusters = {}  # subject -> {gap_texts: set, records: set, statuses: list}
+
+    for record in records:
+        gaps = record.get("gaps", [])
+        record_id = record.get("id", "unknown")
+        status = record.get("status", "unknown")
+
+        for gap in gaps:
+            gap_text = gap.get("text", "")
+            if not gap_text:
+                continue
+
+            if is_persona_gap(gap_text):
+                result["persona_gaps_filtered"] += 1
+                continue
+
+            if is_factual_gap(gap_text):
+                result["factual_gaps_found"] += 1
+                subject = extract_subject(gap_text)
+
+                if subject not in subject_clusters:
+                    subject_clusters[subject] = {
+                        "gap_texts": set(),
+                        "records": set(),
+                        "statuses": []
+                    }
+
+                subject_clusters[subject]["gap_texts"].add(gap_text)
+                subject_clusters[subject]["records"].add(record_id)
+                subject_clusters[subject]["statuses"].append(status)
+
+    # Step 4: Score candidates
+    candidates = []
+    for subject, data in subject_clusters.items():
+        frequency = len(data["records"])
+        status_breakdown = {}
+        for s in data["statuses"]:
+            status_breakdown[s] = status_breakdown.get(s, 0) + 1
+
+        # Determine priority
+        has_failed = "failed" in status_breakdown
+        if frequency >= 3 or has_failed:
+            priority = "high"
+        elif frequency == 2:
+            priority = "medium"
+        else:
+            priority = "low"
+
+        candidates.append({
+            "subject": subject,
+            "frequency": frequency,
+            "priority": priority,
+            "gap_texts": list(data["gap_texts"]),
+            "records_affected": list(data["records"]),
+            "status_breakdown": status_breakdown,
+        })
+
+    # Sort by priority (high > medium > low) then by frequency descending
+    priority_order = {"high": 0, "medium": 1, "low": 2}
+    candidates.sort(key=lambda c: (priority_order[c["priority"]], -c["frequency"]))
+    result["candidates"] = candidates
+
+    # Step 5: Identify unresolved failures
+    for record in records:
+        if record.get("status") == "failed" and record.get("reason") == "still_below_threshold":
+            result["unresolved_failures"].append({
+                "id": record.get("id", ""),
+                "query": record.get("query", ""),
+                "aec_score": record.get("aec_score", 0),
+                "gaps": record.get("gaps", []),
+                "reason": record.get("reason", ""),
+            })
+
+    # Step 6: Build summary
+    high_priority_count = len([c for c in candidates if c["priority"] == "high"])
+    unresolved_count = len(result["unresolved_failures"])
+
+    if result["analyzed"] == 0:
+        result["summary"] = "No records in education queue. Run some queries to populate it."
+    elif result["factual_gaps_found"] == 0:
+        result["summary"] = (
+            f"Analyzed {result['analyzed']} records. "
+            f"All {result['persona_gaps_filtered']} gap statements were persona-style and not KG-groundable."
+        )
+    else:
+        result["summary"] = (
+            f"Analyzed {result['analyzed']} records. Found {len(candidates)} recurring knowledge gap subjects "
+            f"({result['persona_gaps_filtered']} persona statements filtered). "
+            f"{high_priority_count} high-priority candidates identified. "
+            f"{unresolved_count} records failed education and remain unresolved."
+        )
+
+    # Step 7: Auto-queue high priority candidates
+    if auto_queue:
+        for candidate in candidates:
+            if candidate["priority"] == "high":
+                aec_result = {
+                    "score": 0.0,
+                    "threshold": 0.8,
+                    "passed": False,
+                    "gaps": [{"text": t, "reason": "refine_candidate"} for t in candidate["gap_texts"]]
+                }
+                queue_failure(
+                    capsule_path,
+                    query=f"Knowledge gap: {candidate['subject']}",
+                    response=f"Agent produced ungrounded claims about {candidate['subject']}",
+                    aec_result=aec_result
+                )
+                result["auto_queued"] += 1
+
+    return result
+
+
 if __name__ == "__main__":
     import tempfile
     import shutil

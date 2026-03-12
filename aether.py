@@ -208,16 +208,78 @@ class Capsule:
         entities = ctx["distilled"].get("entities", [])
         search_terms = entities + ctx["distilled"].get("keywords", [])
 
-        # Search KB paragraphs
-        paragraphs = [p.strip() for p in self.files["kb"].split("\n\n") if p.strip()]
-        kb_matches = []
-        for para in paragraphs:
-            para_lower = para.lower()
-            score = sum(1 for t in search_terms if t.lower() in para_lower)
-            if score > 0:
-                kb_matches.append((score, para))
-        kb_matches.sort(reverse=True, key=lambda x: x[0])
-        kb_context = [p for _, p in kb_matches[:3]]
+        # Check for markdown headers in KB
+        kb_text = self.files["kb"]
+        has_headers = any(line.strip().startswith("##") for line in kb_text.split("\n"))
+
+        if has_headers:
+            # Two-pass progressive augment
+            kb_pass = "two-pass"
+
+            # Pass 1: Structure scan - split on headers
+            sections = []
+            current_header = ""
+            current_body = []
+
+            for line in kb_text.split("\n"):
+                if line.strip().startswith("##"):
+                    # Save previous section
+                    if current_header or current_body:
+                        sections.append((current_header, "\n".join(current_body).strip()))
+                    current_header = line.strip()
+                    current_body = []
+                else:
+                    current_body.append(line)
+
+            # Don't forget the last section
+            if current_header or current_body:
+                sections.append((current_header, "\n".join(current_body).strip()))
+
+            # Score sections
+            kb_matches = []
+            for header, body in sections:
+                if not header and not body:
+                    continue
+
+                header_lower = header.lower()
+                body_lower = body.lower()
+
+                # Pass 1 scoring
+                # +2 for each entity matched in header
+                header_score = sum(2 for t in search_terms if t.lower() in header_lower)
+
+                # +1 for each entity matched in first sentence of body
+                first_sentence = body.split(".")[0] if body else ""
+                first_sentence_lower = first_sentence.lower()
+                first_sentence_score = sum(1 for t in search_terms if t.lower() in first_sentence_lower)
+
+                pass1_score = header_score + first_sentence_score
+
+                if pass1_score > 0:
+                    # Pass 2: Content pull - score full body
+                    body_score = sum(1 for t in search_terms if t.lower() in body_lower)
+                    final_score = pass1_score + body_score
+
+                    # Reconstruct full section text
+                    full_section = f"{header}\n{body}".strip() if header else body
+                    kb_matches.append((final_score, full_section))
+
+            kb_matches.sort(reverse=True, key=lambda x: x[0])
+            kb_context = [p for _, p in kb_matches[:3]]
+
+        else:
+            # Fallback: original paragraph-split logic
+            kb_pass = "fallback"
+
+            paragraphs = [p.strip() for p in kb_text.split("\n\n") if p.strip()]
+            kb_matches = []
+            for para in paragraphs:
+                para_lower = para.lower()
+                score = sum(1 for t in search_terms if t.lower() in para_lower)
+                if score > 0:
+                    kb_matches.append((score, para))
+            kb_matches.sort(reverse=True, key=lambda x: x[0])
+            kb_context = [p for _, p in kb_matches[:3]]
 
         # Search KG nodes
         kg_context = kg_query(self.files["kg"], search_terms)
@@ -227,6 +289,7 @@ class Capsule:
         ctx["augmented"] = {
             "kb": kb_context,
             "kg": kg_context,
+            "kb_pass": kb_pass,
             "persona": {
                 "tone": self.files["persona"].get("tone", "neutral"),
                 "style": self.files["persona"].get("style", "informative"),
@@ -234,8 +297,8 @@ class Capsule:
         }
         return ctx
 
-    def generate(self, ctx: dict) -> dict:
-        """Stage 3: Build prompt and call LLM."""
+    def _build_prompt(self, ctx: dict, constraints: list[str] = None) -> str:
+        """Build LLM prompt from context. Optionally add knowledge constraints."""
         aug = ctx["augmented"]
         parts = [f"You are: {self.name}"]
 
@@ -244,10 +307,10 @@ class Capsule:
 
         parts.append("\nIMPORTANT: Use exact figures, dates, and names from the provided knowledge. Do not round, approximate, or paraphrase numerical values. Cite precisely.")
 
-        constraints = self.files["persona"].get("constraints", [])
-        if constraints:
+        persona_constraints = self.files["persona"].get("constraints", [])
+        if persona_constraints:
             parts.append("\nYou MUST follow these rules:")
-            for c in constraints:
+            for c in persona_constraints:
                 # Expand terse slugs into clear instructions
                 expanded = c.replace("-", " ").strip()
                 parts.append(f"- {expanded}")
@@ -276,9 +339,22 @@ class Capsule:
                     parts.append(f"- {label}")
 
         parts.append(f"\nQuery: {ctx['input']}")
+
+        # Add knowledge constraints if provided (for AEC retry)
+        if constraints:
+            parts.append("\nKNOWLEDGE CONSTRAINTS:")
+            parts.append("The following claims are not supported by the knowledge base.")
+            parts.append("Do not make these claims in your response:")
+            for c in constraints:
+                parts.append(f"- {c}")
+
         parts.append("\nResponse:")
 
-        prompt = "\n".join(parts)
+        return "\n".join(parts)
+
+    def generate(self, ctx: dict) -> dict:
+        """Stage 3: Build prompt and call LLM."""
+        prompt = self._build_prompt(ctx)
         ctx["_prompt_len"] = len(prompt)
 
         result = self.llm_fn(prompt)
@@ -295,7 +371,7 @@ class Capsule:
         return ctx
 
     def review(self, ctx: dict) -> dict:
-        """Stage 4: Verify response quality via AEC."""
+        """Stage 4: Verify response quality via AEC with retry on failure."""
         response = ctx["generated"]
         # Handle both dict and string from LLM
         if isinstance(response, dict):
@@ -307,22 +383,59 @@ class Capsule:
         kg_nodes = ctx["augmented"].get("kg", [])
         threshold = definition.get("review", {}).get("threshold", 0.8)
 
-        # Run AEC verification against augmented KG subgraph
-        # Pass compiled KG for concept-level matching on skill agents
-        # Pass llm_fn for Layer 2 type-driven verification
+        # First run: AEC verification
         aec_result = aec_verify(response_text, kg_nodes, threshold,
                                 compiled_kg=self._compiled_kg, llm_fn=self.llm_fn)
 
-        # Queue failures for education
-        queued = False
-        if not aec_result["passed"]:
-            queue_failure(self.path, ctx["input"], response_text, aec_result)
-            queued = True
+        # If passed on first try, return success
+        if aec_result["passed"]:
+            ctx["review"] = {
+                "aec": aec_result,
+                "passed": True,
+                "queued": False,
+                "self_corrected": False,
+                "ghost": False,
+            }
+            return ctx
 
+        # First run failed - always queue the original failure
+        queue_failure(self.path, ctx["input"], response_text, aec_result)
+
+        # Retry with constrained prompt
+        gaps = [g["text"] for g in aec_result.get("gaps", [])]
+        constrained_prompt = self._build_prompt(ctx, constraints=gaps)
+        constrained_result = self.llm_fn(constrained_prompt)
+
+        # Extract retry text
+        if isinstance(constrained_result, dict):
+            retry_text = constrained_result.get("text", str(constrained_result))
+        else:
+            retry_text = str(constrained_result)
+
+        # Verify retry response
+        retry_aec = aec_verify(retry_text, kg_nodes, threshold,
+                               compiled_kg=self._compiled_kg, llm_fn=self.llm_fn)
+
+        if retry_aec["passed"]:
+            # Retry succeeded - update generated and return self_corrected
+            ctx["generated"] = retry_text
+            ctx["review"] = {
+                "aec": retry_aec,
+                "passed": True,
+                "queued": True,
+                "self_corrected": True,
+                "ghost": False,
+            }
+            return ctx
+
+        # Retry also failed - GHOST state
+        ctx["generated"] = "[GHOST] Unable to verify response against knowledge base. Confidence: 0.0"
         ctx["review"] = {
-            "aec": aec_result,
-            "passed": aec_result["passed"],
-            "queued": queued,
+            "aec": retry_aec,
+            "passed": False,
+            "queued": True,
+            "self_corrected": False,
+            "ghost": True,
         }
         return ctx
 

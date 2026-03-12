@@ -14,10 +14,10 @@ if sys.platform == "win32":
     sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
 
 from aether import Capsule, validate_folder, get_required_files
-from stamper import stamp_empty, stamp_from_source, validate_capsule
+from stamper import stamp_empty, stamp_from_source, validate_capsule, export_capsule
 from llm import make_llm_fn
 from kg import load_kg, stats as kg_stats
-from education import queue_stats, get_pending, get_oldest_pending, educate
+from education import queue_stats, get_pending, get_oldest_pending, educate, refine_session
 from ingest import ingest_research, ingest_document, ingest_skill
 
 
@@ -282,6 +282,96 @@ def cmd_ingest_skill(args):
         print(f"Errors: {result.get('errors', [])}")
 
 
+def cmd_refine(args):
+    """Analyze education queue and surface KG improvement candidates."""
+    # Validate capsule exists
+    missing = validate_folder(args.capsule)
+    if missing:
+        print(f"Invalid capsule. Missing: {missing}")
+        return
+
+    # Check queue exists
+    capsule_path = Path(args.capsule)
+    queue_file = capsule_path / "education-queue.json"
+    if not queue_file.exists():
+        print("No education queue found for this capsule. Run some queries first.")
+        return
+
+    # Run refine session
+    result = refine_session(args.capsule, n=args.n, auto_queue=args.auto_queue)
+
+    # Get capsule name for display
+    capsule = Capsule(capsule_path)
+
+    # Print report
+    print(f"\nAETHER Refine — {capsule.name}")
+    print("─" * 45)
+    print(f"Analyzed:    {result['analyzed']} records")
+    print(f"Filtered:    {result['persona_gaps_filtered']} persona gaps (not KG-groundable)")
+    print(f"Factual:     {result['factual_gaps_found']} factual gap statements found")
+    print(f"Candidates:  {len(result['candidates'])} subjects identified")
+    print("─" * 45)
+
+    # KG Candidates
+    if result["candidates"]:
+        print("\nKG CANDIDATES (by priority):\n")
+        for candidate in result["candidates"]:
+            priority = candidate["priority"].upper()
+            print(f"[{priority}] {candidate['subject']}  (appears in {candidate['frequency']} records)")
+            print(f"  Gaps: {candidate['gap_texts'][0][:80]}...")
+            if len(candidate["gap_texts"]) > 1:
+                print(f"        {candidate['gap_texts'][1][:80]}...")
+            print(f"  Records: {', '.join(r[:20] for r in candidate['records_affected'][:3])}")
+            if len(candidate["records_affected"]) > 3:
+                print(f"           ...and {len(candidate['records_affected']) - 3} more")
+            print()
+    else:
+        print("\nNo KG candidates identified.\n")
+
+    # Unresolved failures
+    print("─" * 45)
+    print(f"UNRESOLVED FAILURES: {len(result['unresolved_failures'])}")
+    for failure in result["unresolved_failures"][:5]:
+        truncated_id = failure["id"][:20] + "..." if len(failure["id"]) > 20 else failure["id"]
+        print(f"  {truncated_id} | score: {failure['aec_score']:.3f} | {failure['reason']}")
+    if len(result["unresolved_failures"]) > 5:
+        print(f"  ...and {len(result['unresolved_failures']) - 5} more")
+
+    print("\n" + "─" * 45)
+    print(result["summary"])
+
+    # Auto-queue status
+    if result["auto_queued"] > 0:
+        print(f"\nAuto-queued {result['auto_queued']} high-priority candidates for education.")
+    elif result["candidates"] and not args.auto_queue:
+        high_count = len([c for c in result["candidates"] if c["priority"] == "high"])
+        if high_count > 0:
+            print(f"\nRun with --auto-queue to queue {high_count} high-priority candidates for education.")
+
+
+def cmd_export(args):
+    """Export capsule to target platform format."""
+    # Validate capsule first
+    result = validate_capsule(args.capsule)
+    if not result["valid"]:
+        print(f"Invalid capsule: {args.capsule}")
+        if result["missing"]:
+            print(f"Missing: {result['missing']}")
+        if result["errors"]:
+            print(f"Errors: {result['errors']}")
+        return
+
+    try:
+        output_file = export_capsule(args.capsule, args.format, args.output)
+        # Get capsule name for message
+        from aether import Capsule
+        capsule = Capsule(args.capsule)
+        print(f"Exported {capsule.name} → {output_file} (format: {args.format})")
+    except ValueError as e:
+        print(f"Error: {e}")
+        print("Valid formats: claude-md, claude-skill, github-agent-md, a2a-agent-card")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="aether", description="Aether Capsule Framework")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -362,6 +452,25 @@ def main():
     p_ingest_skill.add_argument("--provider", default="stub", help="LLM provider (stub for no-LLM)")
     p_ingest_skill.add_argument("--model", help="Model name")
     p_ingest_skill.set_defaults(func=cmd_ingest_skill)
+
+    # export
+    p_export = subparsers.add_parser("export", help="Export capsule to target platform format")
+    p_export.add_argument("capsule", help="Path to capsule folder")
+    p_export.add_argument("--format", required=True,
+        choices=["claude-md", "claude-skill", "github-agent-md", "a2a-agent-card"],
+        help="Export format")
+    p_export.add_argument("--output", default=None,
+        help="Output path (default: capsule parent directory)")
+    p_export.set_defaults(func=cmd_export)
+
+    # refine
+    p_refine = subparsers.add_parser("refine", help="Analyze queue and surface KG improvement candidates")
+    p_refine.add_argument("capsule", help="Path to capsule folder")
+    p_refine.add_argument("--n", type=int, default=50,
+        help="Number of recent records to analyze (default: 50)")
+    p_refine.add_argument("--auto-queue", action="store_true",
+        help="Auto-queue high-priority candidates into education loop")
+    p_refine.set_defaults(func=cmd_refine)
 
     args = parser.parse_args()
     args.func(args)
