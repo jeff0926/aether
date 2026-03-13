@@ -11,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 
 QUEUE_FILE = "education-queue.json"
-VALID_STATUSES = ["pending", "researching", "validated", "integrated", "failed"]
+VALID_STATUSES = ["pending", "researching", "validated", "integrated", "failed", "rejected_contradiction"]
 
 
 def _queue_path(capsule_path: str | Path) -> Path:
@@ -142,6 +142,99 @@ Respond ONLY in JSON array format. No prose. Example:
 ]"""
 
 
+def _check_contradiction(proposed: dict, kg: dict) -> dict | None:
+    """
+    Check if a proposed acquired node contradicts any core node.
+
+    Returns None if OK to add, or a rejection dict if conflicting:
+    {
+        "reason": "core_conflict" | "antipattern_forbidden",
+        "conflicting_node_id": str,
+        "conflicting_label": str,
+        "details": str
+    }
+    """
+    from aec_concept import tokenize, dice_bigram
+
+    subject = proposed.get("subject", "")
+    predicate = proposed.get("predicate", "").lower()
+    obj = str(proposed.get("object", ""))
+
+    if not subject:
+        return None
+
+    subject_tokens = tokenize(subject)
+    nodes = kg.get("@graph", [])
+
+    for node in nodes:
+        origin = node.get("aether:origin", "")
+        node_id = node.get("@id", "")
+        label = node.get("rdfs:label", "")
+        node_type = node.get("@type", "")
+
+        if not label:
+            continue
+
+        # Calculate subject similarity using Dice bigram
+        dice = dice_bigram(subject, label)
+
+        # Check 1: Core node with same subject (Dice > 0.6)
+        if origin == "core" and dice > 0.6:
+            # Check for predicate conflict: same predicate, different object
+            for key, value in node.items():
+                if key.startswith("@") or key.startswith("aether:") or key == "rdfs:label":
+                    continue
+                # Normalize predicate comparison
+                key_normalized = key.lower().replace("_", " ").replace("-", " ")
+                pred_normalized = predicate.replace("_", " ").replace("-", " ")
+
+                if key_normalized == pred_normalized or dice_bigram(key_normalized, pred_normalized) > 0.7:
+                    # Same predicate - check if objects conflict
+                    existing_obj = str(value).lower().strip()
+                    proposed_obj = obj.lower().strip()
+
+                    if existing_obj != proposed_obj and existing_obj and proposed_obj:
+                        return {
+                            "reason": "core_conflict",
+                            "conflicting_node_id": node_id,
+                            "conflicting_label": label,
+                            "details": f"Core node has {key}={value}, proposed {predicate}={obj}"
+                        }
+
+        # Check 2: AntiPattern nodes - can't learn what your rules forbid
+        if "AntiPattern" in node_type:
+            label_tokens = tokenize(label)
+
+            # Check if proposed subject matches antipattern (Dice > 0.6 OR significant token overlap)
+            antipattern_dice = dice_bigram(subject, label)
+            subject_overlap = subject_tokens & label_tokens
+            subject_coverage = len(subject_overlap) / len(subject_tokens) if subject_tokens else 0
+
+            if antipattern_dice > 0.6 or subject_coverage >= 0.5:
+                return {
+                    "reason": "antipattern_forbidden",
+                    "conflicting_node_id": node_id,
+                    "conflicting_label": label,
+                    "details": f"Cannot learn '{subject}' - matches antipattern '{label}'"
+                }
+
+            # Also check if proposed object matches antipattern terms
+            obj_tokens = tokenize(obj)
+            obj_dice = dice_bigram(obj, label)
+            obj_overlap = obj_tokens & label_tokens
+            obj_coverage = len(obj_overlap) / len(obj_tokens) if obj_tokens else 0
+
+            if obj_dice > 0.5 or obj_coverage >= 0.5:
+                return {
+                    "reason": "antipattern_forbidden",
+                    "conflicting_node_id": node_id,
+                    "conflicting_label": label,
+                    "details": f"Cannot learn object '{obj}' - matches antipattern '{label}'"
+                }
+
+    return None
+
+
 def educate(capsule_path: str | Path, record_id: str, llm_fn: callable) -> dict:
     """
     Self-education loop: research gaps, validate, integrate knowledge.
@@ -167,6 +260,7 @@ def educate(capsule_path: str | Path, record_id: str, llm_fn: callable) -> dict:
         "original_score": 0.0,
         "new_score": 0.0,
         "triples_added": 0,
+        "triples_rejected": [],
         "research_tokens": {"in": 0, "out": 0},
     }
 
@@ -255,9 +349,25 @@ def educate(capsule_path: str | Path, record_id: str, llm_fn: callable) -> dict:
     kg = load_kg(kg_path)
 
     triples_added = 0
+    triples_rejected = []
+
     for t in triples:
         if not all(k in t for k in ["subject", "predicate", "object"]):
             continue
+
+        # Contradiction gate: check if proposed triple conflicts with core nodes
+        contradiction = _check_contradiction(t, kg)
+        if contradiction:
+            triples_rejected.append({
+                "triple": t,
+                "status": "rejected_contradiction",
+                "reason": contradiction["reason"],
+                "conflicting_node_id": contradiction["conflicting_node_id"],
+                "conflicting_label": contradiction["conflicting_label"],
+                "details": contradiction["details"],
+            })
+            continue  # Skip this triple - core has veto
+
         kg = add_knowledge(kg, {
             "subject": t["subject"],
             "predicate": t["predicate"].lower(),
@@ -269,6 +379,7 @@ def educate(capsule_path: str | Path, record_id: str, llm_fn: callable) -> dict:
 
     save_kg(kg, kg_path)
     result["triples_added"] = triples_added
+    result["triples_rejected"] = triples_rejected
 
     # 6. RE-EVALUATE: Run AEC on original response with updated KG
     kg = load_kg(kg_path)  # Reload to get fresh data
@@ -278,20 +389,23 @@ def educate(capsule_path: str | Path, record_id: str, llm_fn: callable) -> dict:
     new_aec = aec_verify(original_response, all_nodes, threshold)
     result["new_score"] = new_aec["score"]
 
+    # Build status metadata including any rejections
+    status_meta = {
+        "new_score": new_aec["score"],
+        "triples_added": triples_added,
+    }
+    if triples_rejected:
+        status_meta["triples_rejected"] = len(triples_rejected)
+        status_meta["rejection_details"] = triples_rejected
+
     if new_aec["passed"]:
         result["status"] = "integrated"
-        update_status(capsule_path, record_id, "integrated", {
-            "new_score": new_aec["score"],
-            "triples_added": triples_added,
-        })
+        update_status(capsule_path, record_id, "integrated", status_meta)
     else:
         result["status"] = "failed"
         result["reason"] = "still_below_threshold"
-        update_status(capsule_path, record_id, "failed", {
-            "reason": "still_below_threshold",
-            "new_score": new_aec["score"],
-            "triples_added": triples_added,
-        })
+        status_meta["reason"] = "still_below_threshold"
+        update_status(capsule_path, record_id, "failed", status_meta)
 
     return result
 

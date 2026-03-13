@@ -323,16 +323,28 @@ class Capsule:
         if aug.get("kg"):
             parts.append("\nReference Data (cite these exactly):")
             for node in aug["kg"]:
-                label = node.get("rdfs:label", node.get("@id", "?"))
+                # Use rdfs:label only - never expose @id to LLM (prevents AEC score inflation)
+                label = node.get("rdfs:label")
+                if not label:
+                    continue  # Skip nodes without human-readable labels
                 # Build a compact summary of key properties
+                # Exclude: @-prefixed, namespaced keys (foo:bar), and values containing node IDs
                 props = []
                 for k, v in node.items():
-                    if k.startswith("@") or k.startswith("aether:") or k == "rdfs:label":
+                    # Skip JSON-LD keywords, rdfs:label, and any namespaced property (contains :)
+                    if k.startswith("@") or k == "rdfs:label" or ":" in k:
+                        continue
+                    # Skip values that look like node IDs (contain namespace:id patterns)
+                    v_str = str(v)
+                    if ":" in v_str and any(ns in v_str for ns in ["aether:", "rule:", "antipattern:", "technique:", "concept:", "skill:", "psi:"]):
                         continue
                     if isinstance(v, (str, int, float, bool)):
                         props.append(f"{k}: {v}")
                     elif isinstance(v, list) and len(v) <= 5:
-                        props.append(f"{k}: {v}")
+                        # Filter list items that look like node IDs
+                        clean_items = [str(item) for item in v if ":" not in str(item)]
+                        if clean_items:
+                            props.append(f"{k}: {clean_items}")
                 if props:
                     parts.append(f"- {label} ({'; '.join(props[:5])})")
                 else:
