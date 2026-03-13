@@ -439,6 +439,98 @@ def cmd_export(args):
         print("Valid formats: claude-md, claude-skill, github-agent-md, a2a-agent-card")
 
 
+def cmd_orchestrate(args):
+    """Route query to best matching capsule and execute."""
+    from habitat import orchestrate
+    from llm import make_llm_fn
+
+    # Build LLM function if not dry run
+    llm_fn = None
+    if not args.dry_run:
+        llm_fn = make_llm_fn(provider=args.provider, model=args.model)
+
+    result = orchestrate(
+        query=args.query,
+        registry_path=args.registry,
+        llm_fn=llm_fn,
+        dry_run=args.dry_run
+    )
+
+    # Output routing decision
+    print(f"Routing: \"{args.query}\"")
+    print()
+
+    # Show candidates
+    if result.get("candidates"):
+        print("  Candidates:")
+        for i, c in enumerate(result["candidates"][:5]):
+            marker = " * SELECTED" if c["capsule_id"] == result.get("routed_to") else ""
+            print(f"    {c['capsule_name']:<25} score={c['score']:.4f}{marker}")
+        print()
+
+    # Handle gap
+    if result.get("gap"):
+        gap = result["gap"]
+        print(f"  GAP DETECTED")
+        print(f"  Topic: {gap.get('topic', 'unknown')}")
+        if gap.get("closest_capsule"):
+            print(f"  Closest: {gap['closest_capsule']} (score={gap['closest_score']:.4f})")
+        print(f"  {gap.get('recommendation', '')}")
+        return
+
+    # Handle dry run
+    if args.dry_run:
+        print(f"  Would dispatch to: {result['routed_name']} ({result['routed_to']})")
+        print(f"  [dry-run mode - not executing]")
+        return
+
+    # Show execution
+    print(f"  Dispatching to: {result['routed_name']} ({result['routed_to']})")
+    print()
+
+    pipeline_result = result.get("result", {})
+
+    # Show response
+    response = pipeline_result.get("generated", "")
+    if response:
+        print("─" * 60)
+        print(response[:1000])
+        if len(response) > 1000:
+            print(f"... ({len(response)} chars total)")
+        print("─" * 60)
+        print()
+
+    # Show AEC result
+    review = pipeline_result.get("review", {})
+    aec = review.get("aec", {})
+
+    if aec:
+        score = aec.get("score", 0)
+        threshold = aec.get("threshold", 0.8)
+        passed = aec.get("passed", False)
+
+        print(f"  AEC Score: {score:.2f} (threshold: {threshold})")
+        print(f"  AEC Passed: {passed}")
+
+        if review.get("ghost"):
+            print(f"  Status: GHOST (unverifiable)")
+        elif review.get("self_corrected"):
+            print(f"  Status: Self-corrected on retry")
+
+    # Full report mode
+    if args.report == "full" and aec:
+        print()
+        print("  AEC Details:")
+        if aec.get("grounded"):
+            print(f"    Grounded: {len(aec['grounded'])}")
+        if aec.get("ungrounded"):
+            print(f"    Ungrounded: {len(aec['ungrounded'])}")
+        if aec.get("gaps"):
+            print(f"    Gaps: {len(aec['gaps'])}")
+            for gap in aec["gaps"][:3]:
+                print(f"      - {gap.get('text', '')[:60]}...")
+
+
 def main():
     parser = argparse.ArgumentParser(prog="aether", description="Aether Capsule Framework")
     subparsers = parser.add_subparsers(dest="command", required=True)
@@ -540,6 +632,16 @@ def main():
     p_refine.add_argument("--auto-queue", action="store_true",
         help="Auto-queue high-priority candidates into education loop")
     p_refine.set_defaults(func=cmd_refine)
+
+    # orchestrate
+    p_orch = subparsers.add_parser("orchestrate", help="Route query to best capsule and execute")
+    p_orch.add_argument("query", help="Query to route")
+    p_orch.add_argument("--registry", default="./examples", help="Capsule registry directory")
+    p_orch.add_argument("--provider", default="stub", help="LLM provider")
+    p_orch.add_argument("--model", default=None, help="Model override")
+    p_orch.add_argument("--report", choices=["full"], help="Show full AEC report")
+    p_orch.add_argument("--dry-run", action="store_true", help="Show routing without executing")
+    p_orch.set_defaults(func=cmd_orchestrate)
 
     args = parser.parse_args()
     args.func(args)

@@ -1,0 +1,18 @@
+{
+  "pipeline": {
+    "distill": {"enabled": true},
+    "augment": {"enabled": true},
+    "generate": {"enabled": false},
+    "review": {"enabled": false}
+  },
+  "review": {"min_length": 0, "max_length": 100000, "threshold": 0.0},
+  "agent_type": "router",
+  "agent_name": "orchestrator",
+  "primary_function": "Route incoming queries to the most appropriate capsule in the registry based on topic affinity and domain boundaries.",
+  "domain_boundaries": {
+    "authoritative": ["query routing", "agent selection", "capability matching", "gap detection"],
+    "out_of_scope": ["direct content generation", "domain expertise", "code writing"]
+  },
+  "suggested_aec_gates": [],
+  "trigger_text": "Any query that doesn't specify a target capsule."
+}
