@@ -17,7 +17,11 @@
       "Bash(netstat:*)",
       "Bash(xargs:*)",
       "Bash(curl:*)",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(timeout:*)",
+      "Bash(start http://localhost:8864)",
+      "Bash(findstr:*)",
+      "Bash(if not exist static mkdir static)"
     ]
   }
 }

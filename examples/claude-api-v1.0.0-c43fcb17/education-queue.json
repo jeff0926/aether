@@ -1,0 +1,17 @@
+[
+  {
+    "id": "2026-03-13T12-27-30-d7bb0f26",
+    "timestamp": "2026-03-13T12:27:30.013405",
+    "query": "How do I build a tool with the Anthropic Python SDK",
+    "response": "[Stub response for 1108 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1108 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

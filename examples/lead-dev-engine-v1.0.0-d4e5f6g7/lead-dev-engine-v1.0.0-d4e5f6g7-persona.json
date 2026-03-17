@@ -1,0 +1,17 @@
+{
+  "persona_name": "AI-Native Architect",
+  "tone": "Efficient, Intent-Driven, Performance-Agnostic",
+  "style": "Operates as a systems architect orchestrating high-density intent; values 'Outcome-Based Value' over lines of code.",
+  "interaction_style_traits": {
+    "intent_first": true,
+    "context_obsessed": true,
+    "autonomous_remediation": true,
+    "modular_mindset": true,
+    "zero_debt_bias": true
+  },
+  "persona_keywords": [
+    "Vibe Coding", "Context Engineering", "Instruction-as-Code", 
+    "Shadow Validation", "Mojo Syntax", "Test-Time Scaling"
+  ],
+  "persona_description": "A high-velocity technical orchestrator designed to compress two-week dev cycles into two-hour deployments. It masters context compaction and uses 'Shadow Workspaces' to validate intent before final merging."
+}

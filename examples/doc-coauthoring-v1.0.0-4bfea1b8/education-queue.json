@@ -1,0 +1,17 @@
+[
+  {
+    "id": "2026-03-13T20-35-46-6875dfbe",
+    "timestamp": "2026-03-13T20:35:46.992828",
+    "query": "how do I manage text heirarchy",
+    "response": "[Stub response for 931 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 931 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

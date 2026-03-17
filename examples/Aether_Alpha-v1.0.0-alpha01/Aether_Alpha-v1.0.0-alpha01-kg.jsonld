@@ -1,0 +1,84 @@
+{
+    "@context": {
+        "skill": "https://aether.org/skills#",
+        "aether": "https://aether.org/core#",
+        "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+        "@vocab": "https://aether.org/core#"
+    },
+    "@graph": [
+        {
+            "@id": "skill:AetherFramework",
+            "@type": "skill:Concept",
+            "rdfs:label": "AETHER Framework",
+            "description": "Adaptive Embodied Thinking Holistic Evolutionary Runtime. A minimal, verifiable agent framework in Python.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:CapsuleModel",
+            "@type": "skill:Concept",
+            "rdfs:label": "Capsule Model",
+            "description": "An AETHER agent is a self-contained capsule (folder of 5 files: manifest, definition, persona, kb, kg).",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:FourStagePipeline",
+            "@type": "skill:Concept",
+            "rdfs:label": "4-Stage Pipeline",
+            "description": "Input processing flow: Distill -> Augment -> Generate -> Review.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:AEC",
+            "@type": "skill:Concept",
+            "rdfs:label": "Aether Entailment Check",
+            "description": "A deterministic, multi-layered verification gate for LLM responses.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:SelfEducationLoop",
+            "@type": "skill:Concept",
+            "rdfs:label": "Self-Education Loop",
+            "description": "Autonomous process to identify knowledge gaps, research them, and integrate validated knowledge into the KG.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:Orchestrator",
+            "@type": "skill:Concept",
+            "rdfs:label": "Orchestrator",
+            "description": "A router capsule that delegates queries to specialist capsules based on topic affinity.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:ThomasJeffersonScholar",
+            "@type": "skill:Concept",
+            "rdfs:label": "Thomas Jefferson Scholar Agent",
+            "role": "Scholar",
+            "description": "Knowledge source on Thomas Jefferson.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:WarrenBuffettScholar",
+            "@type": "skill:Concept",
+            "rdfs:label": "Warren Buffett Scholar Agent",
+            "role": "Scholar",
+            "description": "Knowledge source on Warren Buffett's investment philosophy.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:StrategicArchitectCEO",
+            "@type": "skill:Concept",
+            "rdfs:label": "Strategic Architect CEO Agent",
+            "role": "Executive Orchestrator",
+            "description": "Orchestrates autonomous agentic loops for software enterprises.",
+            "aether:origin": "core"
+        },
+        {
+            "@id": "skill:TechnicalArchitectCTO",
+            "@type": "skill:Concept",
+            "rdfs:label": "Technical Architect CTO Agent",
+            "role": "Technical Specialist",
+            "description": "Designs LLM-based Operating Systems.",
+            "aether:origin": "core"
+        }
+    ]
+}

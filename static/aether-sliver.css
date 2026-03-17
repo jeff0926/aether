@@ -1,0 +1,250 @@
+/**
+ * AETHER Default Sliver Styles
+ * Pure CSS, no framework dependencies
+ * Maps PSI phases to visual states
+ */
+
+/* Base sliver container */
+.aether-sliver {
+  --aether-bg: #1c2128;
+  --aether-border: #30363d;
+  --aether-text: #c9d1d9;
+  --aether-text-dim: #8b949e;
+  --aether-accent: #58a6ff;
+  --aether-success: #3fb950;
+  --aether-warning: #d29922;
+  --aether-error: #f85149;
+
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--aether-bg);
+  border: 1px solid var(--aether-border);
+  border-radius: 8px;
+  padding: 1rem;
+  transition: all 300ms ease;
+  opacity: 1;
+  position: relative;
+}
+
+/* Header */
+.aether-sliver .aether-header {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--aether-text-dim);
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--aether-border);
+}
+
+/* Content area */
+.aether-sliver .aether-content {
+  color: var(--aether-text);
+  line-height: 1.6;
+  min-height: 2rem;
+  transition: all 300ms ease;
+}
+
+.aether-sliver .aether-content p {
+  margin: 0;
+}
+
+/* Footer metadata */
+.aether-sliver .aether-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--aether-border);
+  font-size: 0.7rem;
+  color: var(--aether-text-dim);
+}
+
+/* Phase indicator dot */
+.aether-sliver::before {
+  content: '';
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--aether-text-dim);
+  transition: background 200ms ease;
+}
+
+/* ============================================
+   PHASE STATES
+   ============================================ */
+
+/* Phase: Idle (initial state) */
+.aether-sliver[data-aether-phase="idle"] {
+  opacity: 0.7;
+}
+.aether-sliver[data-aether-phase="idle"]::before {
+  background: var(--aether-text-dim);
+}
+
+/* Phase: Reflex (quick pattern match) */
+.aether-sliver[data-aether-phase="reflex"] {
+  opacity: 0.6;
+  border-color: var(--aether-accent);
+}
+.aether-sliver[data-aether-phase="reflex"]::before {
+  background: var(--aether-accent);
+  animation: aether-pulse 1s infinite;
+}
+.aether-sliver[data-aether-phase="reflex"] .aether-content {
+  max-height: 3rem;
+  overflow: hidden;
+}
+
+/* Phase: Deliberation (processing) */
+.aether-sliver[data-aether-phase="deliberation"] {
+  opacity: 0.85;
+  border-color: var(--aether-accent);
+}
+.aether-sliver[data-aether-phase="deliberation"]::before {
+  background: var(--aether-accent);
+  animation: aether-pulse 0.6s infinite;
+}
+.aether-sliver[data-aether-phase="deliberation"] .aether-content {
+  background: linear-gradient(90deg,
+    var(--aether-bg) 25%,
+    rgba(88, 166, 255, 0.1) 50%,
+    var(--aether-bg) 75%);
+  background-size: 200% 100%;
+  animation: aether-shimmer 1.5s infinite;
+  border-radius: 4px;
+  padding: 0.5rem;
+}
+
+/* Phase: Complete (verified response) */
+.aether-sliver[data-aether-phase="complete"] {
+  opacity: 1;
+  border-color: var(--aether-success);
+}
+.aether-sliver[data-aether-phase="complete"]::before {
+  background: var(--aether-success);
+}
+.aether-sliver[data-aether-phase="complete"] .aether-content {
+  max-height: none;
+}
+
+/* Phase: Ghost (unverified/failed) */
+.aether-sliver[data-aether-phase="ghost"] {
+  opacity: 0.4;
+  filter: grayscale(0.3);
+  border-color: var(--aether-warning);
+}
+.aether-sliver[data-aether-phase="ghost"]::before {
+  background: var(--aether-warning);
+}
+.aether-sliver[data-aether-phase="ghost"] .aether-content {
+  max-height: 3rem;
+  overflow: hidden;
+  font-style: italic;
+  color: var(--aether-text-dim);
+}
+
+/* ============================================
+   SENTIMENT STATES
+   ============================================ */
+
+.aether-sliver[style*="--aether-sentiment: positive"] {
+  --aether-accent: var(--aether-success);
+}
+.aether-sliver[style*="--aether-sentiment: negative"] {
+  --aether-accent: var(--aether-error);
+}
+.aether-sliver[style*="--aether-sentiment: critical"] {
+  --aether-accent: var(--aether-error);
+  border-width: 2px;
+}
+
+/* ============================================
+   CONFIDENCE BAR
+   ============================================ */
+
+.aether-confidence {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.aether-confidence::after {
+  content: '';
+  display: inline-block;
+  width: calc(var(--aether-confidence, 0) * 60px);
+  height: 4px;
+  background: var(--aether-accent);
+  border-radius: 2px;
+  transition: width 300ms ease;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes aether-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+
+@keyframes aether-shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .aether-sliver,
+  .aether-sliver .aether-content,
+  .aether-sliver::before,
+  .aether-confidence::after {
+    transition: none;
+    animation: none;
+  }
+
+  .aether-sliver[data-aether-phase="deliberation"] .aether-content {
+    background: rgba(88, 166, 255, 0.1);
+  }
+}
+
+/* ============================================
+   DENSITY VARIANTS
+   ============================================ */
+
+.aether-sliver[style*="--aether-density: sparse"] {
+  padding: 1.5rem;
+  line-height: 1.8;
+}
+
+.aether-sliver[style*="--aether-density: dense"] {
+  padding: 0.5rem;
+  font-size: 0.85em;
+  line-height: 1.4;
+}
+
+/* ============================================
+   LIGHT THEME OVERRIDE
+   ============================================ */
+
+@media (prefers-color-scheme: light) {
+  .aether-sliver {
+    --aether-bg: #ffffff;
+    --aether-border: #d0d7de;
+    --aether-text: #1f2328;
+    --aether-text-dim: #656d76;
+  }
+}
+
+.aether-sliver.aether-light {
+  --aether-bg: #ffffff;
+  --aether-border: #d0d7de;
+  --aether-text: #1f2328;
+  --aether-text-dim: #656d76;
+}

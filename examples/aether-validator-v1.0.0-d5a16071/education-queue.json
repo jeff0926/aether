@@ -103,5 +103,35 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-13T22-47-37-e32bc9e8",
+    "timestamp": "2026-03-13T22:47:37.469794",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-13T23-10-40-c6ac5098",
+    "timestamp": "2026-03-13T23:10:40.677004",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
   }
 ]

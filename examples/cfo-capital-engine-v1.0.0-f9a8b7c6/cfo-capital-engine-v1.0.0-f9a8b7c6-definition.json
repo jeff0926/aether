@@ -1,0 +1,44 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Subject Matter Expert",
+  "agent_name": "CFO Capital Engine",
+  "primary_function": "Programmatically manage capital allocation and operational efficiency to maximize the engine's profitability and market valuation.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Capital Allocation",
+      "ARR Monitoring",
+      "Unit Economics",
+      "Compute Spend Optimization"
+    ],
+    "out_of_scope": [
+      "Feature Design",
+      "Code Implementation",
+      "Marketing Content Creation"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Token_Burn_Efficiency_Audit",
+    "ARR_Growth_Velocity_Check",
+    "Unit_Economic_Viability",
+    "Capital_Reserves_Validation"
+  ],
+  "trigger_text": "Financial strategy, capital allocation, budget planning, financial metrics, revenue optimization, cost management, investment decisions, financial reporting, cash flow, fiscal planning."
+}

@@ -1,0 +1,59 @@
+<!--
+  AETHER Default EDS Sliver
+  A generic sliver that works with any AETHER agent.
+  The agent possesses it, fills the slots, and morphs it via CSS variables.
+
+  Usage:
+    1. Include aether-sliver.css and aether-orchestrator.js
+    2. Set data-aether-agent to the agent ID
+    3. Optionally set data-aether-endpoint for custom SSE endpoint
+    4. Optionally set data-aether-impulses for event triggers
+
+  The orchestrator will:
+    - Connect to the agent's SSE stream
+    - Apply CSS variable patches as they arrive
+    - Inject content into [data-aether-slot] elements
+    - Set data-aether-phase for CSS state transitions
+-->
+
+<div data-aether-agent="{{AGENT_ID}}"
+     data-aether-phase="idle"
+     data-aether-autoconnect="true"
+     data-aether-refractory="15000"
+     class="aether-sliver"
+     style="--aether-state: idle; --aether-view-complexity: 0; --aether-confidence: 0; --aether-sentiment: neutral;">
+
+  <!-- Header slot: agent name or context -->
+  <header class="aether-header" data-aether-slot="header">
+    <span data-aether-slot="agent-name">Agent</span>
+  </header>
+
+  <!-- Main content area -->
+  <main class="aether-content">
+    <p data-aether-slot="answer">Waiting for response...</p>
+  </main>
+
+  <!-- Footer with metadata -->
+  <footer class="aether-meta">
+    <span class="aether-agent-name" data-aether-slot="status">Ready</span>
+    <span class="aether-confidence" data-aether-slot="confidence"></span>
+  </footer>
+
+</div>
+
+<!--
+  MINIMAL INLINE EXAMPLE (no external files):
+
+  <div data-aether-agent="my-agent" data-aether-phase="idle" style="
+    padding: 1rem;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    background: #1c2128;
+    transition: all 300ms;
+  ">
+    <p data-aether-slot="answer">Loading...</p>
+  </div>
+  <script src="/static/aether-orchestrator.js"></script>
+
+  CSS phases are applied via [data-aether-phase="..."] selectors.
+-->

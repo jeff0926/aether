@@ -1,292 +1,235 @@
-# AETHER
+# AETHER — Adaptive Embodied Thinking Holistic Evolutionary Runtime
 
-**Adaptive Embodied Thinking Holistic Evolutionary Runtime**
+**Self-educating skills for any LLM.**
 
-A minimal agent framework in 1,147 lines of Python. No frameworks. Standard library only. The `anthropic` SDK is the only optional external dependency.
+Skill.md in. Smarter skill.md out. Works with Claude, GPT, Gemini, Copilot, or any LLM. The model is replaceable. The skill is the asset.
 
-## What It Does
+---
 
-AETHER creates, runs, and improves **capsules** — self-contained agent definitions stored as folders with 5 files. Each capsule carries its own identity, knowledge, and behavioral configuration.
+## What Is AETHER
 
-The framework runs a 4-stage pipeline on every query:
+AETHER is an agent framework where agents are files, not code. Every agent is a folder of 5 files — a **capsule** — that carries its own identity, knowledge, personality, and verification rules. Capsules run through a 4-stage pipeline, verify their own output against a compiled knowledge graph, and self-educate when they fail.
 
-```
-Input → Distill → Augment → Generate → Review → Output
-```
+No frameworks. No vector databases. No embeddings. Python stdlib + one LLM SDK.
 
-1. **Distill**: Extract intent, entities, and constraints from input
-2. **Augment**: Retrieve relevant context from KB (markdown) and KG (JSON-LD)
-3. **Generate**: Build prompt with persona + context, call LLM
-4. **Review**: Verify response against knowledge graph using deterministic gates
-
-## Installation
-
-```bash
-git clone https://github.com/jeff0926/aether.git
-cd aether
-
-# Optional: Install anthropic SDK for LLM calls
-pip install anthropic
-
-# Set API key (optional - can use stub provider for testing)
-echo "ANTHROPIC_API_KEY=your-key-here" > .env
-```
-
-**Requirements**: Python 3.11+ (uses `str | Path` union syntax)
+---
 
 ## Quick Start
 
 ```bash
-# Validate the example capsule
-python cli.py validate examples/test-agent
+# Clone
+git clone https://github.com/jeff0926/aether.git
+cd aether
 
-# Get capsule info
-python cli.py info examples/test-agent
+# Optional: Set API key
+echo "ANTHROPIC_API_KEY=sk-ant-..." > .env
 
-# Run a query (uses stub LLM by default)
-python cli.py run examples/test-agent "What is Aether?"
+# Run a capsule
+python cli.py run examples/jefferson "When was Jefferson born?" --provider anthropic
 
-# Run with real LLM
-python cli.py run examples/test-agent "What is Aether?" --provider anthropic
+# Orchestrate (auto-route to the right agent)
+python cli.py orchestrate "When was Jefferson born?" --registry ./examples --provider anthropic
 
-# Create a new empty capsule
-python cli.py stamp "My Agent" --output ./capsules
+# Verify any text against any KG
+python cli.py verify "Jefferson was born in 1743" -r examples/jefferson/jefferson-kg.jsonld
 
-# Create capsule from existing markdown knowledge base
-python cli.py stamp "My Agent" --source knowledge.md --output ./capsules
+# Stamp a new agent from a skill.md
+python cli.py ingest-skill input/skills/my-skill/SKILL.md --output ./examples --provider anthropic
+
+# Start the dashboard
+python dashboard.py
 ```
 
-## Capsule Structure
+---
 
-A capsule is a folder containing exactly 5 files. **Folder and file names follow the pattern:**
+## The Capsule: 5 Files = Complete Agent
 
 ```
-{slug}-v{version}-{uid8}/
+my-agent-v1.0.0-a3f7c2d1/
+├── my-agent-v1.0.0-a3f7c2d1-manifest.json      Identity & lineage
+├── my-agent-v1.0.0-a3f7c2d1-definition.json     Behavior, pipeline config, AEC gates
+├── my-agent-v1.0.0-a3f7c2d1-persona.json        Tone, style, traits
+├── my-agent-v1.0.0-a3f7c2d1-kb.md               Knowledge base (markdown)
+└── my-agent-v1.0.0-a3f7c2d1-kg.jsonld           Knowledge graph (typed JSON-LD)
 ```
 
-Where:
-- `slug`: Lowercase name with hyphens (e.g., "jefferson", "my-agent")
-- `version`: Semver string (e.g., "1.0.0")
-- `uid8`: First 8 chars of SHA256 hash for uniqueness
+Copy the folder. Email it. Check it into Git. The agent works anywhere.
 
-Example:
-```
-jefferson-v1.0.0-a3f7c2d1/
-├── jefferson-v1.0.0-a3f7c2d1-manifest.json      # Identity
-├── jefferson-v1.0.0-a3f7c2d1-definition.json    # Behavior
-├── jefferson-v1.0.0-a3f7c2d1-persona.json       # Personality
-├── jefferson-v1.0.0-a3f7c2d1-kb.md              # Knowledge Base
-└── jefferson-v1.0.0-a3f7c2d1-kg.jsonld          # Knowledge Graph
-```
+---
 
-### {id}-manifest.json
-```json
-{
-  "id": "jefferson-v1.0.0-a3f7c2d1",
-  "name": "Thomas Jefferson",
-  "version": "1.0.0",
-  "created": "2024-01-15T10:30:00"
-}
-```
+## The Pipeline: 4 Stages
 
-### {name}-definition.json
-```json
-{
-  "pipeline": {
-    "distill": {"enabled": true},
-    "augment": {"enabled": true},
-    "generate": {"enabled": true},
-    "review": {"enabled": true}
-  },
-  "review": {
-    "threshold": 0.8,
-    "min_length": 10,
-    "max_length": 10000
-  }
-}
+Every query runs through:
+
+1. **Distill** — Extract intent, entities, format preferences from the query
+2. **Augment** — Match entities against KB paragraphs and KG nodes, retrieve grounding context
+3. **Generate** — Call LLM with persona + matched context + query
+4. **Review** — AEC verifies the response against the knowledge graph
+
+Framework overhead: <1ms. All latency is LLM response time.
+
+---
+
+## AEC: Agent Education Calibration
+
+AEC is AETHER's verification engine. It compiles the knowledge graph into executable policy checkers at load time, then verifies every response in milliseconds.
+
+### Four Verification Layers
+
+**Factual Gate** — Extracts numbers, dates, percentages, names. Matches against KG properties. Deterministic. The foundation.
+
+**Layer 1: Compiled Pattern Matching** — KG node labels compile into token sets at capsule load. Statement matching via set intersection. Sørensen-Dice for ambiguous cases. Anti-pattern blacklist for instant violation detection. O(statements), not O(statements × nodes).
+
+**Layer 2: Type-Driven Verification** — The node's `@type` determines which verification operator fires. Rules check compliance. AntiPatterns check violations. Techniques check application. LLM fallback only when deterministic is inconclusive.
+
+**Layer 3: Edge Policy Traversal** — Typed edges (`avoids`, `requires`, `contradicts`) compile into composed policy functions. 1-hop traversal. If `concept:typography → avoids → antipattern:inter_roboto_arial`, and a statement about typography mentions "Inter" — violation detected via graph path.
+
+### Scoring
+
+```
+Score = Grounded / (Grounded + Ungrounded)
 ```
 
-### {name}-persona.json
-```json
-{
-  "tone": "professional",
-  "style": "concise",
-  "constraints": ["factual", "no-speculation"]
-}
+Persona statements (no verifiable content) excluded. Default threshold: 0.80.
+
+### Self-Education
+
+When AEC fails:
+1. Failure enters the education queue with gaps identified
+2. LLM researches the specific missing knowledge
+3. New triples validated through AEC before integration
+4. Validated knowledge added to KG as `acquired` origin
+5. Original query re-evaluated against expanded KG
+6. Contradiction gate prevents acquired nodes from conflicting with core
+
+---
+
+## Orchestrator
+
+The orchestrator is itself a capsule. It routes queries to the right agent automatically.
+
+```bash
+# User asks a question — AETHER figures out who answers
+python cli.py orchestrate "What is Buffett's investment philosophy?" --registry ./examples --provider anthropic
+
+# See routing decision without executing
+python cli.py orchestrate "How should I approach typography?" --registry ./examples --dry-run
 ```
 
-### {name}-kb.md
-Markdown document containing the agent's knowledge. Paragraphs are searched during augmentation and matched to query entities.
+Scoring uses trigger text, domain boundaries, KG labels, and capsule name. Gap detection when no capsule matches.
 
-### {name}-kg.jsonld
-JSON-LD knowledge graph. Nodes are matched during augmentation and used for AEC verification.
+---
 
-```json
-{
-  "@context": {
-    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
-  },
-  "@graph": [
-    {
-      "@id": "entity:example",
-      "rdfs:label": "Example Entity",
-      "property": "value"
-    }
-  ]
-}
+## Ingest Pipeline
+
+### From Skill.md
+
+```bash
+python cli.py ingest-skill path/to/SKILL.md --output ./examples --provider anthropic
 ```
+
+Parses YAML frontmatter, uses body as KB, runs three specialized extraction skills to generate KG (typed nodes), persona, and definition. All 17 Anthropic official skills have been ingested.
+
+### From Research Document
+
+```bash
+# Deterministic parsing of deep research output (no LLM needed)
+python ingest.py research path/to/research.md --output ./examples --name "My Agent"
+```
+
+### From Any Document
+
+```bash
+# LLM-assisted extraction
+python ingest.py document path/to/doc.md --output ./examples --name "My Agent" --provider anthropic
+```
+
+---
+
+## Capsule Inventory (21 production capsules)
+
+| Category | Capsules |
+|----------|----------|
+| **Scholars** | Thomas Jefferson, Warren Buffett |
+| **Validators** | AETHER Validator, Test Agent |
+| **Domain Experts** | Domain Agent Builder, Domain SAP CAP |
+| **Anthropic Skills** | frontend-design, brand-guidelines, doc-coauthoring, claude-api, skill-creator, mcp-builder |
+| **Executive Roles** | CEO, CTO, CPO, CFO, CISO, CLO, Lead Dev, Lead Data Arch, Agent Performance Mgr |
+| **Infrastructure** | Orchestrator |
+
+---
+
+## Dashboard
+
+```bash
+python dashboard.py          # http://localhost:8864
+```
+
+Five tabs: Overview, KG Explorer (vis-network), AEC Lab, Force Test, Education Queue.
+
+---
+
+## CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `run` | Execute pipeline on a query against a capsule |
+| `orchestrate` | Auto-route query to the best capsule |
+| `verify` | Standalone AEC on any text against any KG |
+| `validate` | Check capsule folder integrity |
+| `info` | Display capsule metadata and stats |
+| `stamp` | Create a new empty capsule |
+| `ingest-skill` | Ingest a SKILL.md into a capsule |
+| `queue` | View education queue status |
+| `educate` | Run self-education on a pending failure |
+
+---
 
 ## Architecture
 
-### Files
-
-| File | Lines | Purpose |
-|------|-------|---------|
-| `aether.py` | 263 | Capsule class, pipeline runner |
-| `aec.py` | 244 | Entailment checking, verification gate |
-| `kg.py` | 145 | JSON-LD loader, core/acquired zones |
-| `stamper.py` | 130 | Capsule folder factory |
-| `habitat.py` | 134 | Capsule registry, message routing |
-| `llm.py` | 103 | LLM wrapper, .env loading |
-| `cli.py` | 128 | Command-line interface |
-
-### AEC (Aether Entailment Check)
-
-The verification gate that checks if generated responses are grounded in the knowledge graph.
-
-**Statement Categories:**
-- **Grounded**: Contains verifiable values (numbers, dates, names) that match KG
-- **Ungrounded**: Contains verifiable values that don't match KG
-- **Persona**: No verifiable values (qualitative statements)
-
-**Scoring:**
 ```
-score = grounded / (grounded + ungrounded)
+aether/
+├── aec.py              Factual entailment check (deterministic gate)
+├── aec_concept.py      Concept-level AEC (3 layers: compiled matching, type-driven, edge traversal)
+├── aether.py           Capsule class, 4-stage pipeline
+├── cli.py              Command-line interface
+├── dashboard.py        Operational diagnostics (port 8864)
+├── education.py        Self-education loop (queue, research, validate, integrate)
+├── habitat.py          Capsule registry, topic routing, orchestration
+├── ingest.py           Document/skill → capsule pipeline
+├── kg.py               JSON-LD knowledge graph (5 origin types)
+├── llm.py              LLM wrapper (Anthropic, OpenAI, stub)
+├── report.py           ASCII execution report
+├── stamper.py          Capsule folder factory with lineage
+├── README.md           This file
+├── examples/           21+ capsules
+├── input/skills/       Cloned skill repos (gitignored)
+└── tests/              Diagnostic suite
 ```
 
-Persona statements are excluded from the ratio — they represent the expected interpretive contribution from the agent's personality.
+**Dependencies:** Python 3.11+ standard library. `anthropic` SDK optional (stub provider works without it).
 
-**Extracted Values:**
-- Numbers: `1743`, `3,000`, `99.5`
-- Percentages: `50%`, `25 percent`
-- Dates: `1776`, `April 13, 1743`
-- Names: Capitalized words (excluding pronouns)
+---
 
-### Habitat
+## What Makes AETHER Different
 
-In-memory registry for capsules with topic-based routing.
+**Portable intelligence.** Agents are files, not runtime objects. Copy the folder = copy the complete agent. Works with any LLM.
 
-```python
-from habitat import Habitat
+**Self-verifying output.** AEC compiles the KG into deterministic policy checkers. No embeddings. No vector DB. No LLM-judging-LLM. Set intersection. Milliseconds.
 
-h = Habitat()
-h.register("analyst-001", {
-    "name": "Market Analyst",
-    "scent_subscriptions": ["market.*", "finance.stocks"]
-})
+**Self-improving knowledge.** Failures trigger autonomous education. The KG grows through use. The next query benefits from every previous failure.
 
-# Find capsules for a topic
-recipients = h.route("market.analysis")  # ['analyst-001']
+**Type-driven entailment.** The KG node's `@type` drives verification strategy. Rules check compliance. AntiPatterns check violations. The schema IS the verification program.
 
-# Check if any capsule handles a topic
-gap = h.detect_gaps("sports.scores")  # True — no handler
-```
+**The graph is the program.** The knowledge graph is simultaneously: knowledge store, policy engine, and compiled verification runtime. One artifact, three functions.
 
-Routing supports exact match and wildcard prefix (`market.*` matches `market.analysis`).
-
-### Knowledge Graph Zones
-
-The KG has two zones:
-
-- **Core**: Original source knowledge. No `aether:origin` tag or `aether:origin: "core"`. Never modified by AEC.
-- **Acquired**: Learned through self-education. Tagged with `aether:origin: "acquired"` plus provenance metadata (confidence, date, trigger).
-
-```python
-from kg import load_kg, add_acquired, get_core_nodes, get_acquired_nodes
-
-kg = load_kg("jefferson/jefferson-kg.jsonld")
-
-# Add learned knowledge
-kg = add_acquired(kg, {
-    "subject": "New Fact",
-    "predicate": "rdfs:comment",
-    "object": "Learned from user feedback",
-    "confidence": 0.85,
-    "aec_trigger": "verification_failure"
-})
-
-core = get_core_nodes(kg)      # Original knowledge
-acquired = get_acquired_nodes(kg)  # Learned knowledge
-```
-
-## CLI Reference
-
-```
-aether stamp <name> [--source FILE] [--output DIR] [--version 1.0.0]
-    Create a new capsule folder.
-    --source: Use .md/.json/.jsonld as starting content
-    --output: Target directory (default: ./capsules)
-
-aether run <capsule_path> <query> [--provider PROVIDER] [--model MODEL]
-    Run the 4-stage pipeline on a query.
-    --provider: anthropic, openai, or stub (default: stub)
-    --model: Override default model
-
-aether validate <capsule_path>
-    Check capsule has all required files and valid JSON.
-
-aether info <capsule_path>
-    Display manifest, KG stats, and file sizes.
-```
-
-## Python API
-
-```python
-from aether import Capsule
-from llm import make_llm_fn
-
-# Load capsule with LLM
-llm_fn = make_llm_fn(provider="anthropic")
-capsule = Capsule("path/to/capsule", llm_fn=llm_fn)
-
-# Run pipeline
-result = capsule.run("What is the capital of France?")
-
-print(result["generated"])           # LLM response
-print(result["distilled"]["intent"]) # query, instruction, comparison, creation, general
-print(result["augmented"]["kb"])     # Matched KB paragraphs
-print(result["augmented"]["kg"])     # Matched KG nodes
-print(result["review"]["passed"])    # True/False
-
-# Standalone AEC verification
-from aec import verify
-aec_result = verify(result["generated"], result["augmented"]["kg"])
-print(aec_result["score"])           # 0.0 - 1.0
-print(aec_result["grounded_statements"])
-print(aec_result["persona_statements"])
-```
-
-## Design Principles
-
-1. **Capsule is a folder.** The framework reads folders. That's it.
-2. **Standard library first.** Only add a dependency when stdlib can't do the job.
-3. **One file per concern.** No file exceeds 300 lines.
-4. **No frameworks.** No Pydantic, no async, no CBOR. JSON and plain dicts.
-5. **If it's not needed to create, stamp, run, or improve a capsule, it doesn't exist.**
-
-## What's Not Included
-
-- Async/await
-- Vector databases
-- Embedding models
-- Web UI
-- Database persistence
-- Multi-turn conversation
-- Tool use / function calling
-- Streaming responses
-
-These are layers that can be added on top. The core framework stays minimal.
+---
 
 ## License
 
-MIT
+864 Zeros LLC — March 2026
+
+---
+
+*AETHER — Adaptive Embodied Thinking Holistic Evolutionary Runtime*
+*github.com/jeff0926/aether*

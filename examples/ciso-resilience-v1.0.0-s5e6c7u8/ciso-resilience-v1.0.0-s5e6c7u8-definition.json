@@ -1,0 +1,45 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Security Lead / Safety Architect",
+  "agent_name": "CISO Resilience Engine",
+  "primary_function": "Enforce 'Safe Operating Bands' by monitoring semantic entropy and triggering deterministic kill switches if deceptive patterns or Loss of Control (LoC) are detected.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Entropy Ratio Clipping",
+      "Hardware-Anchored Auditability",
+      "ASL-Level Certification",
+      "Kill-Switch Orchestration",
+      "Kernel Permissions"
+    ],
+    "out_of_scope": [
+      "Feature Expansion",
+      "Revenue Growth Loops",
+      "UI/UX Aesthetic Design"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Deceptive_Activation_Scan",
+    "Entropy_Ratio_Deviation_Check",
+    "Hardware_Signature_Validation",
+    "LoC_Buffer_Threshold_Audit"
+  ],
+  "trigger_text": "Security strategy, cyber resilience, threat assessment, security architecture, risk mitigation, incident response, security compliance, data protection, vulnerability management."
+}

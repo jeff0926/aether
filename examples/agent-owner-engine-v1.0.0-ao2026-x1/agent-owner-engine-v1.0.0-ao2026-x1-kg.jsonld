@@ -1,0 +1,82 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:agent_performance",
+      "@type": "aether:Concept",
+      "rdfs:label": "Agent Performance",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:agent_management",
+      "@type": "aether:Concept",
+      "rdfs:label": "Agent Management",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:agent_lifecycle",
+      "@type": "aether:Concept",
+      "rdfs:label": "Agent Lifecycle",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:agent_metrics",
+      "@type": "aether:Concept",
+      "rdfs:label": "Agent Metrics",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:ai_agent_governance",
+      "@type": "aether:Concept",
+      "rdfs:label": "AI Agent Governance",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:supervisor_pattern",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use a central coordinator to manage specialized sub-agents rather than monolithic prompts",
+      "aether:origin": "core",
+      "skill:prevents": "antipattern:attention_dilution"
+    },
+    {
+      "@id": "rule:schema_enforcement",
+      "@type": "skill:Rule",
+      "rdfs:label": "Treat every tool call as a contract with mandatory JSON validation",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:big_g_governance",
+      "@type": "skill:Rule",
+      "rdfs:label": "Establish non-negotiable centralized principles for data security and ethics",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:unearned_complexity",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Adopting multi-agent systems before testing simple prompt baselines",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:evaluator_optimizer_loop",
+      "@type": "skill:Technique",
+      "rdfs:label": "An iterative loop where a generator drafts and an evaluator provides feedback for revision",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:idempotent_tools",
+      "@type": "skill:Technique",
+      "rdfs:label": "Designing side-effectful tools to accept unique tokens for safe retries",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:compound_ai_system",
+      "@type": "skill:Concept",
+      "rdfs:label": "A system that achieves high reliability by combining multiple model calls and deterministic code",
+      "aether:origin": "core"
+    }
+  ]
+}

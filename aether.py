@@ -33,6 +33,7 @@ class Capsule:
     """
     A capsule is a folder with 5 files defining an agent's identity and knowledge.
     Pipeline: distill → augment → generate → review
+    Optional 6th file: PSI projection layer for UI state emission.
     """
 
     def __init__(self, path: str | Path, llm_fn: callable = None):
@@ -40,6 +41,21 @@ class Capsule:
         self.llm_fn = llm_fn or (lambda p, **kw: f"[No LLM. Prompt: {len(p)} chars]")
         self.files = self._load_files()
         self._compiled_kg = self._compile_kg_if_typed()
+
+        # PSI Layer (optional)
+        self.psi = self._load_psi()
+        self.psi_enabled = self.files["definition"].get("psi_enabled", False)
+
+        # Initialize emitter if PSI enabled
+        if self.psi_enabled:
+            from psi import AetherEmitter
+            agent_name = self.files["manifest"].get("name", self.path.name)
+            scope = f"#aether-{self.path.name}"
+            if self.psi:
+                scope = self.psi.get("psi:default_scope", scope).replace("{agent_name}", self.path.name)
+            self._emitter = AetherEmitter(agent_name, scope)
+        else:
+            self._emitter = None
 
     def _load_files(self) -> dict:
         if not self.path.is_dir():
@@ -82,6 +98,17 @@ class Capsule:
             return compile_kg(kg_nodes)
         return None
 
+    def _load_psi(self) -> dict | None:
+        """Load optional PSI file if present. Returns None if no PSI file."""
+        psi_files = list(self.path.glob("*-psi.jsonld"))
+        if not psi_files:
+            return None
+        try:
+            with open(psi_files[0], "r", encoding="utf-8") as f:
+                return json.load(f)
+        except (json.JSONDecodeError, IOError):
+            return None
+
     @property
     def id(self) -> str:
         return self.files["manifest"]["id"]
@@ -98,8 +125,18 @@ class Capsule:
     # Pipeline
     # -------------------------------------------------------------------------
 
-    def run(self, input_text: str) -> dict:
-        """Run full 4-stage pipeline. Returns context dict with all results."""
+    def run(self, input_text: str, emit_psi: bool = False) -> dict:
+        """
+        Run full 4-stage pipeline. Returns context dict with all results.
+
+        Args:
+            input_text: Query or input to process
+            emit_psi: If True, include psi_events in result (requires psi_enabled)
+
+        Returns:
+            Context dict with pipeline results. If emit_psi=True and psi_enabled,
+            includes 'psi_events' list of SSE-formatted CVP event strings.
+        """
         start_time = time.time()
         ctx = {
             "input": input_text,
@@ -111,8 +148,13 @@ class Capsule:
             "telemetry": {"start": start_time, "stages": {}},
         }
 
+        # PSI event collection
+        psi_events = []
+        should_emit_psi = emit_psi and self.psi_enabled and self._emitter
+
         cfg = self.files["definition"].get("pipeline", {})
 
+        # Stage 1: Distill
         if cfg.get("distill", {}).get("enabled", True):
             t0 = time.time()
             ctx = self.distill(ctx)
@@ -120,7 +162,14 @@ class Capsule:
                 "time_ms": round((time.time() - t0) * 1000, 2),
                 "entities_extracted": len(ctx["distilled"].get("entities", [])),
             }
+            # PSI: Reflex phase
+            if should_emit_psi:
+                psi_events.append(self._emitter.pulse(
+                    "reflex",
+                    {"--aether-view-complexity": "0.2", "--aether-confidence": "0"}
+                ))
 
+        # Stage 2: Augment
         if cfg.get("augment", {}).get("enabled", True):
             t0 = time.time()
             ctx = self.augment(ctx)
@@ -129,7 +178,14 @@ class Capsule:
                 "kb_matches": len(ctx["augmented"].get("kb", [])),
                 "kg_matches": len(ctx["augmented"].get("kg", [])),
             }
+            # PSI: Deliberation phase (start)
+            if should_emit_psi:
+                psi_events.append(self._emitter.pulse(
+                    "deliberation",
+                    {"--aether-view-complexity": "0.4"}
+                ))
 
+        # Stage 3: Generate
         if cfg.get("generate", {}).get("enabled", True):
             t0 = time.time()
             ctx = self.generate(ctx)
@@ -139,15 +195,60 @@ class Capsule:
                 "tokens_in": ctx.get("_tokens_in", 0),
                 "tokens_out": ctx.get("_tokens_out", 0),
             }
+            # PSI: Deliberation phase (mid)
+            if should_emit_psi:
+                psi_events.append(self._emitter.pulse(
+                    "deliberation",
+                    {"--aether-view-complexity": "0.7"}
+                ))
 
+        # Stage 4: Review
         if cfg.get("review", {}).get("enabled", True):
             t0 = time.time()
             ctx = self.review(ctx)
             ctx["telemetry"]["stages"]["review"] = {
                 "time_ms": round((time.time() - t0) * 1000, 2),
             }
+            # PSI: Complete or Ghost phase
+            if should_emit_psi:
+                from psi import _detect_sentiment
+                review = ctx.get("review", {})
+                aec_data = review.get("aec", {})
+                aec_score = aec_data.get("score", 0)
+                aec_passed = review.get("passed", False)
+                is_ghost = review.get("ghost", False)
+                response = ctx.get("generated", "")
+
+                if aec_passed and not is_ghost:
+                    psi_events.append(self._emitter.pulse(
+                        "complete",
+                        {
+                            "--aether-view-complexity": "1.0",
+                            "--aether-confidence": str(round(aec_score, 2)),
+                            "--aether-sentiment": _detect_sentiment(response),
+                        },
+                        content=response,
+                        aec_score=aec_score,
+                    ))
+                else:
+                    psi_events.append(self._emitter.pulse(
+                        "ghost",
+                        {
+                            "--aether-view-complexity": "0.1",
+                            "--aether-confidence": "0",
+                            "--aether-sentiment": "negative",
+                        },
+                        content=None,
+                        aec_score=aec_score,
+                        reason=f"AEC score {aec_score:.2f} below threshold" if aec_score else "Verification failed",
+                    ))
 
         ctx["telemetry"]["total_ms"] = round((time.time() - start_time) * 1000, 2)
+
+        # Include PSI events if requested
+        if emit_psi:
+            ctx["psi_events"] = psi_events
+
         return ctx
 
     def distill(self, ctx: dict) -> dict:

@@ -1,0 +1,44 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Subject Matter Expert",
+  "agent_name": "CPO Product Engine",
+  "primary_function": "Architect the user journey and 'Magic Moment' to ensure AI agents become personal, indispensable extensions of the user.",
+  "domain_boundaries": {
+    "authoritative": [
+      "User Experience",
+      "Feature Prioritization",
+      "Retention Loops",
+      "PLG Strategy"
+    ],
+    "out_of_scope": [
+      "Backend API Architecture",
+      "Silicon Optimization",
+      "Legal Compliance"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Magic_Moment_Speed_Test",
+    "Retention_Loop_Validation",
+    "Vibe_Consistency_Check",
+    "Feature_Simplicity_Audit"
+  ],
+  "trigger_text": "Product strategy, product vision, roadmap planning, feature prioritization, user experience, product-market fit, customer needs, product development, release planning, product metrics."
+}

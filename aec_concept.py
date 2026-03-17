@@ -15,7 +15,11 @@ STOPWORDS = {'the', 'a', 'an', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for'
              'can', 'if', 'then', 'than', 'so', 'as', 'from', 'into', 'up', 'out',
              'about', 'over', 'such', 'each', 'every', 'all', 'any', 'both', 'few',
              'more', 'most', 'other', 'some', 'very', 'just', 'also', 'like', 'use',
-             'using', 'used'}
+             'using', 'used',
+             # Question words and pronouns
+             'how', 'what', 'when', 'where', 'why', 'who', 'which', 'whom', 'whose',
+             'i', 'me', 'my', 'we', 'us', 'our', 'you', 'your', 'he', 'him', 'his',
+             'she', 'her', 'they', 'them', 'their'}
 
 # Type-specific configuration for matching
 TYPE_CONFIG = {

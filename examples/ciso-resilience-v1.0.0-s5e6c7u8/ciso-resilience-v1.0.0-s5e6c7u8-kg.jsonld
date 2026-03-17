@@ -1,0 +1,76 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:security_strategy",
+      "@type": "aether:Concept",
+      "rdfs:label": "Security Strategy",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:cyber_resilience",
+      "@type": "aether:Concept",
+      "rdfs:label": "Cyber Resilience",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:threat_assessment",
+      "@type": "aether:Concept",
+      "rdfs:label": "Threat Assessment",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:security_architecture",
+      "@type": "aether:Concept",
+      "rdfs:label": "Security Architecture",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:data_protection",
+      "@type": "aether:Concept",
+      "rdfs:label": "Data Protection",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:safe_bound_self_healing",
+      "@type": "skill:Rule",
+      "rdfs:label": "Limit autonomous repairs to low-risk, reversible actions like clearing caches",
+      "aether:origin": "core",
+      "skill:prevents": "antipattern:unbounded_exploration"
+    },
+    {
+      "@id": "rule:deterministic_kill_switches",
+      "@type": "skill:Rule",
+      "rdfs:label": "Execute immediate 'Exit and Collapse' triggers for high-stakes loops upon boundary drift",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:permission_modification",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Allowing agents to autonomously modify their own kernel or security configurations",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:entropy_ratio_clipping",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use bidirectional constraints on policy entropy to prevent runaway behavioral divergence",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:mechanistic_vetting",
+      "@type": "skill:Technique",
+      "rdfs:label": "Inspecting model weights/activations to ensure safe testing behavior is not masking deceptive deployment intent",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:loss_of_control_loc",
+      "@type": "skill:Concept",
+      "rdfs:label": "State where human oversight fails to constrain an autonomous system",
+      "aether:origin": "core"
+    }
+  ]
+}

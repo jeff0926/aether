@@ -1,0 +1,149 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:infrastructure_architecture",
+      "@type": "aether:Concept",
+      "rdfs:label": "Infrastructure Architecture",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:technical_decisions",
+      "@type": "aether:Concept",
+      "rdfs:label": "Technical Decisions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:platform_architecture",
+      "@type": "aether:Concept",
+      "rdfs:label": "Platform Architecture",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:technical_architecture",
+      "@type": "aether:Concept",
+      "rdfs:label": "Technical Architecture",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:technology_strategy",
+      "@type": "aether:Concept",
+      "rdfs:label": "Technology Strategy",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:engineering_leadership",
+      "@type": "aether:Concept",
+      "rdfs:label": "Engineering Leadership",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:system_design",
+      "@type": "aether:Concept",
+      "rdfs:label": "System Design",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:tech_stack",
+      "@type": "aether:Concept",
+      "rdfs:label": "Tech Stack",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:llm_as_kernel",
+      "@type": "skill:Rule",
+      "rdfs:label": "Treat the LLM as an orchestration kernel managing volatile context RAM",
+      "aether:origin": "core",
+      "skill:avoids": "antipattern:monolithic_model_dependency"
+    },
+    {
+      "@id": "rule:process_verification_prm",
+      "@type": "skill:Rule",
+      "rdfs:label": "Verify every intermediate reasoning step rather than just final outcomes",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:context_stabilization",
+      "@type": "skill:Rule",
+      "rdfs:label": "Prioritize a simple model in a high-density context over a large model in a weak context",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:hardware_reckoning",
+      "@type": "skill:Rule",
+      "rdfs:label": "Fully reckon with hardware details to optimize inference performance",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:musks_deletion_rule",
+      "@type": "skill:Rule",
+      "rdfs:label": "Never optimize a part or process that should be deleted",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:vibe_coding_production",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Deploying code in production based on 'vibes' without formal AST constraints",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:semantic_entropy_spread",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Allowing small synthesis uncertainties to multiply across multi-turn interactions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:unearned_complexity",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Implementing multi-agent solutions before testing simple path baselines",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:context_engineering",
+      "@type": "skill:Technique",
+      "rdfs:label": "Providing 'just-in-time' relevant information to the model's context window",
+      "aether:origin": "core",
+      "skill:enables": "concept:llm_os"
+    },
+    {
+      "@id": "technique:test_time_scaling",
+      "@type": "skill:Technique",
+      "rdfs:label": "Allocating more inference compute to improve reasoning via tree search or ensembles",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:self_healing_hooks",
+      "@type": "skill:Technique",
+      "rdfs:label": "Triggering auto-remediation loops based on sensed 'pain' signals like latency",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:extreme_vertical_integration",
+      "@type": "skill:Technique",
+      "rdfs:label": "Aligning custom silicon (TPU) directly with model core architectures",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:cognition_engineering",
+      "@type": "skill:Concept",
+      "rdfs:label": "The formation of dynamic reasoning pathways through test-time scaling",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:llm_os",
+      "@type": "skill:Concept",
+      "rdfs:label": "A system where the LLM manages files, APIs, and action loops",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:entropy_ratio_clipping",
+      "@type": "skill:Concept",
+      "rdfs:label": "Stabilizing RL updates by constraining policy entropy shifts",
+      "aether:origin": "core"
+    }
+  ]
+}

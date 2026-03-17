@@ -196,5 +196,134 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-13T23-03-18-c2a166ad",
+    "timestamp": "2026-03-13T23:03:18.596246",
+    "query": "How should I approach typography for a luxury brand",
+    "response": "[Stub response for 1025 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1025 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-13T23-06-12-455607e4",
+    "timestamp": "2026-03-13T23:06:12.620846",
+    "query": "How should I approach typography for a luxury brand",
+    "response": "[Stub response for 1025 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1025 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-16T22-57-59-79599005",
+    "timestamp": "2026-03-16T22:57:59.254819",
+    "query": "Typography",
+    "response": "[Stub response for 514 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 514 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-16T22-59-14-306cdbba",
+    "timestamp": "2026-03-16T22:59:14.980988",
+    "query": "How should I approach typography for a luxury brand?",
+    "response": "# LUXURY TYPOGRAPHY MANIFESTO\n\n## The Typography Power Move\nFor luxury brands, typography isn't decoration—it's **DOMINANCE**. Your typeface choice communicates exclusivity before a single word is read.\n\n## The Luxury Typography Formula\n\n### **Primary Display**: Go SURGICAL\n- **Didot** or **Bodoni** - Those razor-sharp serifs scream sophistication\n- **Optima** - Clean brutality that whispers wealth\n- **Custom letterforms** - Commission bespoke characters for ultimate exclusivity\n\n### **Body Text**: Embrace Contrast\n- Pair your dramatic display with something breathable\n- **Minion Pro** for editorial luxury\n- **Sabon** for timeless elegance\n- **GT America** for modern luxury tech brands\n\n## The BOLD Creative Rules\n\n### 1. **SIZE HIERARCHY = POWER HIERARCHY**\nYour brand name should dominate at 72pt minimum. Subtext whispers at 14pt. No middle ground.\n\n### 2. **LETTERSPACING IS YOUR SECRET WEAPON**\nLuxury = space = exclusivity. Track your headlines at +50-100. Give those letters room to breathe like they own the place.\n\n### 3. **WEIGHT EXTREMES ONLY**\n- Display: Extra Bold or Hairline Thin\n- No \"medium\" weights—they're for mediocre brands\n\n### 4. **COLOR = RESTRAINT**\n- Pure black (#000000) or warm black (#1a1a1a)\n- Champagne gold (#D4AF37) for accents ONLY\n- White space is your most expensive material\n\n## The Perfectionist Details\n- Line height: 1.2 for drama, 1.6 for readability\n- Never center-align body text—it's amateur\n- Custom ligatures for brand names\n- Kerning adjustments for every headline\n\n**Remember**: Generic fonts like Arial and Inter are brand suicide for luxury. Your typography should make competitors look like they're using Comic Sans.\n\n*Reference: Aesthetic Architect principles demand Perfectionist execution with Bold Creative vision.*",
+    "aec_score": 0.571,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "Subtext whispers at 14pt",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "Track your headlines at +50-100",
+        "reason": "values_not_in_kg"
+      },
+      {
+        "text": "VIOLATION: 'arial, inter' matches antipattern",
+        "reason": "antipattern_violation",
+        "node_id": "antipattern:generic_fonts"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-16T23-11-31-a150e645",
+    "timestamp": "2026-03-16T23:11:31.446530",
+    "query": "How should I approach typography for a luxury brand?",
+    "response": "[Stub response for 1026 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1026 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-16T23-29-16-49e648ff",
+    "timestamp": "2026-03-16T23:29:16.668139",
+    "query": "How should I approach typography for a luxury brand?",
+    "response": "[Stub response for 1026 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1026 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-16T23-43-31-b6b9d296",
+    "timestamp": "2026-03-16T23:43:31.005942",
+    "query": "How should I approach typography?",
+    "response": "[Stub response for 1007 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1007 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-16T23-46-55-4598eb99",
+    "timestamp": "2026-03-16T23:46:55.983276",
+    "query": "how should I handle fonts?",
+    "response": "[Stub response for 1000 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1000 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

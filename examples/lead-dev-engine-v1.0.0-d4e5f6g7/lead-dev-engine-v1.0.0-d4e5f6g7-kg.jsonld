@@ -1,0 +1,76 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:ai_development",
+      "@type": "aether:Concept",
+      "rdfs:label": "AI Development",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:machine_learning",
+      "@type": "aether:Concept",
+      "rdfs:label": "Machine Learning",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:model_development",
+      "@type": "aether:Concept",
+      "rdfs:label": "Model Development",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:ml_infrastructure",
+      "@type": "aether:Concept",
+      "rdfs:label": "ML Infrastructure",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:neural_networks",
+      "@type": "aether:Concept",
+      "rdfs:label": "Neural Networks",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:spec_driven_development",
+      "@type": "skill:Rule",
+      "rdfs:label": "Generate SPEC.md and TESTS.md before requesting any executable code",
+      "aether:origin": "core",
+      "skill:prevents": "antipattern:vague_vibe_delegation"
+    },
+    {
+      "@id": "rule:shadow_validation",
+      "@type": "skill:Rule",
+      "rdfs:label": "Agents must run linters and tests in a containerized sandbox before human review",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:bus_factor_zero",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Deploying AI code that has not been read or owned by a human architect",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:context_compaction",
+      "@type": "skill:Technique",
+      "rdfs:label": "Using /compact commands to discard exploration data and keep SNR high in the prompt window",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:instruction_as_code",
+      "@type": "skill:Technique",
+      "rdfs:label": "Using .cursorrules to pin architectural constraints as an OS kernel for the agent",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:vibe_coding",
+      "@type": "skill:Concept",
+      "rdfs:label": "Paradigm shift where human intent is the primary source code and AI handles syntax",
+      "aether:origin": "core"
+    }
+  ]
+}

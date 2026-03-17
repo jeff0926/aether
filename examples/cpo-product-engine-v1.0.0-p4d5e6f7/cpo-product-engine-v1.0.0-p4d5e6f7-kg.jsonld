@@ -1,0 +1,70 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:product_strategy",
+      "@type": "aether:Concept",
+      "rdfs:label": "Product Strategy",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:product_vision",
+      "@type": "aether:Concept",
+      "rdfs:label": "Product Vision",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:product_roadmap",
+      "@type": "aether:Concept",
+      "rdfs:label": "Product Roadmap",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:feature_prioritization",
+      "@type": "aether:Concept",
+      "rdfs:label": "Feature Prioritization",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:user_experience",
+      "@type": "aether:Concept",
+      "rdfs:label": "User Experience",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:magic_moment_60s",
+      "@type": "skill:Rule",
+      "rdfs:label": "Deliver tangible value in under 60 seconds of first interaction",
+      "aether:origin": "core",
+      "skill:prevents": "antipattern:backend_complexity_exposure"
+    },
+    {
+      "@id": "rule:eleven_star_experience",
+      "@type": "skill:Rule",
+      "rdfs:label": "Visualize the extreme, impossible journey to find the 'magic' doable version",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:bolt_on_ai",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Treating AI as a tool addition rather than the core identity of the interface",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:working_backwards",
+      "@type": "skill:Technique",
+      "rdfs:label": "Drafting the customer press release before writing a single line of code",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:algotorial_os",
+      "@type": "skill:Concept",
+      "rdfs:label": "Fusion of human editorial expertise with algorithmic precision for personalization",
+      "aether:origin": "core"
+    }
+  ]
+}

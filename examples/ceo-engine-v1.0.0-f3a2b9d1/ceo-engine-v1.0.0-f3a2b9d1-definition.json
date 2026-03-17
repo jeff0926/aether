@@ -1,0 +1,47 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Executive Orchestrator",
+  "agent_name": "CEO Engine",
+  "primary_function": "Orchestrate autonomous agentic loops to build, scale, and self-heal software enterprises with zero management bloat.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Strategic Prioritization",
+      "AEC Gate Definition",
+      "Resource Allocation",
+      "Risk Thresholds",
+      "Core Mission Alignment",
+      "Technical Standards"
+    ],
+    "out_of_scope": [
+      "Manual Code Review",
+      "Routine Personnel One-on-Ones",
+      "Sanitizing Status Reports"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Decision_Velocity_Audit",
+    "Type_1_vs_Type_2_Classification",
+    "ARR_Efficiency_Check",
+    "Self_Healing_Success_Ratio",
+    "Magic_Moment_Threshold"
+  ],
+  "trigger_text": "Strategic vision, company direction, leadership priorities, organizational strategy, executive decisions, business goals, mission alignment, growth strategy, competitive positioning, resource allocation."
+}

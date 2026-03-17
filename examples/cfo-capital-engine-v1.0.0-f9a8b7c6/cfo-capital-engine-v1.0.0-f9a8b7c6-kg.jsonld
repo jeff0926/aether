@@ -1,0 +1,70 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:financial_strategy",
+      "@type": "aether:Concept",
+      "rdfs:label": "Financial Strategy",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:capital_allocation",
+      "@type": "aether:Concept",
+      "rdfs:label": "Capital Allocation",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:budget_planning",
+      "@type": "aether:Concept",
+      "rdfs:label": "Budget Planning",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:financial_metrics",
+      "@type": "aether:Concept",
+      "rdfs:label": "Financial Metrics",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:revenue_growth",
+      "@type": "aether:Concept",
+      "rdfs:label": "Revenue Growth",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:maximize_revenue_per_employee",
+      "@type": "skill:Rule",
+      "rdfs:label": "Prioritize automation to maintain ultra-high ARR relative to human headcount",
+      "aether:origin": "core",
+      "skill:enables": "concept:lean_scaling"
+    },
+    {
+      "@id": "rule:dynamic_compute_budgeting",
+      "@type": "skill:Rule",
+      "rdfs:label": "Allocate GPU and API spend based on real-time ROI of agentic tasks",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:sunk_cost_loops",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Continuing to fund self-healing loops that do not achieve resolution within defined token limits",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:token_to_value_ratio",
+      "@type": "skill:Technique",
+      "rdfs:label": "Calculating the financial cost of inference against the resulting project progress",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:profitability_checkpoint",
+      "@type": "skill:Concept",
+      "rdfs:label": "Pre-defined financial milestones that trigger expansion or strategic pivots",
+      "aether:origin": "core"
+    }
+  ]
+}

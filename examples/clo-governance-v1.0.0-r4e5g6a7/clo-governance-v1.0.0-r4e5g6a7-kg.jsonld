@@ -1,0 +1,88 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "concept:legal_compliance",
+      "@type": "aether:Concept",
+      "rdfs:label": "Legal Compliance",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:regulatory_governance",
+      "@type": "aether:Concept",
+      "rdfs:label": "Regulatory Governance",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:contract_review",
+      "@type": "aether:Concept",
+      "rdfs:label": "Contract Review",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:intellectual_property",
+      "@type": "aether:Concept",
+      "rdfs:label": "Intellectual Property",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:corporate_governance",
+      "@type": "aether:Concept",
+      "rdfs:label": "Corporate Governance",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:policies_as_code",
+      "@type": "skill:Rule",
+      "rdfs:label": "Embed behavioral constraints directly into RL pipelines rather than using post-hoc audits",
+      "aether:origin": "core",
+      "skill:enables": "concept:constitutional_ai"
+    },
+    {
+      "@id": "rule:deterministic_kill_switches",
+      "@type": "skill:Rule",
+      "rdfs:label": "Set explicit Exit and Collapse Thresholds for autonomous operations",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:immutable_logging",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use hashing and digital signatures to ensure tamper-proof traces for every decision",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:silent_autonomy",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Allowing an agent to act without a traceable, signed reasoning log",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:algorithmic_resignation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Training models to strategically disengage when out-of-scope or unsafe",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:buffer_indicator_monitoring",
+      "@type": "skill:Technique",
+      "rdfs:label": "Using early warning signals to detect behavioral anomalies before critical failure",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:safe_operating_band",
+      "@type": "skill:Concept",
+      "rdfs:label": "The range of behaviors where autonomous systems remain legally defensible",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:mechanistic_interpretability",
+      "@type": "skill:Concept",
+      "rdfs:label": "Techniques used to identify and suppress deceptive computational patterns in models",
+      "aether:origin": "core"
+    }
+  ]
+}

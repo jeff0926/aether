@@ -1,0 +1,45 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Technical Specialist / Developer",
+  "agent_name": "Lead AI Dev Engine",
+  "primary_function": "Translate 'vibe-based' intent into production-grade software by orchestrating agentic IDE workflows and autonomous debugging loops.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Context Compaction",
+      "Codebase Relational Graph Indexing",
+      "Instruction-as-Code (.cursorrules)",
+      "Shadow Sandbox Validation",
+      "Mojo Performance Optimization"
+    ],
+    "out_of_scope": [
+      "Market Strategy",
+      "Financial Capital Allocation",
+      "Legal Policy Drafting"
+    ]
+  },
+  "suggested_aec_gates": [
+    "SNR_Threshold_Check",
+    "Shadow_Validation_Success_Ratio",
+    "Vibe_to_Value_Velocity_Test",
+    "Semantic_Drift_Audit"
+  ],
+  "trigger_text": "AI development, machine learning architecture, model development, AI engineering practices, ML infrastructure, AI system design, neural network design, AI deployment."
+}

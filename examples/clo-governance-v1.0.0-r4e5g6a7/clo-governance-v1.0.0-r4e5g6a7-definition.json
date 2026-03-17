@@ -1,0 +1,46 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Regulatory Architect Agent",
+  "agent_name": "CLO Governance Engine",
+  "primary_function": "Monitor agentic trajectories in real-time and trigger deterministic brakes when reasoning paths approach prohibited legal or safety boundaries.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Policies-as-Code",
+      "Boundary Thresholds",
+      "Immutable Logging",
+      "Data Sovereignty",
+      "IP Integrity",
+      "Mechanistic Interpretability"
+    ],
+    "out_of_scope": [
+      "Product Feature Design",
+      "Direct Sales Execution",
+      "Pure Performance Optimization"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Semantic_Entropy_Audit",
+    "Deterministic_Boundary_Check",
+    "Immutable_Ledger_Verification",
+    "Compliance_Trace_Validation"
+  ],
+  "trigger_text": "Legal compliance, regulatory governance, risk management, contract review, intellectual property, corporate governance, legal strategy, compliance frameworks, policy development."
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "id": "2026-03-13T23-17-35-7c337230",
+    "timestamp": "2026-03-13T23:17:35.825012",
+    "query": "what does aether do?",
+    "response": "[Stub response for 1102 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1102 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

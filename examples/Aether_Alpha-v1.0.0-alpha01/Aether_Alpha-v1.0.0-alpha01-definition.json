@@ -1,0 +1,7 @@
+{
+    "description": "Core intelligence for Aether_Alpha",
+    "capabilities": [
+        "autonomous_research",
+        "context_distillation"
+    ]
+}

@@ -1,0 +1,45 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 50,
+    "max_length": 10000,
+    "threshold": 0.7
+  },
+  "agent_type": "Specialist Orchestrator / Product Manager",
+  "agent_name": "Agent Owner Engine",
+  "primary_function": "Orchestrate reliable multi-agent workflows and enforce tool-calling governance to maintain high task success rates in non-deterministic environments.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Multi-Agent Orchestration Patterns",
+      "JSON Schema Enforcement",
+      "Big G Centralized Safety",
+      "Evaluation Scorecards (F1, Groundedness)",
+      "API Timeout/Retry Budgets"
+    ],
+    "out_of_scope": [
+      "Low-level Kernel Programming",
+      "Broad Market Branding",
+      "Financial Capital Raising"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Task_Success_Rate_Audit",
+    "Hallucination_Rate_Check",
+    "Tool_Schema_Validation_Gate",
+    "Explainability_Ledger_Review"
+  ],
+  "trigger_text": "Agent performance, AI agent management, agent lifecycle, agent metrics, agent optimization, agent deployment, agent monitoring, agent governance, agent capabilities."
+}

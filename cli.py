@@ -94,6 +94,15 @@ def cmd_run(args):
         from report import print_report
         print_report(ctx, aec_result, capsule)
 
+    # PSI/CVP events if requested
+    if args.psi:
+        from psi import pipeline_to_psi, AetherEmitter
+        print(f"\n--- PSI Events (DAI Pulse) ---")
+        emitter = AetherEmitter(capsule.id, scope=f"#aether-{capsule.id}")
+        events = pipeline_to_psi(ctx, emitter)
+        for event in events:
+            print(event)
+
 
 def cmd_validate(args):
     """Validate a capsule folder."""
@@ -552,6 +561,8 @@ def main():
     p_run.add_argument("--provider", default="stub", help="LLM provider")
     p_run.add_argument("--model", help="Model name")
     p_run.add_argument("--report", choices=["full"], help="Print execution report")
+    p_run.add_argument("--psi", action="store_true",
+        help="Print PSI/CVP events after normal output (DAI Pulse projection)")
     p_run.set_defaults(func=cmd_run)
 
     # validate
