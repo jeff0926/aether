@@ -16,7 +16,7 @@ PASSED = 0
 FAILED = 0
 
 
-def test(name: str, condition: bool, details: str = ""):
+def check(name: str, condition: bool, details: str = ""):
     """Record test result."""
     global PASSED, FAILED
     if condition:
@@ -35,10 +35,10 @@ def test_1_perfect_grounding():
 
     result = verify(response, kg)
 
-    test("score is 1.0", result["score"] == 1.0, f"got {result['score']}")
-    test("passed is True", result["passed"] == True, f"got {result['passed']}")
-    test("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
-    test("ungrounded is 0", result["ungrounded_statements"] == 0, f"got {result['ungrounded_statements']}")
+    check("score is 1.0", result["score"] == 1.0, f"got {result['score']}")
+    check("passed is True", result["passed"] == True, f"got {result['passed']}")
+    check("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
+    check("ungrounded is 0", result["ungrounded_statements"] == 0, f"got {result['ungrounded_statements']}")
 
 
 def test_2_complete_failure():
@@ -50,9 +50,9 @@ def test_2_complete_failure():
 
     result = verify(response, kg)
 
-    test("score is 0.0", result["score"] == 0.0, f"got {result['score']}")
-    test("passed is False", result["passed"] == False, f"got {result['passed']}")
-    test("ungrounded >= 1", result["ungrounded_statements"] >= 1, f"got {result['ungrounded_statements']}")
+    check("score is 0.0", result["score"] == 0.0, f"got {result['score']}")
+    check("passed is False", result["passed"] == False, f"got {result['passed']}")
+    check("ungrounded >= 1", result["ungrounded_statements"] >= 1, f"got {result['ungrounded_statements']}")
 
 
 def test_3_mixed_grounding():
@@ -63,9 +63,9 @@ def test_3_mixed_grounding():
 
     result = verify(response, kg)
 
-    test("score > 0", result["score"] > 0, f"got {result['score']}")
-    test("score < 1", result["score"] < 1.0, f"got {result['score']}")
-    test("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
+    check("score > 0", result["score"] > 0, f"got {result['score']}")
+    check("score < 1", result["score"] < 1.0, f"got {result['score']}")
+    check("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
 
 
 def test_4_all_persona():
@@ -76,11 +76,11 @@ def test_4_all_persona():
 
     result = verify(response, kg)
 
-    test("score is 1.0", result["score"] == 1.0, f"got {result['score']}")
-    test("passed is True", result["passed"] == True, f"got {result['passed']}")
-    test("persona >= 1", result["persona_statements"] >= 1, f"got {result['persona_statements']}")
-    test("grounded is 0", result["grounded_statements"] == 0, f"got {result['grounded_statements']}")
-    test("ungrounded is 0", result["ungrounded_statements"] == 0, f"got {result['ungrounded_statements']}")
+    check("score is 1.0", result["score"] == 1.0, f"got {result['score']}")
+    check("passed is True", result["passed"] == True, f"got {result['passed']}")
+    check("persona >= 1", result["persona_statements"] >= 1, f"got {result['persona_statements']}")
+    check("grounded is 0", result["grounded_statements"] == 0, f"got {result['grounded_statements']}")
+    check("ungrounded is 0", result["ungrounded_statements"] == 0, f"got {result['ungrounded_statements']}")
 
 
 def test_5_numeric_tolerance():
@@ -92,7 +92,7 @@ def test_5_numeric_tolerance():
     result = verify(response, kg)
 
     # 72.5 is within ~0.7% of 72, should be grounded
-    test("grounded (within tolerance)", result["grounded_statements"] >= 1 or result["score"] > 0,
+    check("grounded (within tolerance)", result["grounded_statements"] >= 1 or result["score"] > 0,
          f"score={result['score']}, grounded={result['grounded_statements']}")
 
 
@@ -105,7 +105,7 @@ def test_6_date_normalization():
     result = verify(response, kg)
 
     # Year 1944 should be extractable and match
-    test("date year grounded", result["grounded_statements"] >= 1 or result["score"] > 0.5,
+    check("date year grounded", result["grounded_statements"] >= 1 or result["score"] > 0.5,
          f"score={result['score']}, grounded={result['grounded_statements']}")
 
 
@@ -117,8 +117,8 @@ def test_7_empty_response():
 
     result = verify(response, kg)
 
-    test("score is 0.0", result["score"] == 0.0, f"got {result['score']}")
-    test("passed is False", result["passed"] == False, f"got {result['passed']}")
+    check("score is 0.0", result["score"] == 0.0, f"got {result['score']}")
+    check("passed is False", result["passed"] == False, f"got {result['passed']}")
 
 
 def test_8_empty_kg():
@@ -131,11 +131,11 @@ def test_8_empty_kg():
 
     # With no KG to verify against, deterministic_gate returns values_found=0
     # This classifies all statements as PERSONA, and all-persona = score 1.0
-    test("all persona (no KG to verify)", result["persona_statements"] >= 1,
+    check("all persona (no KG to verify)", result["persona_statements"] >= 1,
          f"persona={result['persona_statements']}")
-    test("no grounded (nothing to match)", result["grounded_statements"] == 0,
+    check("no grounded (nothing to match)", result["grounded_statements"] == 0,
          f"grounded={result['grounded_statements']}")
-    test("no ungrounded (no KG = no mismatch)", result["ungrounded_statements"] == 0,
+    check("no ungrounded (no KG = no mismatch)", result["ungrounded_statements"] == 0,
          f"ungrounded={result['ungrounded_statements']}")
 
 
@@ -151,8 +151,8 @@ def test_9_large_kg_single_match():
 
     result = verify(response, kg)
 
-    test("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
-    test("passed is True", result["passed"] == True, f"got {result['passed']}")
+    check("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
+    check("passed is True", result["passed"] == True, f"got {result['passed']}")
 
 
 def test_10_formatted_numbers():
@@ -163,8 +163,8 @@ def test_10_formatted_numbers():
 
     result = verify(response, kg)
 
-    test("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
-    test("score > 0.5", result["score"] > 0.5, f"got {result['score']}")
+    check("grounded >= 1", result["grounded_statements"] >= 1, f"got {result['grounded_statements']}")
+    check("score > 0.5", result["score"] > 0.5, f"got {result['score']}")
 
 
 def main():

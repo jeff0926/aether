@@ -38,7 +38,7 @@ PASS = "PASS"
 FAIL = "FAIL"
 WARN = "WARN"
 
-def test(name: str, expected, actual, compare_fn=None):
+def check(name: str, expected, actual, compare_fn=None):
     """Record test result."""
     if compare_fn:
         passed = compare_fn(expected, actual)
@@ -80,67 +80,67 @@ def test_aec():
 
     # 2.1 Statement splitting
     r = split_statements("First sentence. Second sentence. Third sentence.")
-    results.append(test("split_basic", 3, len(r)))
+    results.append(check("split_basic", 3, len(r)))
 
     r = split_statements("Mr. Smith went to Washington. He met Dr. Jones.")
-    results.append(test("split_abbreviations", 2, len(r)))
+    results.append(check("split_abbreviations", 2, len(r)))
 
     r = split_statements("")
-    results.append(test("split_empty", [], r))
+    results.append(check("split_empty", [], r))
 
     r = split_statements("Hi.")
-    results.append(test("split_short", [], r))
+    results.append(check("split_short", [], r))
 
     # 2.2 Value extraction
     r = _extract_values("The cost was 1,743 dollars")
     found_1743 = any(v[1] == 1743.0 for v in r if v[2] == "number")
-    results.append(test("extract_numbers", True, found_1743))
+    results.append(check("extract_numbers", True, found_1743))
 
     r = _extract_values("Born in 1743")
     found_year = any(v[1] == "1743" and v[2] == "date" for v in r)
-    results.append(test("extract_year", True, found_year))
+    results.append(check("extract_year", True, found_year))
 
     r = _extract_values("Born on April 13, 1743")
     found_date = any("1743-04-13" in str(v[1]) for v in r)
-    results.append(test("extract_full_date", True, found_date))
+    results.append(check("extract_full_date", True, found_date))
 
     r = _extract_values("Growth was 19.8%")
     found_pct = any(isinstance(v[1], (int, float)) and abs(v[1] - 19.8) < 0.01 and v[2] == "percentage" for v in r)
-    results.append(test("extract_percentage", True, found_pct))
+    results.append(check("extract_percentage", True, found_pct))
 
     r = _extract_values("Thomas Jefferson was president")
     found_name = any("Thomas Jefferson" in str(v[0]) for v in r)
-    results.append(test("extract_name", True, found_name))
+    results.append(check("extract_name", True, found_name))
 
     # Magnitude extraction (known issue 5.6)
     r = _extract_values("Revenue was $25 million")
     found_25m = any(abs(v[1] - 25000000) < 1 for v in r if isinstance(v[1], (int, float)))
-    results.append(test("extract_magnitude_million", True, found_25m))
+    results.append(check("extract_magnitude_million", True, found_25m))
     RESULTS["known_issues"]["magnitude_million"] = {"expected": 25000000, "actual": [v for v in r], "status": PASS if found_25m else FAIL}
 
     r = _extract_values("Market cap is $373.3 billion")
     found_373b = any(abs(v[1] - 373300000000) < 1e6 for v in r if isinstance(v[1], (int, float)))
-    results.append(test("extract_magnitude_billion", True, found_373b))
+    results.append(check("extract_magnitude_billion", True, found_373b))
     RESULTS["known_issues"]["magnitude_billion"] = {"expected": 373300000000, "actual": [v for v in r], "status": PASS if found_373b else FAIL}
 
     # 2.3 Deterministic gate
     r = deterministic_gate("Jefferson was born in 1743", [
         {"@id": "person:jefferson", "birth_year": 1743}
     ])
-    results.append(test("gate_match", True, r["matched"]))
+    results.append(check("gate_match", True, r["matched"]))
 
     r = deterministic_gate("Jefferson was born in 1750", [
         {"@id": "person:jefferson", "birth_year": 1743}
     ])
-    results.append(test("gate_no_match", False, r["matched"]))
+    results.append(check("gate_no_match", False, r["matched"]))
 
     r = deterministic_gate("He was a brilliant thinker", [
         {"@id": "person:jefferson", "birth_year": 1743}
     ])
-    results.append(test("gate_no_values", "no_values", r["method"]))
+    results.append(check("gate_no_values", "no_values", r["method"]))
 
     r = deterministic_gate("Born in 1743", [])
-    results.append(test("gate_empty_kg", "no_input", r["method"]))
+    results.append(check("gate_empty_kg", "no_input", r["method"]))
 
     # 2.4 Full verify
     r = verify(
@@ -150,28 +150,28 @@ def test_aec():
             {"@id": "doc:declaration", "year": 1776, "author": "Thomas Jefferson"},
         ]
     )
-    results.append(test("verify_grounded_score", True, r["score"] >= 0.5))
-    results.append(test("verify_grounded_passed", True, r["passed"]))
+    results.append(check("verify_grounded_score", True, r["score"] >= 0.5))
+    results.append(check("verify_grounded_passed", True, r["passed"]))
 
     r = verify(
         "Jefferson was born in 1743. He was a brilliant thinker. He died in 1850.",
         [{"@id": "person:jefferson", "birth_year": 1743, "death_year": 1826}]
     )
-    results.append(test("verify_mixed_has_ungrounded", True, r["ungrounded_statements"] > 0))
+    results.append(check("verify_mixed_has_ungrounded", True, r["ungrounded_statements"] > 0))
 
     r = verify(
         "He was a brilliant thinker and visionary leader who inspired millions.",
         [{"@id": "person:jefferson", "birth_year": 1743}]
     )
-    results.append(test("verify_all_persona_passes", True, r["passed"]))
-    results.append(test("verify_all_persona_score", 1.0, r["score"]))
+    results.append(check("verify_all_persona_passes", True, r["passed"]))
+    results.append(check("verify_all_persona_score", 1.0, r["score"]))
 
     r = verify("", [{"@id": "test"}])
-    results.append(test("verify_empty_response", False, r["passed"]))
+    results.append(check("verify_empty_response", False, r["passed"]))
 
     # Numeric tolerance
     r = verify("The value was 99.5", [{"@id": "test", "value": 100}])
-    results.append(test("verify_numeric_tolerance", True, r["grounded_statements"] > 0))
+    results.append(check("verify_numeric_tolerance", True, r["grounded_statements"] > 0))
     RESULTS["known_issues"]["numeric_tolerance"] = {"expected": "99.5 matches 100 within 1%", "actual": f"grounded={r['grounded_statements']}", "status": PASS if r['grounded_statements'] > 0 else FAIL}
 
     RESULTS["aec"] = results
@@ -191,7 +191,7 @@ def test_kg():
 
     # 3.1 Load/create
     r = load_kg("nonexistent_path_12345.jsonld")
-    results.append(test("load_nonexistent", True, "@graph" in r))
+    results.append(check("load_nonexistent", True, "@graph" in r))
 
     # 3.2 Add knowledge with all 5 origin types
     kg = {"@context": EMPTY_KG["@context"].copy(), "@graph": [
@@ -200,37 +200,37 @@ def test_kg():
     kg = add_knowledge(kg, {"subject": "Fact A", "predicate": "relates_to", "object": "X", "confidence": 0.9}, origin="acquired")
     kg = add_knowledge(kg, {"subject": "Source Doc", "predicate": "url", "object": "http://example.com"}, origin="provenance")
     s = stats(kg)
-    results.append(test("stats_core", 1, s["core"]))
-    results.append(test("stats_acquired", 1, s["acquired"]))
-    results.append(test("stats_provenance", 1, s["provenance"]))
+    results.append(check("stats_core", 1, s["core"]))
+    results.append(check("stats_acquired", 1, s["acquired"]))
+    results.append(check("stats_provenance", 1, s["provenance"]))
 
     # 3.3 Mark operations
     kg = mark_deprecated(kg, "test:core1", reason="outdated")
     deprecated = get_nodes_by_origin(kg, "deprecated")
-    results.append(test("mark_deprecated", 1, len(deprecated)))
+    results.append(check("mark_deprecated", 1, len(deprecated)))
 
     # After deprecation, stats changes
     s = stats(kg)
-    results.append(test("stats_deprecated", 1, s["deprecated"]))
+    results.append(check("stats_deprecated", 1, s["deprecated"]))
 
     kg = mark_updated(kg, "test:core1", {"value": 150})
     updated_node = [n for n in get_nodes(kg) if n.get("@id") == "test:core1"][0]
-    results.append(test("mark_updated_value", 150, updated_node["value"]))
+    results.append(check("mark_updated_value", 150, updated_node["value"]))
 
     # 3.4 Query nodes
     kg2 = {"@context": {}, "@graph": [{"@id": "test", "rdfs:label": "Core Node Test"}]}
     r = query_nodes(kg2, ["Core"])
-    results.append(test("query_nodes", True, len(r) > 0))
+    results.append(check("query_nodes", True, len(r) > 0))
 
     r = query_nodes(kg2, [])
-    results.append(test("query_empty", [], r))
+    results.append(check("query_empty", [], r))
 
     # 3.5 Invalid origin
     try:
         add_knowledge(kg, {"subject": "X", "predicate": "Y", "object": "Z"}, origin="invalid")
-        results.append(test("invalid_origin", "ValueError", "No exception"))
+        results.append(check("invalid_origin", "ValueError", "No exception"))
     except ValueError:
-        results.append(test("invalid_origin", "ValueError", "ValueError"))
+        results.append(check("invalid_origin", "ValueError", "ValueError"))
 
     # 3.6 Save and reload
     with tempfile.NamedTemporaryFile(suffix=".jsonld", delete=False, mode='w') as f:
@@ -238,7 +238,7 @@ def test_kg():
     try:
         save_kg(kg, temp_path)
         reloaded = load_kg(temp_path)
-        results.append(test("save_reload", len(get_nodes(kg)), len(get_nodes(reloaded))))
+        results.append(check("save_reload", len(get_nodes(kg)), len(get_nodes(reloaded))))
     finally:
         os.unlink(temp_path)
 
@@ -266,7 +266,7 @@ def test_capsule():
     # 4.1 Validate all example capsules
     for capsule_dir in capsule_dirs:
         missing = validate_folder(capsule_dir)
-        results.append(test(f"validate_{capsule_dir.name}", [], missing))
+        results.append(check(f"validate_{capsule_dir.name}", [], missing))
 
         # Record inventory
         RESULTS["capsule_inventory"][capsule_dir.name] = {
@@ -279,7 +279,7 @@ def test_capsule():
     for capsule_dir in capsule_dirs:
         try:
             cap = Capsule(capsule_dir)
-            results.append(test(f"load_{capsule_dir.name}", True, cap.id is not None))
+            results.append(check(f"load_{capsule_dir.name}", True, cap.id is not None))
             RESULTS["capsule_inventory"][capsule_dir.name].update({
                 "id": cap.id,
                 "name": cap.name,
@@ -288,7 +288,7 @@ def test_capsule():
                 "kg_nodes": len(cap.files["kg"].get("@graph", [])),
             })
         except Exception as e:
-            results.append(test(f"load_{capsule_dir.name}", True, f"FAIL: {e}"))
+            results.append(check(f"load_{capsule_dir.name}", True, f"FAIL: {e}"))
             RESULTS["capsule_inventory"][capsule_dir.name]["load_error"] = str(e)
 
     # 4.3 Run pipeline with stub LLM
@@ -308,11 +308,11 @@ def test_capsule():
             cap = Capsule(capsule_dir, llm_fn=stub_fn)
             ctx = cap.run(query)
 
-            results.append(test(f"run_{capsule_name}_distill", True, "intent" in ctx["distilled"]))
-            results.append(test(f"run_{capsule_name}_augment", True, "kb" in ctx["augmented"]))
-            results.append(test(f"run_{capsule_name}_generate", True, len(ctx["generated"]) > 0))
-            results.append(test(f"run_{capsule_name}_review", True, "aec" in ctx["review"]))
-            results.append(test(f"run_{capsule_name}_telemetry", True, "total_ms" in ctx["telemetry"]))
+            results.append(check(f"run_{capsule_name}_distill", True, "intent" in ctx["distilled"]))
+            results.append(check(f"run_{capsule_name}_augment", True, "kb" in ctx["augmented"]))
+            results.append(check(f"run_{capsule_name}_generate", True, len(ctx["generated"]) > 0))
+            results.append(check(f"run_{capsule_name}_review", True, "aec" in ctx["review"]))
+            results.append(check(f"run_{capsule_name}_telemetry", True, "total_ms" in ctx["telemetry"]))
 
             # Record detailed results
             RESULTS["capsule_inventory"][capsule_name].update({
@@ -324,7 +324,7 @@ def test_capsule():
                 "telemetry_ms": ctx["telemetry"]["total_ms"],
             })
         except Exception as e:
-            results.append(test(f"run_{capsule_name}", True, f"FAIL: {e}"))
+            results.append(check(f"run_{capsule_name}", True, f"FAIL: {e}"))
 
     # 4.4 Validator capsule (generate disabled)
     validator_dir = examples_dir / "aether-validator-v1.0.0-d5a16071"
@@ -333,14 +333,14 @@ def test_capsule():
             cap = Capsule(validator_dir, llm_fn=stub_fn)
             ctx = cap.run("Validate this text")
             generate_enabled = cap.files["definition"].get("pipeline", {}).get("generate", {}).get("enabled", True)
-            results.append(test("validator_generate_disabled", False, generate_enabled))
+            results.append(check("validator_generate_disabled", False, generate_enabled))
         except Exception as e:
-            results.append(test("validator_capsule", True, f"FAIL: {e}"))
+            results.append(check("validator_capsule", True, f"FAIL: {e}"))
 
     # 4.5 generate_id format
     test_id = generate_id("Test Agent", "1.0.0")
     pattern = r'^[a-z0-9-]+-v\d+\.\d+\.\d+-[a-f0-9]{8}$'
-    results.append(test("generate_id_format", True, bool(re.match(pattern, test_id))))
+    results.append(check("generate_id_format", True, bool(re.match(pattern, test_id))))
 
     RESULTS["capsule"] = results
     return results
@@ -360,36 +360,36 @@ def test_stamper():
         # 5.1 Stamp empty capsule
         path = stamp_empty("Test Agent", tmp)
         validation = validate_capsule(path)
-        results.append(test("stamp_empty_valid", True, validation["valid"]))
+        results.append(check("stamp_empty_valid", True, validation["valid"]))
 
         # 5.2 Verify file naming convention
         files = [f.name for f in path.iterdir()]
         all_prefixed = all(f.startswith(path.name) for f in files)
-        results.append(test("files_prefixed", True, all_prefixed))
+        results.append(check("files_prefixed", True, all_prefixed))
 
         # 5.3 Stamp from markdown source
         md_file = Path(tmp) / "test_kb.md"
         md_file.write_text("# Test Knowledge\n\nSome content here.")
         path2 = stamp_from_source("KB Agent", str(md_file), tmp)
         kb_content = (path2 / f"{path2.name}-kb.md").read_text()
-        results.append(test("stamp_from_md", True, "Some content here" in kb_content))
+        results.append(check("stamp_from_md", True, "Some content here" in kb_content))
 
         # 5.4 Stamp from JSON-LD source
         jsonld_file = Path(tmp) / "test_kg.jsonld"
         jsonld_file.write_text('{"@context": {}, "@graph": [{"@id": "test"}]}')
         path3 = stamp_from_source("KG Agent", str(jsonld_file), tmp)
         kg_content = json.loads((path3 / f"{path3.name}-kg.jsonld").read_text())
-        results.append(test("stamp_from_jsonld", True, len(kg_content.get("@graph", [])) > 0))
+        results.append(check("stamp_from_jsonld", True, len(kg_content.get("@graph", [])) > 0))
 
         # 5.5 Restamp with lineage
         path4 = restamp(path, "1.1.0")
         manifest = json.loads((path4 / f"{path4.name}-manifest.json").read_text())
         has_lineage = "previous_id" in manifest and "previous_version" in manifest
-        results.append(test("restamp_lineage", True, has_lineage))
+        results.append(check("restamp_lineage", True, has_lineage))
 
         # 5.6 Validate invalid folder
         validation = validate_capsule(Path(tmp) / "nonexistent")
-        results.append(test("validate_invalid", False, validation["valid"]))
+        results.append(check("validate_invalid", False, validation["valid"]))
 
     RESULTS["stamper"] = results
     return results
@@ -416,44 +416,44 @@ def test_education():
             "gaps": [{"text": "Wrong date", "reason": "values_not_in_kg"}]
         }
         record = queue_failure(capsule, "Test query", "Test response", aec_result)
-        results.append(test("queue_failure_status", "pending", record["status"]))
-        results.append(test("queue_failure_score", 0.4, record["aec_score"]))
+        results.append(check("queue_failure_status", "pending", record["status"]))
+        results.append(check("queue_failure_score", 0.4, record["aec_score"]))
 
         # 6.2 Get pending
         pending = get_pending(capsule)
-        results.append(test("get_pending", 1, len(pending)))
+        results.append(check("get_pending", 1, len(pending)))
 
         # 6.3 Update status
         update_status(capsule, record["id"], "researching")
         queue = get_queue(capsule)
-        results.append(test("update_status", "researching", queue[0]["status"]))
+        results.append(check("update_status", "researching", queue[0]["status"]))
 
         # 6.4 Queue stats
         stats = queue_stats(capsule)
-        results.append(test("queue_stats_total", 1, stats["total"]))
-        results.append(test("queue_stats_researching", 1, stats["researching"]))
+        results.append(check("queue_stats_total", 1, stats["total"]))
+        results.append(check("queue_stats_researching", 1, stats["researching"]))
 
         # 6.5 Get oldest pending
         queue_failure(capsule, "Query 2", "Response 2", aec_result)
         oldest = get_oldest_pending(capsule)
-        results.append(test("get_oldest_pending", True, oldest is not None))
+        results.append(check("get_oldest_pending", True, oldest is not None))
 
         # 6.6 Parse JSON response
         parsed = _parse_json_response('[{"subject": "A", "predicate": "B", "object": "C"}]')
-        results.append(test("parse_json_clean", True, len(parsed) == 1))
+        results.append(check("parse_json_clean", True, len(parsed) == 1))
 
         parsed = _parse_json_response('```json\n[{"subject": "A", "predicate": "B", "object": "C"}]\n```')
-        results.append(test("parse_json_markdown", True, len(parsed) == 1))
+        results.append(check("parse_json_markdown", True, len(parsed) == 1))
 
         try:
             _parse_json_response("This is not JSON at all")
-            results.append(test("parse_json_garbage", "exception", "no exception"))
+            results.append(check("parse_json_garbage", "exception", "no exception"))
         except:
-            results.append(test("parse_json_garbage", "exception", "exception"))
+            results.append(check("parse_json_garbage", "exception", "exception"))
 
         # 6.7 Build research prompt
         prompt = _build_research_prompt([{"text": "Jefferson was born in 1750"}])
-        results.append(test("build_research_prompt", True, "Jefferson" in prompt and "JSON" in prompt))
+        results.append(check("build_research_prompt", True, "Jefferson" in prompt and "JSON" in prompt))
 
     RESULTS["education"] = results
     return results
@@ -474,42 +474,42 @@ def test_habitat():
     # 7.1 Register capsules
     h.register("agent-001", {"name": "Agent One", "scent_subscriptions": ["topic.a", "topic.b"]})
     h.register("agent-002", {"name": "Agent Two", "scent_subscriptions": ["topic.b", "topic.c*"]})
-    results.append(test("register_count", 2, len(h.list_capsules())))
+    results.append(check("register_count", 2, len(h.list_capsules())))
 
     # 7.2 Exact route
     r = h.route("topic.a")
-    results.append(test("route_exact", ["agent-001"], r))
+    results.append(check("route_exact", ["agent-001"], r))
 
     # 7.3 Wildcard route
     r = h.route("topic.cats")
-    results.append(test("route_wildcard", ["agent-002"], r))
+    results.append(check("route_wildcard", ["agent-002"], r))
 
     # 7.4 Multi-match route
     r = h.route("topic.b")
-    results.append(test("route_multi", 2, len(r)))
+    results.append(check("route_multi", 2, len(r)))
 
     # 7.5 No match
     r = h.route("unknown.topic")
-    results.append(test("route_none", [], r))
+    results.append(check("route_none", [], r))
 
     # 7.6 Gap detection
     r = h.detect_gaps("unknown.topic")
-    results.append(test("detect_gap", True, r))
+    results.append(check("detect_gap", True, r))
 
     # 7.7 Broadcast
     result = h.broadcast("topic.a", {"data": "test"})
-    results.append(test("broadcast", True, len(result["recipients"]) > 0))
+    results.append(check("broadcast", True, len(result["recipients"]) > 0))
 
     # 7.8 Stats
     s = h.stats()
-    results.append(test("stats_capsules", 2, s["capsules"]))
+    results.append(check("stats_capsules", 2, s["capsules"]))
 
     # 7.9 Unregister
     h.unregister("agent-001")
-    results.append(test("unregister", 1, len(h.list_capsules())))
+    results.append(check("unregister", 1, len(h.list_capsules())))
 
     # 7.10 Log
-    results.append(test("log", True, len(h.get_log()) > 0))
+    results.append(check("log", True, len(h.get_log()) > 0))
 
     RESULTS["habitat"] = results
     return results
@@ -527,21 +527,21 @@ def test_llm():
 
     # 8.1 Stub provider
     r = call_llm("Hello world", provider="stub")
-    results.append(test("stub_text", True, "text" in r))
-    results.append(test("stub_cost", 0.0, r["cost"]))
+    results.append(check("stub_text", True, "text" in r))
+    results.append(check("stub_cost", 0.0, r["cost"]))
 
     # 8.2 make_llm_fn
     fn = make_llm_fn(provider="stub")
     r = fn("Test prompt")
-    results.append(test("make_llm_fn", True, isinstance(r, dict) and "text" in r))
+    results.append(check("make_llm_fn", True, isinstance(r, dict) and "text" in r))
 
     # 8.3 Unknown provider
     r = call_llm("Hello", provider="fake_provider")
-    results.append(test("unknown_provider", True, "Unknown" in r["text"] or "Error" in r["text"]))
+    results.append(check("unknown_provider", True, "Unknown" in r["text"] or "Error" in r["text"]))
 
     # 8.4 Cost estimation
     cost = estimate_cost("claude-sonnet-4-20250514", 1000, 500)
-    results.append(test("estimate_cost", True, cost > 0))
+    results.append(check("estimate_cost", True, cost > 0))
 
     # 8.5 API key error handling (don't call real API)
     # Tested via stub - real API tests skipped to avoid costs
@@ -599,14 +599,14 @@ def test_report():
         report_output = buffer.getvalue()
         sys.stdout = old_stdout
 
-        results.append(test("report_no_crash", True, True))
-        results.append(test("report_has_header", True, "AETHER" in report_output))
-        results.append(test("report_has_score", True, "Score" in report_output or "score" in report_output or "0.85" in report_output))
-        results.append(test("report_length", True, len(report_output) > 100))
+        results.append(check("report_no_crash", True, True))
+        results.append(check("report_has_header", True, "AETHER" in report_output))
+        results.append(check("report_has_score", True, "Score" in report_output or "score" in report_output or "0.85" in report_output))
+        results.append(check("report_length", True, len(report_output) > 100))
 
     except Exception as e:
         sys.stdout = old_stdout if 'old_stdout' in dir() else sys.stdout
-        results.append(test("report_no_crash", True, f"FAIL: {e}"))
+        results.append(check("report_no_crash", True, f"FAIL: {e}"))
 
     RESULTS["report"] = results
     return results
@@ -638,7 +638,7 @@ def test_capsule_integrity():
         kg_path = capsule_dir / f"{prefix}-kg.jsonld"
 
         all_exist = all(p.exists() for p in [manifest_path, definition_path, persona_path, kb_path, kg_path])
-        results.append(test(f"{prefix}_files_exist", True, all_exist))
+        results.append(check(f"{prefix}_files_exist", True, all_exist))
 
         if not all_exist:
             continue
@@ -646,35 +646,35 @@ def test_capsule_integrity():
         # Check manifest
         try:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            results.append(test(f"{prefix}_manifest_id", True, "id" in manifest))
-            results.append(test(f"{prefix}_manifest_version", True, "version" in manifest))
+            results.append(check(f"{prefix}_manifest_id", True, "id" in manifest))
+            results.append(check(f"{prefix}_manifest_version", True, "version" in manifest))
         except:
-            results.append(test(f"{prefix}_manifest_parse", True, False))
+            results.append(check(f"{prefix}_manifest_parse", True, False))
 
         # Check definition
         try:
             definition = json.loads(definition_path.read_text(encoding="utf-8"))
-            results.append(test(f"{prefix}_definition_pipeline", True, "pipeline" in definition))
+            results.append(check(f"{prefix}_definition_pipeline", True, "pipeline" in definition))
         except:
-            results.append(test(f"{prefix}_definition_parse", True, False))
+            results.append(check(f"{prefix}_definition_parse", True, False))
 
         # Check persona
         try:
             persona = json.loads(persona_path.read_text(encoding="utf-8"))
-            results.append(test(f"{prefix}_persona_parse", True, isinstance(persona, dict)))
+            results.append(check(f"{prefix}_persona_parse", True, isinstance(persona, dict)))
         except:
-            results.append(test(f"{prefix}_persona_parse", True, False))
+            results.append(check(f"{prefix}_persona_parse", True, False))
 
         # Check KB
         kb_content = kb_path.read_text(encoding="utf-8")
-        results.append(test(f"{prefix}_kb_nonempty", True, len(kb_content) > 0))
+        results.append(check(f"{prefix}_kb_nonempty", True, len(kb_content) > 0))
 
         # Check KG
         try:
             kg = json.loads(kg_path.read_text(encoding="utf-8"))
-            results.append(test(f"{prefix}_kg_graph", True, "@graph" in kg or "@id" in kg))
+            results.append(check(f"{prefix}_kg_graph", True, "@graph" in kg or "@id" in kg))
         except:
-            results.append(test(f"{prefix}_kg_parse", True, False))
+            results.append(check(f"{prefix}_kg_parse", True, False))
 
     return results
 
@@ -701,11 +701,11 @@ def test_integration():
             cap = Capsule(jefferson_dir, llm_fn=stub_fn)
             ctx = cap.run("When was Jefferson born?")
 
-            results.append(test("integration_pipeline_runs", True, ctx is not None))
-            results.append(test("integration_aec_in_review", True, "aec" in ctx["review"]))
-            results.append(test("integration_telemetry", True, ctx["telemetry"]["total_ms"] > 0))
+            results.append(check("integration_pipeline_runs", True, ctx is not None))
+            results.append(check("integration_aec_in_review", True, "aec" in ctx["review"]))
+            results.append(check("integration_telemetry", True, ctx["telemetry"]["total_ms"] > 0))
     except Exception as e:
-        results.append(test("integration_pipeline", True, f"FAIL: {e}"))
+        results.append(check("integration_pipeline", True, f"FAIL: {e}"))
 
     # 11.2 Stamp → Load → Run cycle
     try:
@@ -717,9 +717,9 @@ def test_integration():
             path = stamp_empty("Integration Test", tmp)
             cap = Capsule(path, llm_fn=make_llm_fn(provider="stub"))
             ctx = cap.run("Test query")
-            results.append(test("integration_stamp_load_run", True, ctx is not None))
+            results.append(check("integration_stamp_load_run", True, ctx is not None))
     except Exception as e:
-        results.append(test("integration_stamp_load_run", True, f"FAIL: {e}"))
+        results.append(check("integration_stamp_load_run", True, f"FAIL: {e}"))
 
     # 11.3 Habitat routing
     try:
@@ -728,9 +728,9 @@ def test_integration():
         h = Habitat()
         h.register("test-001", {"name": "Test", "scent_subscriptions": ["test.*"]})
         matched = h.route("test.query")
-        results.append(test("integration_habitat_route", True, len(matched) > 0))
+        results.append(check("integration_habitat_route", True, len(matched) > 0))
     except Exception as e:
-        results.append(test("integration_habitat_route", True, f"FAIL: {e}"))
+        results.append(check("integration_habitat_route", True, f"FAIL: {e}"))
 
     RESULTS["integration"] = results
     return results
@@ -750,12 +750,12 @@ def test_known_issues():
     # 12.1 Magnitude extraction
     r = _extract_values("$25 million revenue")
     found_25m = any(abs(v[1] - 25000000) < 1 for v in r if isinstance(v[1], (int, float)))
-    results.append(test("known_magnitude_25m", True, found_25m))
+    results.append(check("known_magnitude_25m", True, found_25m))
 
     # 12.2 Name matching looseness
     r = _extract_values("Thomas wrote this")
     has_thomas = any("Thomas" in str(v[0]) for v in r)
-    results.append(test("known_name_partial", True, has_thomas))
+    results.append(check("known_name_partial", True, has_thomas))
 
     # 12.3 Check education queues in example capsules
     examples_dir = Path(__file__).parent.parent / "examples"

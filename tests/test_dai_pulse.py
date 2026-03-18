@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from ui.dai_pulse import DAIPulse, PHASES
 
 
-def test(name: str, condition: bool, details: str = ""):
+def check(name: str, condition: bool, details: str = ""):
     """Test helper - prints PASS/FAIL."""
     status = "PASS" if condition else "FAIL"
     msg = f"  {status}: {name}"
@@ -33,18 +33,18 @@ def test_phase_transitions():
     event_json = pulse.transition("discovery")
     event = json.loads(event_json)
 
-    test("event type is aether.css-delta", event["type"] == "aether.css-delta")
-    test("scope is document", event["scope"] == "document")
-    test("meta.phase is discovery", event["meta"]["phase"] == "discovery")
-    test("meta.capsule is test-capsule", event["meta"]["capsule"] == "test-capsule")
-    test("meta.heartbeat is False", event["meta"]["heartbeat"] is False)
-    test("vars contains --kinetic-tempo", "--kinetic-tempo" in event["vars"])
-    test("vars contains --surface-accent", "--surface-accent" in event["vars"])
+    check("event type is aether.css-delta", event["type"] == "aether.css-delta")
+    check("scope is document", event["scope"] == "document")
+    check("meta.phase is discovery", event["meta"]["phase"] == "discovery")
+    check("meta.capsule is test-capsule", event["meta"]["capsule"] == "test-capsule")
+    check("meta.heartbeat is False", event["meta"]["heartbeat"] is False)
+    check("vars contains --kinetic-tempo", "--kinetic-tempo" in event["vars"])
+    check("vars contains --surface-accent", "--surface-accent" in event["vars"])
 
     # Test deliberation phase
     event_json = pulse.transition("deliberation")
     event = json.loads(event_json)
-    test("deliberation phase vars has orange accent",
+    check("deliberation phase vars has orange accent",
          event["vars"]["--surface-accent"] == "#FF9800")
 
 
@@ -54,19 +54,19 @@ def test_sequence_increments():
 
     pulse = DAIPulse(capsule_id="test-seq", min_phase_duration_ms=0)
 
-    test("initial sequence is 0", pulse.sequence == 0)
+    check("initial sequence is 0", pulse.sequence == 0)
 
     pulse.transition("discovery")
-    test("sequence after first transition is 1", pulse.sequence == 1)
+    check("sequence after first transition is 1", pulse.sequence == 1)
 
     pulse.transition("deliberation")
-    test("sequence after second transition is 2", pulse.sequence == 2)
+    check("sequence after second transition is 2", pulse.sequence == 2)
 
     pulse.heartbeat()
-    test("sequence after heartbeat is 3", pulse.sequence == 3)
+    check("sequence after heartbeat is 3", pulse.sequence == 3)
 
     pulse.reconnect()
-    test("sequence after reconnect is 4", pulse.sequence == 4)
+    check("sequence after reconnect is 4", pulse.sequence == 4)
 
 
 def test_heartbeat_empty_vars():
@@ -79,10 +79,10 @@ def test_heartbeat_empty_vars():
     hb_json = pulse.heartbeat()
     hb = json.loads(hb_json)
 
-    test("heartbeat type is aether.css-delta", hb["type"] == "aether.css-delta")
-    test("heartbeat vars is empty dict", hb["vars"] == {})
-    test("meta.heartbeat is True", hb["meta"]["heartbeat"] is True)
-    test("meta.phase is current phase", hb["meta"]["phase"] == "deliberation")
+    check("heartbeat type is aether.css-delta", hb["type"] == "aether.css-delta")
+    check("heartbeat vars is empty dict", hb["vars"] == {})
+    check("meta.heartbeat is True", hb["meta"]["heartbeat"] is True)
+    check("meta.phase is current phase", hb["meta"]["phase"] == "deliberation")
 
 
 def test_reconnect_state_snapshot():
@@ -99,11 +99,11 @@ def test_reconnect_state_snapshot():
     snap_json = pulse.reconnect()
     snap = json.loads(snap_json)
 
-    test("snapshot type is aether.state-snapshot", snap["type"] == "aether.state-snapshot")
-    test("snapshot has scope", snap["scope"] == "document")
-    test("snapshot vars is not empty", len(snap["vars"]) > 0)
-    test("snapshot meta.phase is validation", snap["meta"]["phase"] == "validation")
-    test("snapshot has sequence", "sequence" in snap["meta"])
+    check("snapshot type is aether.state-snapshot", snap["type"] == "aether.state-snapshot")
+    check("snapshot has scope", snap["scope"] == "document")
+    check("snapshot vars is not empty", len(snap["vars"]) > 0)
+    check("snapshot meta.phase is validation", snap["meta"]["phase"] == "validation")
+    check("snapshot has sequence", "sequence" in snap["meta"])
 
 
 def test_ghost_transition_reason():
@@ -116,10 +116,10 @@ def test_ghost_transition_reason():
     ghost_json = pulse.transition("ghost", reason="aec_failed_twice")
     ghost = json.loads(ghost_json)
 
-    test("ghost phase is set", ghost["meta"]["phase"] == "ghost")
-    test("reason is aec_failed_twice", ghost["meta"]["reason"] == "aec_failed_twice")
-    test("ghost vars has gray accent", ghost["vars"]["--surface-accent"] == "#9E9E9E")
-    test("ghost vars has reduced opacity", ghost["vars"]["--surface-opacity"] == "0.60")
+    check("ghost phase is set", ghost["meta"]["phase"] == "ghost")
+    check("reason is aec_failed_twice", ghost["meta"]["reason"] == "aec_failed_twice")
+    check("ghost vars has gray accent", ghost["vars"]["--surface-accent"] == "#9E9E9E")
+    check("ghost vars has reduced opacity", ghost["vars"]["--surface-opacity"] == "0.60")
 
 
 def test_recovery_transition():
@@ -132,9 +132,9 @@ def test_recovery_transition():
     recover_json = pulse.transition("recovering", reason="new_query")
     recover = json.loads(recover_json)
 
-    test("phase is recovering", recover["meta"]["phase"] == "recovering")
-    test("reason is new_query", recover["meta"]["reason"] == "new_query")
-    test("current_phase property is recovering", pulse.current_phase == "recovering")
+    check("phase is recovering", recover["meta"]["phase"] == "recovering")
+    check("reason is new_query", recover["meta"]["reason"] == "new_query")
+    check("current_phase property is recovering", pulse.current_phase == "recovering")
 
 
 def test_unknown_phase_raises():
@@ -148,11 +148,11 @@ def test_unknown_phase_raises():
         pulse.transition("invalid_phase")
     except ValueError as e:
         raised = True
-        test("ValueError raised", True)
-        test("error mentions invalid phase", "invalid_phase" in str(e))
+        check("ValueError raised", True)
+        check("error mentions invalid phase", "invalid_phase" in str(e))
 
     if not raised:
-        test("ValueError raised", False)
+        check("ValueError raised", False)
 
 
 def test_alive_phase_blocked():
@@ -166,11 +166,11 @@ def test_alive_phase_blocked():
         pulse.transition("alive")
     except ValueError as e:
         raised = True
-        test("ValueError raised for alive", True)
-        test("error mentions heartbeat()", "heartbeat()" in str(e))
+        check("ValueError raised for alive", True)
+        check("error mentions heartbeat()", "heartbeat()" in str(e))
 
     if not raised:
-        test("ValueError raised for alive", False)
+        check("ValueError raised for alive", False)
 
 
 def test_min_phase_duration():
@@ -185,8 +185,8 @@ def test_min_phase_duration():
     pulse.transition("deliberation")  # This should wait ~100ms
     elapsed = (time.time() - start) * 1000
 
-    test("elapsed time >= 100ms", elapsed >= 100, f"{elapsed:.1f}ms")
-    test("elapsed time < 300ms (not too long)", elapsed < 300, f"{elapsed:.1f}ms")
+    check("elapsed time >= 100ms", elapsed >= 100, f"{elapsed:.1f}ms")
+    check("elapsed time < 300ms (not too long)", elapsed < 300, f"{elapsed:.1f}ms")
 
 
 def test_event_id_format():
@@ -198,8 +198,8 @@ def test_event_id_format():
     event_json = pulse.transition("discovery")
     event = json.loads(event_json)
 
-    test("id starts with 'frame-'", event["id"].startswith("frame-"))
-    test("id has hash suffix", len(event["id"]) > 6)  # "frame-" + hash
+    check("id starts with 'frame-'", event["id"].startswith("frame-"))
+    check("id has hash suffix", len(event["id"]) > 6)  # "frame-" + hash
 
 
 def test_timestamp_present():
@@ -214,8 +214,8 @@ def test_timestamp_present():
 
     event = json.loads(event_json)
 
-    test("ts is present", "ts" in event)
-    test("ts is within range", before <= event["ts"] <= after)
+    check("ts is present", "ts" in event)
+    check("ts is within range", before <= event["ts"] <= after)
 
 
 def test_custom_pulse_map():
@@ -237,9 +237,9 @@ def test_custom_pulse_map():
     event_json = pulse.transition("discovery")
     event = json.loads(event_json)
 
-    test("custom accent applied", event["vars"]["--surface-accent"] == "#CUSTOM_COLOR")
+    check("custom accent applied", event["vars"]["--surface-accent"] == "#CUSTOM_COLOR")
     # Other vars should still be present from defaults
-    test("default kinetic-tempo preserved", "--kinetic-tempo" in event["vars"])
+    check("default kinetic-tempo preserved", "--kinetic-tempo" in event["vars"])
 
 
 def test_all_phases_have_vars():
@@ -251,7 +251,7 @@ def test_all_phases_have_vars():
     for phase in ["discovery", "deliberation", "validation", "delivery", "ghost", "recovering"]:
         event_json = pulse.transition(phase)
         event = json.loads(event_json)
-        test(f"{phase} has vars", len(event["vars"]) > 0)
+        check(f"{phase} has vars", len(event["vars"]) > 0)
 
 
 if __name__ == "__main__":
