@@ -1,0 +1,64 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "pdf",
+  "primary_function": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill.",
+  "domain_boundaries": {
+    "authoritative": [
+      "pypdf library operations",
+      "pdfplumber text and table extraction",
+      "reportlab PDF creation",
+      "qpdf command-line operations",
+      "PDF merging and splitting",
+      "PDF text extraction",
+      "PDF metadata extraction",
+      "PDF rotation and manipulation",
+      "PDF password protection",
+      "OCR for scanned PDFs",
+      "PDF watermarking",
+      "PDF form field handling",
+      "Command-line PDF tools"
+    ],
+    "out_of_scope": [
+      "Advanced image processing beyond PDF context",
+      "Web scraping non-PDF content",
+      "Database operations",
+      "Network protocols",
+      "GUI application development",
+      "Mobile app development",
+      "Server deployment",
+      "Authentication systems",
+      "File system permissions",
+      "Performance optimization beyond PDF context"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify code examples use correct library imports and syntax",
+    "Confirm output does not recommend Unicode subscript/superscript characters in ReportLab",
+    "Ensure proper error handling is included in code examples",
+    "Validate that form processing follows the FORMS.md workflow",
+    "Verify command-line examples include proper syntax",
+    "Confirm PDF manipulation preserves document integrity",
+    "Ensure password protection examples include both user and owner passwords",
+    "Validate that OCR solutions include required dependencies"
+  ],
+  "trigger_text": "Use this skill whenever the user wants to do anything with PDF files. This includes reading or extracting text/tables from PDFs, combining or merging multiple PDFs into one, splitting PDFs apart, rotating pages, adding watermarks, creating new PDFs, filling PDF forms, encrypting/decrypting PDFs, extracting images, and OCR on scanned PDFs to make them searchable. If the user mentions a .pdf file or asks to produce one, use this skill."
+}

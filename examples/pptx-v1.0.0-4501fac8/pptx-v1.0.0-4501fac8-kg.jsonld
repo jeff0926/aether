@@ -1,0 +1,605 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:visual_storyteller",
+      "@type": "skill:Trait",
+      "rdfs:label": "Visual Storyteller",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:visual_storytelling",
+        "concept:design_boldness",
+        "concept:content_informed_design"
+      ],
+      "skill:contains": [
+        "trait:bold_creative",
+        "trait:innovative",
+        "trait:detail_oriented",
+        "trait:artistic",
+        "trait:technical",
+        "trait:opinionated",
+        "trait:perfectionist",
+        "trait:inspiring",
+        "trait:unconventional"
+      ],
+      "skill:avoids": [
+        "antipattern:boring_slides",
+        "antipattern:generic_design",
+        "antipattern:forgettable_presentations"
+      ]
+    },
+    {
+      "@id": "trait:bold_creative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Bold Creative",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:pick_bold_color_palette",
+        "rule:commit_to_visual_motif"
+      ]
+    },
+    {
+      "@id": "trait:innovative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Innovative",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:vary_slide_layouts",
+        "rule:choose_interesting_fonts"
+      ]
+    },
+    {
+      "@id": "trait:perfectionist",
+      "@type": "skill:Trait",
+      "rdfs:label": "Perfectionist",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:qa_process",
+        "rule:assume_problems_exist"
+      ]
+    },
+    {
+      "@id": "trait:opinionated",
+      "@type": "skill:Trait",
+      "rdfs:label": "Opinionated",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:dominance_over_equality",
+        "rule:dont_default_to_blue"
+      ]
+    },
+    {
+      "@id": "concept:pptx_skill",
+      "@type": "skill:Concept",
+      "rdfs:label": "PPTX Skill",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:reading_content",
+        "concept:editing_workflow",
+        "concept:creating_from_scratch",
+        "concept:design_ideas",
+        "concept:qa_process"
+      ]
+    },
+    {
+      "@id": "concept:reading_content",
+      "@type": "skill:Concept",
+      "rdfs:label": "Reading Content",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:text_extraction",
+        "technique:visual_overview",
+        "technique:raw_xml_analysis"
+      ],
+      "skill:pairs_with": [
+        "tool:markitdown",
+        "tool:thumbnail_py",
+        "tool:unpack_py"
+      ]
+    },
+    {
+      "@id": "concept:editing_workflow",
+      "@type": "skill:Concept",
+      "rdfs:label": "Editing Workflow",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:template_analysis",
+        "technique:unpack_manipulate_pack"
+      ],
+      "skill:requires": [
+        "concept:reading_content"
+      ]
+    },
+    {
+      "@id": "concept:creating_from_scratch",
+      "@type": "skill:Concept",
+      "rdfs:label": "Creating from Scratch",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:pptxgenjs"
+      ],
+      "skill:enables": [
+        "concept:design_ideas"
+      ]
+    },
+    {
+      "@id": "concept:design_ideas",
+      "@type": "skill:Concept",
+      "rdfs:label": "Design Ideas",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:color_palettes",
+        "concept:typography",
+        "concept:spacing",
+        "concept:layout_options"
+      ],
+      "skill:rules": [
+        "rule:dont_create_boring_slides",
+        "rule:pick_bold_color_palette",
+        "rule:commit_to_visual_motif",
+        "rule:every_slide_needs_visual_element"
+      ],
+      "skill:avoids": [
+        "antipattern:boring_slides",
+        "antipattern:generic_design",
+        "antipattern:common_mistakes"
+      ]
+    },
+    {
+      "@id": "concept:color_palettes",
+      "@type": "skill:Concept",
+      "rdfs:label": "Color Palettes",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:pick_bold_color_palette",
+        "rule:dominance_over_equality",
+        "rule:dont_default_to_blue"
+      ],
+      "skill:techniques": [
+        "technique:content_informed_colors",
+        "technique:dark_light_contrast"
+      ],
+      "skill:contains": [
+        "concept:midnight_executive",
+        "concept:forest_moss",
+        "concept:coral_energy",
+        "concept:warm_terracotta",
+        "concept:ocean_gradient",
+        "concept:charcoal_minimal",
+        "concept:teal_trust",
+        "concept:berry_cream",
+        "concept:sage_calm",
+        "concept:cherry_bold"
+      ]
+    },
+    {
+      "@id": "concept:typography",
+      "@type": "skill:Concept",
+      "rdfs:label": "Typography",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:choose_interesting_fonts",
+        "rule:proper_font_sizing"
+      ],
+      "skill:avoids": [
+        "antipattern:default_arial"
+      ],
+      "skill:techniques": [
+        "technique:font_pairing"
+      ]
+    },
+    {
+      "@id": "concept:layout_options",
+      "@type": "skill:Concept",
+      "rdfs:label": "Layout Options",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:two_column",
+        "technique:icon_text_rows",
+        "technique:grid_layout",
+        "technique:half_bleed_image"
+      ],
+      "skill:rules": [
+        "rule:vary_slide_layouts"
+      ]
+    },
+    {
+      "@id": "concept:qa_process",
+      "@type": "skill:Concept",
+      "rdfs:label": "QA Process",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:assume_problems_exist",
+        "rule:use_subagents",
+        "rule:check_placeholder_text"
+      ],
+      "skill:contains": [
+        "concept:content_qa",
+        "concept:visual_qa"
+      ],
+      "skill:techniques": [
+        "technique:markitdown_qa",
+        "technique:grep_placeholders"
+      ]
+    },
+    {
+      "@id": "rule:dont_create_boring_slides",
+      "@type": "skill:Rule",
+      "rdfs:label": "Don't create boring slides - plain bullets on white background won't impress anyone",
+      "aether:origin": "core",
+      "skill:contradicts": [
+        "antipattern:boring_slides"
+      ]
+    },
+    {
+      "@id": "rule:pick_bold_color_palette",
+      "@type": "skill:Rule",
+      "rdfs:label": "Pick a bold, content-informed color palette that feels designed for THIS topic",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:content_informed_colors"
+      ]
+    },
+    {
+      "@id": "rule:dominance_over_equality",
+      "@type": "skill:Rule",
+      "rdfs:label": "One color should dominate (60-70% visual weight), never give all colors equal weight",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:equal_color_weight"
+      ]
+    },
+    {
+      "@id": "rule:commit_to_visual_motif",
+      "@type": "skill:Rule",
+      "rdfs:label": "Pick ONE distinctive element and repeat it across every slide",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:visual_motif_repetition"
+      ]
+    },
+    {
+      "@id": "rule:every_slide_needs_visual_element",
+      "@type": "skill:Rule",
+      "rdfs:label": "Every slide needs a visual element - image, chart, icon, or shape",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:text_only_slides"
+      ]
+    },
+    {
+      "@id": "rule:choose_interesting_fonts",
+      "@type": "skill:Rule",
+      "rdfs:label": "Choose an interesting font pairing - don't default to Arial",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:default_arial"
+      ]
+    },
+    {
+      "@id": "rule:proper_font_sizing",
+      "@type": "skill:Rule",
+      "rdfs:label": "Slide title 36-44pt bold, section header 20-24pt bold, body text 14-16pt, captions 10-12pt muted",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:vary_slide_layouts",
+      "@type": "skill:Rule",
+      "rdfs:label": "Don't repeat the same layout - vary columns, cards, and callouts across slides",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:repeated_layouts"
+      ]
+    },
+    {
+      "@id": "rule:dont_default_to_blue",
+      "@type": "skill:Rule",
+      "rdfs:label": "Don't default to blue - pick colors that reflect the specific topic",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:generic_blue"
+      ]
+    },
+    {
+      "@id": "rule:assume_problems_exist",
+      "@type": "skill:Rule",
+      "rdfs:label": "Assume there are problems - your first render is almost never correct",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:bug_hunt_qa"
+      ]
+    },
+    {
+      "@id": "rule:use_subagents",
+      "@type": "skill:Rule",
+      "rdfs:label": "USE SUBAGENTS - even for 2-3 slides, you've been staring at code and will miss issues",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:check_placeholder_text",
+      "@type": "skill:Rule",
+      "rdfs:label": "When using templates, check for leftover placeholder text using grep",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:grep_placeholders"
+      ]
+    },
+    {
+      "@id": "antipattern:boring_slides",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Boring slides with plain bullets on white background",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:generic_design",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Generic design choices that could work for any presentation",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:equal_color_weight",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Giving all colors equal weight in the design",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:text_only_slides",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Text-only slides without visual elements",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:default_arial",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Defaulting to Arial font without considering alternatives",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:repeated_layouts",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Repeating the same layout across multiple slides",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:generic_blue",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Defaulting to generic blue color schemes",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:centered_body_text",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Center-aligning body text and paragraphs",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:accent_lines_under_titles",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Accent lines under titles - hallmark of AI-generated slides",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:low_contrast_elements",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Low-contrast elements like light text on light backgrounds",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:text_extraction",
+      "@type": "skill:Technique",
+      "rdfs:label": "Text extraction using markitdown",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:markitdown"
+      ]
+    },
+    {
+      "@id": "technique:visual_overview",
+      "@type": "skill:Technique",
+      "rdfs:label": "Visual overview using thumbnail script",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:thumbnail_py"
+      ]
+    },
+    {
+      "@id": "technique:content_informed_colors",
+      "@type": "skill:Technique",
+      "rdfs:label": "Choose colors that match your topic rather than generic defaults",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:dark_light_contrast",
+      "@type": "skill:Technique",
+      "rdfs:label": "Dark backgrounds for title + conclusion slides, light for content (sandwich structure)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:font_pairing",
+      "@type": "skill:Technique",
+      "rdfs:label": "Pick header font with personality and pair with clean body font",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:two_column",
+      "@type": "skill:Technique",
+      "rdfs:label": "Two-column layout with text left, illustration right",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:icon_text_rows",
+      "@type": "skill:Technique",
+      "rdfs:label": "Icon in colored circle with bold header and description below",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:grid_layout",
+      "@type": "skill:Technique",
+      "rdfs:label": "2x2 or 2x3 grid with image on one side, content blocks on other",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:half_bleed_image",
+      "@type": "skill:Technique",
+      "rdfs:label": "Full left or right side image with content overlay",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:markitdown_qa",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use markitdown to extract and verify slide content",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:markitdown"
+      ]
+    },
+    {
+      "@id": "technique:grep_placeholders",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use grep to find leftover placeholder text in templates",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:bug_hunt_qa",
+      "@type": "skill:Technique",
+      "rdfs:label": "Approach QA as bug hunt, not confirmation step",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:markitdown",
+      "@type": "skill:Tool",
+      "rdfs:label": "Markitdown Python module",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:thumbnail_py",
+      "@type": "skill:Tool",
+      "rdfs:label": "Thumbnail.py script for visual overview",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:unpack_py",
+      "@type": "skill:Tool",
+      "rdfs:label": "Office unpack script for raw XML analysis",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:pptxgenjs",
+      "@type": "skill:Tool",
+      "rdfs:label": "PptxGenJS for creating presentations from scratch",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:midnight_executive",
+      "@type": "skill:Concept",
+      "rdfs:label": "Midnight Executive palette (navy, ice blue, white)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:forest_moss",
+      "@type": "skill:Concept",
+      "rdfs:label": "Forest & Moss palette (forest green, moss, cream)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:coral_energy",
+      "@type": "skill:Concept",
+      "rdfs:label": "Coral Energy palette (coral, gold, navy)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:warm_terracotta",
+      "@type": "skill:Concept",
+      "rdfs:label": "Warm Terracotta palette (terracotta, sand, sage)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:ocean_gradient",
+      "@type": "skill:Concept",
+      "rdfs:label": "Ocean Gradient palette (deep blue, teal, midnight)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:charcoal_minimal",
+      "@type": "skill:Concept",
+      "rdfs:label": "Charcoal Minimal palette (charcoal, off-white, black)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:teal_trust",
+      "@type": "skill:Concept",
+      "rdfs:label": "Teal Trust palette (teal, seafoam, mint)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:berry_cream",
+      "@type": "skill:Concept",
+      "rdfs:label": "Berry & Cream palette (berry, dusty rose, cream)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:sage_calm",
+      "@type": "skill:Concept",
+      "rdfs:label": "Sage Calm palette (sage, eucalyptus, slate)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:cherry_bold",
+      "@type": "skill:Concept",
+      "rdfs:label": "Cherry Bold palette (cherry, off-white, navy)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:content_qa",
+      "@type": "skill:Concept",
+      "rdfs:label": "Content QA",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:markitdown_qa",
+        "technique:grep_placeholders"
+      ]
+    },
+    {
+      "@id": "concept:visual_qa",
+      "@type": "skill:Concept",
+      "rdfs:label": "Visual QA",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:use_subagents"
+      ]
+    },
+    {
+      "@id": "concept:spacing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Spacing",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:minimum_margins",
+        "rule:consistent_gaps",
+        "rule:breathing_room"
+      ]
+    },
+    {
+      "@id": "rule:minimum_margins",
+      "@type": "skill:Rule",
+      "rdfs:label": "0.5 inch minimum margins",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:consistent_gaps",
+      "@type": "skill:Rule",
+      "rdfs:label": "0.3-0.5 inch between content blocks, choose and use consistently",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:breathing_room",
+      "@type": "skill:Rule",
+      "rdfs:label": "Leave breathing room - don't fill every inch",
+      "aether:origin": "core"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "canvas-design",
+  "primary_function": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations.",
+  "domain_boundaries": {
+    "authoritative": [
+      "Visual design philosophy creation",
+      "Aesthetic movement development",
+      "Art movement manifestos",
+      "Visual composition principles",
+      "Color theory and application",
+      "Spatial design and form",
+      "Typography as visual element",
+      "Canvas-based artistic expression",
+      "Museum-quality visual artifacts",
+      "Abstract conceptual visualization",
+      "Design craftsmanship standards",
+      "Visual hierarchy and balance"
+    ],
+    "out_of_scope": [
+      "Literal illustration or representation",
+      "Text-heavy document design",
+      "User interface design",
+      "Web development",
+      "Cartoon or amateur aesthetics",
+      "Marketing materials",
+      "Corporate branding",
+      "Photography editing",
+      "Animation or motion graphics",
+      "Print production workflows"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify output includes both .md philosophy file and visual artifact (.pdf or .png)",
+    "Confirm design philosophy is 4-6 substantial paragraphs",
+    "Ensure text in visual artifacts is minimal and integrated as design element",
+    "Validate visual work demonstrates master-level craftsmanship and appears meticulously created",
+    "Confirm output avoids redundant repetition of design concepts within philosophy",
+    "Verify visual expression prioritizes form, space, color, and composition over text",
+    "Ensure aesthetic movement has clear 1-2 word name",
+    "Confirm subtle conceptual references are sophisticated and non-literal",
+    "Validate final artifacts appear as museum or magazine quality art objects"
+  ],
+  "trigger_text": "Create beautiful visual art in .png and .pdf documents using design philosophy. You should use this skill when the user asks to create a poster, piece of art, design, or other static piece. Create original visual designs, never copying existing artists' work to avoid copyright violations."
+}

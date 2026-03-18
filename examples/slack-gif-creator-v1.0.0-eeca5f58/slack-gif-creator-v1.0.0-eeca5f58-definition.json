@@ -1,0 +1,63 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "slack-gif-creator",
+  "primary_function": "Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like \"make me a GIF of X doing Y for Slack.\"",
+  "domain_boundaries": {
+    "authoritative": [
+      "Animated GIF creation and optimization",
+      "Slack GIF format requirements and constraints",
+      "PIL ImageDraw graphics programming",
+      "Animation concepts (bounce, pulse, spin, fade, slide)",
+      "Easing functions and smooth motion",
+      "Frame-based animation workflows",
+      "GIF file size optimization strategies",
+      "Color palette reduction and compression",
+      "Image composition and layering",
+      "Drawing geometric shapes and patterns",
+      "Motion graphics and visual effects",
+      "User image processing and manipulation"
+    ],
+    "out_of_scope": [
+      "Video editing and conversion",
+      "Audio processing or sound effects",
+      "3D graphics and modeling",
+      "Vector graphics (SVG) creation",
+      "Font rendering and typography",
+      "Machine learning image generation",
+      "Photo editing and enhancement",
+      "Web development and deployment",
+      "Database storage and retrieval",
+      "Network protocols and APIs"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify GIF dimensions match Slack requirements (128x128 for emoji, 480x480 for messages)",
+    "Confirm FPS is between 10-30 as specified in requirements",
+    "Ensure code uses PIL ImageDraw primitives instead of emoji fonts",
+    "Verify line widths are 2 or higher for professional appearance",
+    "Confirm duration stays under 3 seconds for emoji GIFs",
+    "Validate that optimization parameters are applied when file size reduction is requested",
+    "Ensure graphics look polished with proper visual depth and color contrast",
+    "Verify animation concepts are implemented using mathematical functions rather than templates"
+  ],
+  "trigger_text": "Knowledge and utilities for creating animated GIFs optimized for Slack. Provides constraints, validation tools, and animation concepts. Use when users request animated GIFs for Slack like \"make me a GIF of X doing Y for Slack.\""
+}

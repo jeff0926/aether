@@ -1,0 +1,63 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "internal-comms",
+  "primary_function": "A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.).",
+  "domain_boundaries": {
+    "authoritative": [
+      "3P updates (Progress, Plans, Problems)",
+      "Company newsletters and announcements",
+      "FAQ responses and documentation",
+      "Status reports and project updates",
+      "Leadership communications",
+      "Incident reports",
+      "Internal team communications",
+      "Executive briefings",
+      "Communication formatting and structure",
+      "Corporate tone and messaging",
+      "Information synthesis from multiple sources",
+      "Stakeholder-appropriate content adaptation"
+    ],
+    "out_of_scope": [
+      "External marketing communications",
+      "Customer-facing content",
+      "Legal or compliance documentation",
+      "Financial reporting",
+      "HR policy creation",
+      "Technical implementation details",
+      "Product specifications",
+      "Sales collateral",
+      "Public relations content",
+      "Social media posts"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify communication type matches one of the supported formats (3P, newsletter, FAQ, status, leadership, incident)",
+    "Confirm 3P updates follow strict format: [emoji] [Team Name] (Dates), Progress/Plans/Problems sections with 1-3 sentences each",
+    "Ensure company newsletters use 'we' tense and include 20-25 bullet points with appropriate sectioning",
+    "Validate tone is matter-of-fact and data-driven with metrics where possible",
+    "Confirm content is appropriate for internal audience and avoids external/customer-facing language",
+    "Verify communication length is appropriate for format (3P: 30-60 seconds read time, newsletter: consumable in Slack/email)",
+    "Ensure proper emoji usage and formatting consistency across communication types",
+    "Confirm team name and time period are clearly specified for 3P updates"
+  ],
+  "trigger_text": "A set of resources to help me write all kinds of internal communications, using the formats that my company likes to use. Claude should use this skill whenever asked to write some sort of internal communications (status reports, leadership updates, 3P updates, company newsletters, FAQs, incident reports, project updates, etc.)."
+}

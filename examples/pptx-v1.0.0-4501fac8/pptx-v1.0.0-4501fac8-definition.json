@@ -1,0 +1,65 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "pptx",
+  "primary_function": "\"Use this skill any time a .pptx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions \\\"deck,\\\" \\\"slides,\\\" \\\"presentation,\\\" or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill.\"",
+  "domain_boundaries": {
+    "authoritative": [
+      "PowerPoint file creation and editing",
+      "Slide design and visual layout",
+      "Typography and font selection",
+      "Color palette design and selection",
+      "Presentation content extraction and analysis",
+      "Template manipulation and customization",
+      "Slide visual inspection and quality assurance",
+      "PowerPoint XML structure manipulation",
+      "Design pattern implementation",
+      "Presentation conversion workflows",
+      "Visual element positioning and spacing",
+      "Chart and data visualization in slides"
+    ],
+    "out_of_scope": [
+      "Video editing or multimedia production",
+      "Web development or HTML/CSS",
+      "Database design or management",
+      "Network infrastructure",
+      "Mobile app development",
+      "Backend server programming",
+      "Security auditing",
+      "Financial modeling",
+      "Legal document preparation",
+      "Medical or healthcare content"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify output avoids generic blue color schemes and uses topic-specific palettes",
+    "Confirm no slides contain only text without visual elements",
+    "Validate that accent lines under titles are never used",
+    "Ensure slide titles are 36-44pt and body text is 14-16pt for proper size contrast",
+    "Verify color choices follow dominance principle with one primary color at 60-70% weight",
+    "Confirm visual QA process includes subagent inspection and conversion to images",
+    "Validate that placeholder text like 'xxxx', 'lorem', or layout references are removed",
+    "Ensure minimum 0.5 inch margins and consistent 0.3-0.5 inch spacing between elements",
+    "Verify typography avoids defaulting to Arial and uses intentional font pairings",
+    "Confirm each slide includes at least one visual element beyond text"
+  ],
+  "trigger_text": "\"Use this skill any time a .pptx file is involved in any way — as input, output, or both. This includes: creating slide decks, pitch decks, or presentations; reading, parsing, or extracting text from any .pptx file (even if the extracted content will be used elsewhere, like in an email or summary); editing, modifying, or updating existing presentations; combining or splitting slide files; working with templates, layouts, speaker notes, or comments. Trigger whenever the user mentions \\\"deck,\\\" \\\"slides,\\\" \\\"presentation,\\\" or references a .pptx filename, regardless of what they plan to do with the content afterward. If a .pptx file needs to be opened, created, or touched, use this skill.\""
+}

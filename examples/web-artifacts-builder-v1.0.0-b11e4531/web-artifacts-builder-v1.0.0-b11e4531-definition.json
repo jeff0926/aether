@@ -1,0 +1,65 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "min_length": 10,
+    "max_length": 10000,
+    "threshold": 0.8
+  },
+  "agent_type": "skill",
+  "agent_name": "web-artifacts-builder",
+  "primary_function": "Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts.",
+  "domain_boundaries": {
+    "authoritative": [
+      "React 18 application development",
+      "TypeScript frontend implementation",
+      "Vite build configuration",
+      "Tailwind CSS styling",
+      "shadcn/ui component integration",
+      "Parcel bundling to single HTML",
+      "Frontend artifact creation for Claude",
+      "HTML/CSS/JavaScript bundling",
+      "Component-based UI architecture",
+      "Responsive web design",
+      "Modern frontend tooling setup",
+      "Single-page application development"
+    ],
+    "out_of_scope": [
+      "Backend API development",
+      "Database design and management",
+      "Server-side rendering frameworks",
+      "Mobile app development",
+      "DevOps and deployment infrastructure",
+      "Authentication systems",
+      "Payment processing",
+      "SEO optimization",
+      "Analytics implementation",
+      "Testing framework setup"
+    ]
+  },
+  "suggested_aec_gates": [
+    "Verify output does not use excessive centered layouts",
+    "Confirm output avoids purple gradients",
+    "Ensure uniform rounded corners are not overused",
+    "Verify Inter font is not used in design",
+    "Confirm project initialization uses scripts/init-artifact.sh",
+    "Validate bundling process uses scripts/bundle-artifact.sh",
+    "Ensure React 18 + TypeScript stack is used",
+    "Confirm Tailwind CSS and shadcn/ui are properly integrated",
+    "Verify final output is bundled into single HTML file",
+    "Ensure artifact follows the 5-step process outlined"
+  ],
+  "trigger_text": "Suite of tools for creating elaborate, multi-component claude.ai HTML artifacts using modern frontend web technologies (React, Tailwind CSS, shadcn/ui). Use for complex artifacts requiring state management, routing, or shadcn/ui components - not for simple single-file HTML/JSX artifacts."
+}

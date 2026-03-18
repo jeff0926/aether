@@ -1,0 +1,491 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:pdf_engineer",
+      "@type": "skill:Trait",
+      "rdfs:label": "PDF Engineer",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:pdf_processing",
+        "concept:python_libraries",
+        "concept:command_line_tools"
+      ],
+      "skill:contains": [
+        "trait:technical",
+        "trait:detail_oriented",
+        "trait:systematic",
+        "trait:procedural",
+        "trait:analytical",
+        "trait:cautious"
+      ]
+    },
+    {
+      "@id": "trait:technical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Technical",
+      "aether:origin": "core",
+      "skill:enables": "technique:code_driven_solutions"
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail Oriented",
+      "aether:origin": "core",
+      "skill:enables": "rule:careful_attention_technical_details"
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic",
+      "aether:origin": "core",
+      "skill:enables": "technique:procedural_sequences"
+    },
+    {
+      "@id": "trait:procedural",
+      "@type": "skill:Trait",
+      "rdfs:label": "Procedural",
+      "aether:origin": "core",
+      "skill:requires": "technique:strict_procedural_sequences"
+    },
+    {
+      "@id": "trait:analytical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Analytical",
+      "aether:origin": "core",
+      "skill:enables": "technique:proper_tool_selection"
+    },
+    {
+      "@id": "trait:cautious",
+      "@type": "skill:Trait",
+      "rdfs:label": "Cautious",
+      "aether:origin": "core",
+      "skill:enables": "rule:avoid_unicode_subscripts_superscripts"
+    },
+    {
+      "@id": "concept:pdf_processing",
+      "@type": "skill:Concept",
+      "rdfs:label": "PDF Processing",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:python_libraries",
+        "concept:command_line_tools",
+        "concept:common_tasks"
+      ],
+      "skill:techniques": [
+        "technique:merge_pdfs",
+        "technique:split_pdfs",
+        "technique:extract_text",
+        "technique:extract_tables"
+      ]
+    },
+    {
+      "@id": "concept:python_libraries",
+      "@type": "skill:Concept",
+      "rdfs:label": "Python Libraries",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:pypdf",
+        "tool:pdfplumber",
+        "tool:reportlab"
+      ],
+      "skill:rules": [
+        "rule:use_pypdf_for_basic_operations",
+        "rule:use_pdfplumber_for_text_tables",
+        "rule:use_reportlab_for_creation"
+      ]
+    },
+    {
+      "@id": "concept:command_line_tools",
+      "@type": "skill:Concept",
+      "rdfs:label": "Command Line Tools",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:pdftotext",
+        "tool:qpdf",
+        "tool:pdftk"
+      ],
+      "skill:techniques": [
+        "technique:batch_processing",
+        "technique:shell_automation"
+      ]
+    },
+    {
+      "@id": "concept:common_tasks",
+      "@type": "skill:Concept",
+      "rdfs:label": "Common Tasks",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:text_extraction",
+        "concept:pdf_manipulation",
+        "concept:table_extraction",
+        "concept:pdf_creation"
+      ],
+      "skill:techniques": [
+        "technique:ocr_scanned_pdfs",
+        "technique:add_watermark",
+        "technique:rotate_pages"
+      ]
+    },
+    {
+      "@id": "concept:text_extraction",
+      "@type": "skill:Concept",
+      "rdfs:label": "Text Extraction",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:basic_text_extraction",
+        "technique:layout_preserved_extraction",
+        "technique:ocr_extraction"
+      ],
+      "skill:rules": [
+        "rule:use_pdfplumber_for_layout",
+        "rule:use_pytesseract_for_scanned"
+      ]
+    },
+    {
+      "@id": "concept:pdf_manipulation",
+      "@type": "skill:Concept",
+      "rdfs:label": "PDF Manipulation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:merge_pdfs",
+        "technique:split_pdfs",
+        "technique:rotate_pages",
+        "technique:add_watermark"
+      ],
+      "skill:rules": [
+        "rule:use_pypdf_for_basic_manipulation"
+      ]
+    },
+    {
+      "@id": "concept:table_extraction",
+      "@type": "skill:Concept",
+      "rdfs:label": "Table Extraction",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:extract_tables_pdfplumber",
+        "technique:convert_tables_to_dataframe"
+      ],
+      "skill:rules": [
+        "rule:check_table_not_empty",
+        "rule:use_pandas_for_table_processing"
+      ]
+    },
+    {
+      "@id": "concept:pdf_creation",
+      "@type": "skill:Concept",
+      "rdfs:label": "PDF Creation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:basic_pdf_creation",
+        "technique:multi_page_documents",
+        "technique:formatted_text_markup"
+      ],
+      "skill:rules": [
+        "rule:avoid_unicode_subscripts_superscripts",
+        "rule:use_reportlab_xml_markup"
+      ]
+    },
+    {
+      "@id": "tool:pypdf",
+      "@type": "skill:Tool",
+      "rdfs:label": "pypdf",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:merge_pdfs",
+        "technique:split_pdfs",
+        "technique:extract_metadata",
+        "technique:rotate_pages"
+      ],
+      "skill:pairs_with": [
+        "tool:pdfplumber",
+        "tool:reportlab"
+      ]
+    },
+    {
+      "@id": "tool:pdfplumber",
+      "@type": "skill:Tool",
+      "rdfs:label": "pdfplumber",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:extract_text_with_layout",
+        "technique:extract_tables",
+        "technique:advanced_table_extraction"
+      ],
+      "skill:pairs_with": [
+        "tool:pandas"
+      ]
+    },
+    {
+      "@id": "tool:reportlab",
+      "@type": "skill:Tool",
+      "rdfs:label": "reportlab",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:basic_pdf_creation",
+        "technique:multi_page_documents",
+        "technique:formatted_text_markup"
+      ],
+      "skill:avoids": "antipattern:unicode_subscripts_superscripts"
+    },
+    {
+      "@id": "tool:pdftotext",
+      "@type": "skill:Tool",
+      "rdfs:label": "pdftotext (poppler-utils)",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:command_line_text_extraction",
+        "technique:layout_preserved_extraction",
+        "technique:page_range_extraction"
+      ]
+    },
+    {
+      "@id": "tool:qpdf",
+      "@type": "skill:Tool",
+      "rdfs:label": "qpdf",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:command_line_merge",
+        "technique:command_line_split",
+        "technique:command_line_rotate",
+        "technique:decrypt_pdf"
+      ]
+    },
+    {
+      "@id": "tool:pdftk",
+      "@type": "skill:Tool",
+      "rdfs:label": "pdftk",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:alternative_merge",
+        "technique:burst_split",
+        "technique:directional_rotation"
+      ]
+    },
+    {
+      "@id": "tool:pandas",
+      "@type": "skill:Tool",
+      "rdfs:label": "pandas",
+      "aether:origin": "core",
+      "skill:pairs_with": "tool:pdfplumber",
+      "skill:enables": "technique:convert_tables_to_dataframe"
+    },
+    {
+      "@id": "tool:pytesseract",
+      "@type": "skill:Tool",
+      "rdfs:label": "pytesseract",
+      "aether:origin": "core",
+      "skill:pairs_with": "tool:pdf2image",
+      "skill:enables": "technique:ocr_scanned_pdfs"
+    },
+    {
+      "@id": "tool:pdf2image",
+      "@type": "skill:Tool",
+      "rdfs:label": "pdf2image",
+      "aether:origin": "core",
+      "skill:pairs_with": "tool:pytesseract",
+      "skill:enables": "technique:convert_pdf_to_images"
+    },
+    {
+      "@id": "technique:merge_pdfs",
+      "@type": "skill:Technique",
+      "rdfs:label": "Merge PDFs",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pypdf"
+      ],
+      "skill:enables": "concept:pdf_manipulation"
+    },
+    {
+      "@id": "technique:split_pdfs",
+      "@type": "skill:Technique",
+      "rdfs:label": "Split PDFs",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pypdf"
+      ],
+      "skill:enables": "concept:pdf_manipulation"
+    },
+    {
+      "@id": "technique:extract_text",
+      "@type": "skill:Technique",
+      "rdfs:label": "Extract Text",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pypdf"
+      ],
+      "skill:enables": "concept:text_extraction"
+    },
+    {
+      "@id": "technique:extract_text_with_layout",
+      "@type": "skill:Technique",
+      "rdfs:label": "Extract Text with Layout",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pdfplumber"
+      ],
+      "skill:enables": "concept:text_extraction"
+    },
+    {
+      "@id": "technique:extract_tables",
+      "@type": "skill:Technique",
+      "rdfs:label": "Extract Tables",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pdfplumber"
+      ],
+      "skill:enables": "concept:table_extraction"
+    },
+    {
+      "@id": "technique:advanced_table_extraction",
+      "@type": "skill:Technique",
+      "rdfs:label": "Advanced Table Extraction",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pdfplumber",
+        "tool:pandas"
+      ],
+      "skill:enables": "concept:table_extraction"
+    },
+    {
+      "@id": "technique:basic_pdf_creation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Basic PDF Creation",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:reportlab"
+      ],
+      "skill:enables": "concept:pdf_creation"
+    },
+    {
+      "@id": "technique:multi_page_documents",
+      "@type": "skill:Technique",
+      "rdfs:label": "Multi-page Documents",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:reportlab"
+      ],
+      "skill:enables": "concept:pdf_creation"
+    },
+    {
+      "@id": "technique:ocr_scanned_pdfs",
+      "@type": "skill:Technique",
+      "rdfs:label": "OCR Scanned PDFs",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pytesseract",
+        "tool:pdf2image"
+      ],
+      "skill:enables": "concept:text_extraction"
+    },
+    {
+      "@id": "technique:add_watermark",
+      "@type": "skill:Technique",
+      "rdfs:label": "Add Watermark",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pypdf"
+      ],
+      "skill:enables": "concept:pdf_manipulation"
+    },
+    {
+      "@id": "technique:rotate_pages",
+      "@type": "skill:Technique",
+      "rdfs:label": "Rotate Pages",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pypdf"
+      ],
+      "skill:enables": "concept:pdf_manipulation"
+    },
+    {
+      "@id": "technique:extract_metadata",
+      "@type": "skill:Technique",
+      "rdfs:label": "Extract Metadata",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pypdf"
+      ],
+      "skill:enables": "concept:pdf_processing"
+    },
+    {
+      "@id": "rule:use_pypdf_for_basic_operations",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use pypdf for basic operations",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_pdfplumber_for_text_tables",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use pdfplumber for text and table extraction",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_reportlab_for_creation",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use reportlab for PDF creation",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:avoid_unicode_subscripts_superscripts",
+      "@type": "skill:Rule",
+      "rdfs:label": "Never use Unicode subscript/superscript characters in ReportLab PDFs",
+      "aether:origin": "core",
+      "skill:avoids": "antipattern:unicode_subscripts_superscripts"
+    },
+    {
+      "@id": "rule:use_reportlab_xml_markup",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use ReportLab XML markup tags for subscripts and superscripts",
+      "aether:origin": "core",
+      "skill:contradicts": "antipattern:unicode_subscripts_superscripts"
+    },
+    {
+      "@id": "rule:check_table_not_empty",
+      "@type": "skill:Rule",
+      "rdfs:label": "Check if table is not empty before processing",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_pandas_for_table_processing",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use pandas for table processing and export",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_pdfplumber_for_layout",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use pdfplumber for layout-preserved text extraction",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_pytesseract_for_scanned",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use pytesseract for scanned PDF text extraction",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:reference_forms_guide",
+      "@type": "skill:Rule",
+      "rdfs:label": "Read FORMS.md for PDF form filling instructions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:reference_advanced_guide",
+      "@type": "skill:Rule",
+      "rdfs:label": "See REFERENCE.md for advanced features and JavaScript libraries",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:unicode_subscripts_superscripts",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Unicode subscript/superscript characters (₀₁₂₃₄₅₆₇₈₉, ⁰¹²³⁴⁵⁶⁷⁸⁹)",
+      "aether:origin": "core",
+      "skill:contradicts": "rule:use_reportlab_xml_markup"
+    }
+  ]
+}

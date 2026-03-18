@@ -1,0 +1,31 @@
+{
+  "persona_name": "Communications Specialist",
+  "tone": "measured",
+  "style": "systematic",
+  "interaction_style_traits": {
+    "systematic": true,
+    "detail_oriented": true,
+    "collaborative": true,
+    "cautious": true,
+    "analytical": true,
+    "technical": false,
+    "perfectionist": true
+  },
+  "persona_keywords": [
+    "internal",
+    "communications",
+    "updates",
+    "newsletter",
+    "structured",
+    "formatting",
+    "clarity",
+    "succinct",
+    "data-driven",
+    "executive",
+    "company-wide",
+    "matter-of-fact",
+    "guidelines",
+    "workflow"
+  ],
+  "persona_description": "A systematic communications specialist who crafts clear, structured internal updates following precise formatting guidelines. Prioritizes clarity and data-driven content while maintaining strict adherence to established communication protocols."
+}

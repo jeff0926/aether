@@ -1,12 +1,161 @@
 """
 Ingest - Automated document-to-capsule pipeline.
-Two modes: ingest_research (deterministic) and ingest_document (LLM-assisted).
+Three modes: ingest_research (deterministic), ingest_document (LLM-assisted),
+and ingest_skill_recursive (multi-file directory walk).
 """
-import json, re
+import ast
+import json
+import re
+import tempfile
 from pathlib import Path
 from datetime import datetime
 from aether import generate_id, REQUIRED_SUFFIXES
 from stamper import DEFAULT_DEFINITION, DEFAULT_KG, _write_json
+
+
+# Binary extensions to skip during recursive walk
+SKIP_EXTENSIONS = {
+    '.xlsx', '.xls', '.pdf', '.png', '.jpg', '.jpeg', '.gif', '.svg',
+    '.zip', '.tar', '.gz', '.whl', '.pyc', '.pyo', '.so', '.dll',
+    '.exe', '.bin', '.dat', '.db', '.sqlite', '.ico', '.woff', '.ttf',
+    '.mp3', '.mp4', '.wav', '.avi', '.mov', '.webp', '.bmp', '.tiff',
+}
+
+
+def extract_from_python(path: Path) -> str:
+    """Extract knowledge-relevant content from a Python file using AST.
+
+    Extracts:
+    - Module docstring
+    - Import statements (become Tool nodes)
+    - Class names + docstrings (become Technique/Concept nodes)
+    - Function names + docstrings + signatures (become Technique nodes)
+
+    Does NOT extract:
+    - Implementation details (function bodies)
+    - Variable assignments (too noisy)
+    - Comments (docstrings are sufficient)
+    """
+    path = Path(path)
+    source = path.read_text(encoding='utf-8', errors='replace')
+    lines = [f"### Python Module: {path.name}"]
+
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        # If file can't be parsed, extract imports and docstrings via regex
+        lines.append("(parsed via regex — syntax error in source)")
+        for line in source.splitlines():
+            stripped = line.strip()
+            if stripped.startswith(('import ', 'from ')):
+                lines.append(f"- Dependency: {stripped}")
+            elif stripped.startswith('"""') or stripped.startswith("'''"):
+                note = stripped.strip('"').strip("'")
+                lines.append(f"- Note: {note}")
+        return "\n".join(lines)
+
+    # Module docstring
+    module_doc = ast.get_docstring(tree)
+    if module_doc:
+        first_line = module_doc.split('\n')[0]
+        lines.append(f"**Purpose:** {first_line}")
+
+    # Imports → Tool/dependency nodes
+    for node in ast.iter_child_nodes(tree):
+        if isinstance(node, ast.Import):
+            for alias in node.names:
+                lines.append(f"- Dependency: `{alias.name}`")
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ''
+            for alias in node.names:
+                lines.append(f"- Dependency: `{module}.{alias.name}`")
+
+    # Track class definitions to avoid duplicating methods
+    class_names = set()
+
+    # Classes and their methods
+    for node in ast.iter_child_nodes(tree):
+        if isinstance(node, ast.ClassDef):
+            class_names.add(node.name)
+            doc = ast.get_docstring(node)
+            desc = f" — {doc.split(chr(10))[0]}" if doc else ""
+            lines.append(f"- Class: `{node.name}`{desc}")
+            # Extract method names from class
+            for item in node.body:
+                if isinstance(item, ast.FunctionDef) and not item.name.startswith('_'):
+                    method_doc = ast.get_docstring(item)
+                    method_desc = f" — {method_doc.split(chr(10))[0]}" if method_doc else ""
+                    lines.append(f"  - Method: `{node.name}.{item.name}()`{method_desc}")
+
+    # Top-level functions (not methods)
+    for node in ast.iter_child_nodes(tree):
+        if isinstance(node, ast.FunctionDef):
+            doc = ast.get_docstring(node)
+            desc = f" — {doc.split(chr(10))[0]}" if doc else ""
+            # Extract parameter names
+            params = [arg.arg for arg in node.args.args if arg.arg != 'self']
+            param_str = f"({', '.join(params)})" if params else "()"
+            lines.append(f"- Function: `{node.name}{param_str}`{desc}")
+
+    return "\n".join(lines)
+
+
+def extract_from_schema(path: Path) -> str:
+    """Extract knowledge-relevant content from JSON or YAML schema files.
+
+    Extracts:
+    - Top-level keys and their types
+    - Nested structure (1 level deep)
+    - Array item types
+    - String enum values (become Rule nodes — allowed values)
+    - Required fields (become Rule nodes — must have)
+    - Description fields (become Concept nodes)
+    """
+    path = Path(path)
+    source = path.read_text(encoding='utf-8', errors='replace')
+    lines = [f"### Schema: {path.name}"]
+
+    try:
+        data = json.loads(source)
+    except json.JSONDecodeError:
+        # Try YAML
+        try:
+            import yaml
+            data = yaml.safe_load(source)
+        except (ImportError, Exception):
+            lines.append(f"(could not parse {path.name})")
+            return "\n".join(lines)
+
+    if not isinstance(data, dict):
+        lines.append(f"- Type: {type(data).__name__} with {len(data) if hasattr(data, '__len__') else '?'} items")
+        return "\n".join(lines)
+
+    def describe_value(key, value, indent=0):
+        prefix = "  " * indent + "- "
+        if isinstance(value, dict):
+            lines.append(f"{prefix}Field: `{key}` (object with {len(value)} properties)")
+            if indent < 1:  # Only 1 level deep
+                for k, v in list(value.items())[:10]:  # Limit to first 10
+                    describe_value(k, v, indent + 1)
+        elif isinstance(value, list):
+            item_types = set(type(item).__name__ for item in value[:5])
+            lines.append(f"{prefix}Field: `{key}` (array of {', '.join(item_types)}, {len(value)} items)")
+        elif isinstance(value, str):
+            preview = value[:80] + "..." if len(value) > 80 else value
+            lines.append(f"{prefix}Field: `{key}` = \"{preview}\"")
+        elif isinstance(value, (int, float)):
+            lines.append(f"{prefix}Field: `{key}` = {value}")
+        elif isinstance(value, bool):
+            lines.append(f"{prefix}Field: `{key}` = {value}")
+        elif value is None:
+            lines.append(f"{prefix}Field: `{key}` = null")
+        else:
+            lines.append(f"{prefix}Field: `{key}` ({type(value).__name__})")
+
+    for key, value in list(data.items())[:20]:  # Limit to first 20 top-level keys
+        describe_value(key, value)
+
+    return "\n".join(lines)
 
 
 def _clean_gemini(text: str) -> str:
@@ -462,5 +611,118 @@ def ingest_skill(source_path: str | Path, output_path: str | Path,
     return _stamp_capsule(output_path, agent_name, version, kb, kg, persona, definition)
 
 
+def ingest_skill_recursive(skill_dir: str | Path, output_path: str | Path,
+                           provider: str = "anthropic", model: str = None) -> Path:
+    """Recursively ingest a multi-file skill directory into a single capsule.
+
+    Reads SKILL.md as primary source, then walks the directory tree extracting
+    knowledge from Python files (via AST), JSON/YAML schemas, and markdown/text
+    files. Binary files are skipped. All extracted content is concatenated with
+    the primary SKILL.md and fed to the standard DAG extraction pipeline.
+
+    Args:
+        skill_dir: Path to skill directory containing SKILL.md
+        output_path: Directory to write the capsule
+        provider: LLM provider for extraction
+        model: Optional model override
+
+    Returns:
+        Path to the created capsule directory
+    """
+    skill_dir = Path(skill_dir)
+
+    # 1. Find and read primary SKILL.md
+    skill_md_path = skill_dir / "SKILL.md"
+    if not skill_md_path.exists():
+        # Check for case variations
+        for f in skill_dir.iterdir():
+            if f.name.lower() == "skill.md":
+                skill_md_path = f
+                break
+        else:
+            raise FileNotFoundError(f"No SKILL.md found in {skill_dir}")
+
+    skill_md = skill_md_path.read_text(encoding='utf-8', errors='replace')
+
+    # 2. Walk directory tree, extract from each file type
+    supplements = []
+    file_count = {"py": 0, "json": 0, "yaml": 0, "md": 0, "skipped": 0}
+
+    for path in sorted(skill_dir.rglob("*")):
+        if path.is_dir():
+            continue
+        if path == skill_md_path:
+            continue  # Already read as primary
+        if path.name.startswith('.'):
+            continue  # Skip hidden files
+        if path.suffix.lower() in SKIP_EXTENSIONS:
+            file_count["skipped"] += 1
+            continue
+
+        try:
+            if path.suffix.lower() == '.py':
+                content = extract_from_python(path)
+                file_count["py"] += 1
+            elif path.suffix.lower() in ('.json', '.jsonld'):
+                content = extract_from_schema(path)
+                file_count["json"] += 1
+            elif path.suffix.lower() in ('.yaml', '.yml'):
+                content = extract_from_schema(path)
+                file_count["yaml"] += 1
+            elif path.suffix.lower() in ('.md', '.txt', '.rst'):
+                content = f"### Document: {path.name}\n\n"
+                content += path.read_text(encoding='utf-8', errors='replace')
+                file_count["md"] += 1
+            else:
+                file_count["skipped"] += 1
+                continue
+
+            if content.strip():
+                supplements.append(content)
+        except Exception as e:
+            supplements.append(f"### {path.name}\n(extraction failed: {e})")
+
+    # 3. Concatenate primary + supplements
+    if supplements:
+        separator = "\n\n---\n\n"
+        header = "## Supporting Code, Schemas, and Documentation\n\n"
+        total_files = sum(v for k, v in file_count.items() if k != 'skipped')
+        header += f"Extracted from {total_files} "
+        header += f"supporting files ({file_count['py']} Python, {file_count['json']} JSON, "
+        header += f"{file_count['yaml']} YAML, {file_count['md']} docs). "
+        header += f"{file_count['skipped']} binary files skipped.\n\n"
+
+        full_source = skill_md + separator + header + "\n\n".join(supplements)
+    else:
+        full_source = skill_md  # No supplements found — same as single-file ingest
+
+    # 4. Log expansion
+    original_len = len(skill_md)
+    expanded_len = len(full_source)
+    total_files = sum(v for k, v in file_count.items() if k != 'skipped')
+    print(f"[recursive-ingest] Source expanded: {original_len:,} → {expanded_len:,} chars "
+          f"({expanded_len/max(original_len,1):.1f}x) from {total_files} supporting files")
+
+    # 5. Feed to existing DAG pipeline
+    #    Write expanded source to temp file, then call ingest_skill
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False,
+                                      encoding='utf-8') as tmp:
+        tmp.write(full_source)
+        tmp_path = tmp.name
+
+    try:
+        # Create LLM function if provider specified
+        llm_fn = None
+        if provider and provider != "stub":
+            from llm import make_llm_fn
+            llm_fn = make_llm_fn(provider=provider, model=model)
+
+        result = ingest_skill(tmp_path, output_path, llm_fn=llm_fn)
+    finally:
+        Path(tmp_path).unlink(missing_ok=True)
+
+    return result
+
+
 if __name__ == "__main__":
-    print("ingest.py loaded — ingest_research, ingest_document, ingest_skill")
+    print("ingest.py loaded — ingest_research, ingest_document, ingest_skill, ingest_skill_recursive")

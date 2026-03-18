@@ -358,6 +358,46 @@ def cmd_ingest_skill(args):
         print(f"Errors: {result.get('errors', [])}")
 
 
+def cmd_ingest_skill_recursive(args):
+    """Recursively ingest a multi-file skill directory into a capsule."""
+    from ingest import ingest_skill_recursive
+
+    skill_dir = Path(args.skill_dir)
+    if not skill_dir.exists():
+        print(f"Skill directory not found: {skill_dir}")
+        return
+    if not skill_dir.is_dir():
+        print(f"Not a directory: {skill_dir}")
+        return
+
+    output = Path(args.output)
+    output.mkdir(parents=True, exist_ok=True)
+
+    result = ingest_skill_recursive(
+        skill_dir=skill_dir,
+        output_path=output,
+        provider=args.provider,
+        model=getattr(args, 'model', None),
+    )
+    print(f"\nCapsule created: {result}")
+
+    # Auto-validate
+    from stamper import validate_capsule
+    validation = validate_capsule(result)
+    if validation["valid"]:
+        print("Validation: PASS")
+    else:
+        print(f"Validation: FAIL — {validation['errors']}")
+
+    # Print KG stats
+    from kg import load_kg, stats
+    kg_files = list(result.glob("*-kg.jsonld"))
+    if kg_files:
+        kg = load_kg(kg_files[0])
+        s = stats(kg)
+        print(f"KG: {s.get('total', 0)} nodes")
+
+
 def cmd_refine(args):
     """Analyze education queue and surface KG improvement candidates."""
     # Validate capsule exists
@@ -624,6 +664,15 @@ def main():
     p_ingest_skill.add_argument("--provider", default="stub", help="LLM provider (stub for no-LLM)")
     p_ingest_skill.add_argument("--model", help="Model name")
     p_ingest_skill.set_defaults(func=cmd_ingest_skill)
+
+    # ingest-skill-recursive
+    p_ingest_rec = subparsers.add_parser("ingest-skill-recursive",
+        help="Recursively ingest multi-file skill directory into capsule")
+    p_ingest_rec.add_argument("skill_dir", help="Path to skill directory containing SKILL.md")
+    p_ingest_rec.add_argument("--output", "-o", default="./examples", help="Output directory")
+    p_ingest_rec.add_argument("--provider", "-p", default="stub", help="LLM provider")
+    p_ingest_rec.add_argument("--model", "-m", default=None, help="Model override")
+    p_ingest_rec.set_defaults(func=cmd_ingest_skill_recursive)
 
     # export
     p_export = subparsers.add_parser("export", help="Export capsule to target platform format")

@@ -1,0 +1,400 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:test_automation_engineer",
+      "@type": "skill:Trait",
+      "rdfs:label": "Test Automation Engineer",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:reliability",
+        "concept:systematic_approach",
+        "concept:reconnaissance_pattern"
+      ],
+      "skill:contains": [
+        "trait:methodical",
+        "trait:systematic",
+        "trait:detail_oriented",
+        "trait:cautious",
+        "trait:procedural",
+        "trait:analytical"
+      ]
+    },
+    {
+      "@id": "trait:methodical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Methodical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:decision_tree_approach",
+        "technique:reconnaissance_then_action"
+      ]
+    },
+    {
+      "@id": "trait:systematic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Systematic",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:follow_decision_tree",
+        "technique:black_box_usage"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail Oriented",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:wait_for_networkidle",
+        "rule:use_descriptive_selectors"
+      ]
+    },
+    {
+      "@id": "trait:cautious",
+      "@type": "skill:Trait",
+      "rdfs:label": "Cautious",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:run_scripts_with_help_first",
+        "antipattern:reading_source_before_trying"
+      ]
+    },
+    {
+      "@id": "trait:procedural",
+      "@type": "skill:Trait",
+      "rdfs:label": "Procedural",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:decision_tree_approach",
+        "technique:reconnaissance_then_action"
+      ]
+    },
+    {
+      "@id": "trait:analytical",
+      "@type": "skill:Trait",
+      "rdfs:label": "Analytical",
+      "aether:origin": "core",
+      "skill:enables": [
+        "technique:dom_inspection",
+        "technique:selector_identification"
+      ]
+    },
+    {
+      "@id": "concept:web_application_testing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Web Application Testing",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:playwright_automation",
+        "concept:server_management",
+        "concept:reconnaissance_pattern"
+      ],
+      "skill:techniques": [
+        "technique:native_python_playwright",
+        "technique:decision_tree_approach"
+      ]
+    },
+    {
+      "@id": "concept:playwright_automation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Playwright Automation",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:use_sync_playwright",
+        "rule:launch_chromium_headless",
+        "rule:wait_for_networkidle",
+        "rule:close_browser_when_done"
+      ],
+      "skill:techniques": [
+        "technique:reconnaissance_then_action",
+        "technique:dom_inspection"
+      ],
+      "skill:pairs_with": [
+        "tool:playwright"
+      ]
+    },
+    {
+      "@id": "concept:server_management",
+      "@type": "skill:Concept",
+      "rdfs:label": "Server Management",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:use_with_server_helper",
+        "rule:run_scripts_with_help_first"
+      ],
+      "skill:techniques": [
+        "technique:single_server_setup",
+        "technique:multiple_server_setup"
+      ],
+      "skill:pairs_with": [
+        "tool:with_server_script"
+      ]
+    },
+    {
+      "@id": "concept:reconnaissance_pattern",
+      "@type": "skill:Concept",
+      "rdfs:label": "Reconnaissance Pattern",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:reconnaissance_then_action"
+      ],
+      "skill:rules": [
+        "rule:inspect_before_action",
+        "rule:wait_for_networkidle_before_inspection"
+      ]
+    },
+    {
+      "@id": "concept:static_html_testing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Static HTML Testing",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:direct_html_reading",
+        "technique:file_url_usage"
+      ]
+    },
+    {
+      "@id": "concept:dynamic_webapp_testing",
+      "@type": "skill:Concept",
+      "rdfs:label": "Dynamic Webapp Testing",
+      "aether:origin": "core",
+      "skill:requires": [
+        "technique:reconnaissance_then_action"
+      ],
+      "skill:rules": [
+        "rule:wait_for_networkidle_before_inspection"
+      ]
+    },
+    {
+      "@id": "concept:systematic_approach",
+      "@type": "skill:Concept",
+      "rdfs:label": "Systematic Approach",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:decision_tree_approach",
+        "technique:black_box_usage"
+      ]
+    },
+    {
+      "@id": "concept:reliability",
+      "@type": "skill:Concept",
+      "rdfs:label": "Reliability",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:use_bundled_scripts_as_black_boxes",
+        "rule:add_appropriate_waits"
+      ]
+    },
+    {
+      "@id": "rule:use_native_python_playwright",
+      "@type": "skill:Rule",
+      "rdfs:label": "Write native Python Playwright scripts for testing local web applications",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:run_scripts_with_help_first",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always run scripts with --help first to see usage",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:reading_source_before_trying"
+      ]
+    },
+    {
+      "@id": "rule:use_sync_playwright",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use sync_playwright() for synchronous scripts",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:launch_chromium_headless",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always launch chromium in headless mode",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:wait_for_networkidle",
+      "@type": "skill:Rule",
+      "rdfs:label": "Wait for page.wait_for_load_state('networkidle') to allow JS to execute",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:wait_for_networkidle_before_inspection",
+      "@type": "skill:Rule",
+      "rdfs:label": "Wait for networkidle before inspecting DOM on dynamic apps",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:inspect_dom_before_networkidle"
+      ]
+    },
+    {
+      "@id": "rule:close_browser_when_done",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always close the browser when done",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_descriptive_selectors",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use descriptive selectors: text=, role=, CSS selectors, or IDs",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:add_appropriate_waits",
+      "@type": "skill:Rule",
+      "rdfs:label": "Add appropriate waits: page.wait_for_selector() or page.wait_for_timeout()",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_bundled_scripts_as_black_boxes",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use bundled scripts as black boxes to handle complex workflows reliably",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:use_with_server_helper",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use scripts/with_server.py helper for server lifecycle management",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:follow_decision_tree",
+      "@type": "skill:Rule",
+      "rdfs:label": "Follow decision tree: static HTML vs dynamic webapp vs server running status",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:inspect_before_action",
+      "@type": "skill:Rule",
+      "rdfs:label": "Follow reconnaissance-then-action: inspect rendered DOM, identify selectors, then execute actions",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:reading_source_before_trying",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Reading script source code before trying to run it with --help",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:inspect_dom_before_networkidle",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Inspecting DOM before waiting for networkidle on dynamic apps",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:native_python_playwright",
+      "@type": "skill:Technique",
+      "rdfs:label": "Native Python Playwright Script Writing",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "tool:playwright"
+      ]
+    },
+    {
+      "@id": "technique:decision_tree_approach",
+      "@type": "skill:Technique",
+      "rdfs:label": "Decision Tree Approach for Choosing Testing Strategy",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:reconnaissance_then_action",
+      "@type": "skill:Technique",
+      "rdfs:label": "Reconnaissance-Then-Action Pattern",
+      "aether:origin": "core",
+      "skill:contains": [
+        "technique:dom_inspection",
+        "technique:selector_identification",
+        "technique:action_execution"
+      ]
+    },
+    {
+      "@id": "technique:dom_inspection",
+      "@type": "skill:Technique",
+      "rdfs:label": "DOM Inspection",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:selector_identification",
+      "@type": "skill:Technique",
+      "rdfs:label": "Selector Identification from Rendered State",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:action_execution",
+      "@type": "skill:Technique",
+      "rdfs:label": "Action Execution with Discovered Selectors",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:single_server_setup",
+      "@type": "skill:Technique",
+      "rdfs:label": "Single Server Setup with with_server.py",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:multiple_server_setup",
+      "@type": "skill:Technique",
+      "rdfs:label": "Multiple Server Setup (backend + frontend)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:direct_html_reading",
+      "@type": "skill:Technique",
+      "rdfs:label": "Direct HTML File Reading for Static Content",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:file_url_usage",
+      "@type": "skill:Technique",
+      "rdfs:label": "Using file:// URLs for Local HTML",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:black_box_usage",
+      "@type": "skill:Technique",
+      "rdfs:label": "Black Box Script Usage",
+      "aether:origin": "core",
+      "skill:avoids": [
+        "antipattern:reading_source_before_trying"
+      ]
+    },
+    {
+      "@id": "tool:playwright",
+      "@type": "skill:Tool",
+      "rdfs:label": "Playwright",
+      "aether:origin": "core",
+      "skill:pairs_with": [
+        "technique:native_python_playwright"
+      ]
+    },
+    {
+      "@id": "tool:with_server_script",
+      "@type": "skill:Tool",
+      "rdfs:label": "scripts/with_server.py",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:element_discovery_example",
+      "@type": "skill:Tool",
+      "rdfs:label": "examples/element_discovery.py",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:static_html_automation_example",
+      "@type": "skill:Tool",
+      "rdfs:label": "examples/static_html_automation.py",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:console_logging_example",
+      "@type": "skill:Tool",
+      "rdfs:label": "examples/console_logging.py",
+      "aether:origin": "core"
+    }
+  ]
+}

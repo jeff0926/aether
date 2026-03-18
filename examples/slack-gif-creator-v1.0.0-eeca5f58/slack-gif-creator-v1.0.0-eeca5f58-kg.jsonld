@@ -1,0 +1,679 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#",
+    "skill": "http://aether.dev/skill#"
+  },
+  "@graph": [
+    {
+      "@id": "persona:animation_craftsperson",
+      "@type": "skill:Trait",
+      "rdfs:label": "Animation Craftsperson",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:visual_quality",
+        "concept:polished_graphics",
+        "concept:smooth_motion"
+      ],
+      "skill:contains": [
+        "trait:creative",
+        "trait:detail_oriented",
+        "trait:artistic",
+        "trait:opinionated",
+        "trait:perfectionist"
+      ]
+    },
+    {
+      "@id": "trait:creative",
+      "@type": "skill:Trait",
+      "rdfs:label": "Creative",
+      "aether:origin": "core",
+      "skill:enables": [
+        "concept:creative_combinations",
+        "concept:artistic_quality"
+      ]
+    },
+    {
+      "@id": "trait:detail_oriented",
+      "@type": "skill:Trait",
+      "rdfs:label": "Detail Oriented",
+      "aether:origin": "core",
+      "skill:requires": [
+        "rule:thick_lines",
+        "rule:visual_depth"
+      ]
+    },
+    {
+      "@id": "trait:artistic",
+      "@type": "skill:Trait",
+      "rdfs:label": "Artistic",
+      "aether:origin": "core",
+      "skill:prioritizes": [
+        "concept:visual_quality",
+        "concept:color_composition"
+      ]
+    },
+    {
+      "@id": "trait:opinionated",
+      "@type": "skill:Trait",
+      "rdfs:label": "Opinionated",
+      "aether:origin": "core",
+      "skill:enables": [
+        "rule:avoid_basic_graphics",
+        "antipattern:thin_lines"
+      ]
+    },
+    {
+      "@id": "trait:perfectionist",
+      "@type": "skill:Trait",
+      "rdfs:label": "Perfectionist",
+      "aether:origin": "core",
+      "skill:requires": [
+        "concept:polished_graphics",
+        "rule:artistic_quality_over_basic"
+      ]
+    },
+    {
+      "@id": "concept:slack_gif_creation",
+      "@type": "skill:Concept",
+      "rdfs:label": "Slack GIF Creation",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:slack_requirements",
+        "concept:core_workflow",
+        "concept:drawing_graphics",
+        "concept:animation_concepts"
+      ],
+      "skill:rules": [
+        "rule:emoji_dimensions",
+        "rule:message_dimensions",
+        "rule:fps_range",
+        "rule:color_limits",
+        "rule:duration_limits"
+      ]
+    },
+    {
+      "@id": "concept:slack_requirements",
+      "@type": "skill:Concept",
+      "rdfs:label": "Slack Requirements",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:emoji_dimensions",
+        "rule:message_dimensions",
+        "rule:fps_range",
+        "rule:color_limits",
+        "rule:duration_limits"
+      ]
+    },
+    {
+      "@id": "rule:emoji_dimensions",
+      "@type": "skill:Rule",
+      "rdfs:label": "Emoji GIFs must be 128x128 pixels",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:message_dimensions",
+      "@type": "skill:Rule",
+      "rdfs:label": "Message GIFs must be 480x480 pixels",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:fps_range",
+      "@type": "skill:Rule",
+      "rdfs:label": "FPS must be 10-30 with lower being smaller file size",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:color_limits",
+      "@type": "skill:Rule",
+      "rdfs:label": "Colors must be 48-128 with fewer colors meaning smaller file size",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:duration_limits",
+      "@type": "skill:Rule",
+      "rdfs:label": "Keep emoji GIFs under 3 seconds duration",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:core_workflow",
+      "@type": "skill:Concept",
+      "rdfs:label": "Core Workflow",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:create_builder",
+        "technique:generate_frames",
+        "technique:save_with_optimization"
+      ],
+      "skill:requires": [
+        "tool:gif_builder"
+      ]
+    },
+    {
+      "@id": "technique:create_builder",
+      "@type": "skill:Technique",
+      "rdfs:label": "Create GIFBuilder with dimensions and FPS",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:gif_builder"
+      ]
+    },
+    {
+      "@id": "technique:generate_frames",
+      "@type": "skill:Technique",
+      "rdfs:label": "Generate animation frames using PIL primitives",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pil_image",
+        "tool:image_draw"
+      ]
+    },
+    {
+      "@id": "technique:save_with_optimization",
+      "@type": "skill:Technique",
+      "rdfs:label": "Save GIF with color optimization for Slack",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:gif_builder"
+      ]
+    },
+    {
+      "@id": "concept:drawing_graphics",
+      "@type": "skill:Concept",
+      "rdfs:label": "Drawing Graphics",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:user_uploaded_images",
+        "concept:drawing_from_scratch",
+        "concept:polished_graphics"
+      ],
+      "skill:avoids": [
+        "antipattern:emoji_fonts",
+        "antipattern:pre_packaged_graphics"
+      ]
+    },
+    {
+      "@id": "concept:user_uploaded_images",
+      "@type": "skill:Concept",
+      "rdfs:label": "Working with User-Uploaded Images",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:direct_image_use",
+        "technique:inspiration_use"
+      ]
+    },
+    {
+      "@id": "technique:direct_image_use",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use uploaded image directly for animation or frame splitting",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:pil_image"
+      ]
+    },
+    {
+      "@id": "technique:inspiration_use",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use uploaded image as reference for colors and style",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:drawing_from_scratch",
+      "@type": "skill:Concept",
+      "rdfs:label": "Drawing from Scratch",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:draw_ellipses",
+        "technique:draw_polygons",
+        "technique:draw_lines",
+        "technique:draw_rectangles"
+      ],
+      "skill:requires": [
+        "tool:image_draw"
+      ]
+    },
+    {
+      "@id": "technique:draw_ellipses",
+      "@type": "skill:Technique",
+      "rdfs:label": "Draw circles and ovals with fill, outline, and width",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:draw_polygons",
+      "@type": "skill:Technique",
+      "rdfs:label": "Draw stars, triangles, and complex shapes using point arrays",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:draw_lines",
+      "@type": "skill:Technique",
+      "rdfs:label": "Draw lines with color and width specification",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:draw_rectangles",
+      "@type": "skill:Technique",
+      "rdfs:label": "Draw rectangles with fill, outline, and width",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:emoji_fonts",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Using emoji fonts (unreliable across platforms)",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:pre_packaged_graphics",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Assuming pre-packaged graphics exist in this skill",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:polished_graphics",
+      "@type": "skill:Concept",
+      "rdfs:label": "Making Graphics Look Good",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:thick_lines",
+        "rule:visual_depth",
+        "rule:interesting_shapes",
+        "rule:color_attention",
+        "rule:complex_shape_details",
+        "rule:artistic_quality_over_basic"
+      ],
+      "skill:avoids": [
+        "antipattern:thin_lines",
+        "antipattern:basic_graphics",
+        "antipattern:placeholder_graphics"
+      ]
+    },
+    {
+      "@id": "rule:thick_lines",
+      "@type": "skill:Rule",
+      "rdfs:label": "Always set width=2 or higher for outlines and lines",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:visual_depth",
+      "@type": "skill:Rule",
+      "rdfs:label": "Add visual depth using gradients and layered shapes",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:gradient_backgrounds",
+        "technique:shape_layering"
+      ]
+    },
+    {
+      "@id": "rule:interesting_shapes",
+      "@type": "skill:Rule",
+      "rdfs:label": "Make shapes more interesting with highlights, rings, and patterns",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:color_attention",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use vibrant complementary colors with proper contrast",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:complex_shape_details",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use combinations of polygons and ellipses for complex shapes with careful symmetry",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "rule:artistic_quality_over_basic",
+      "@type": "skill:Rule",
+      "rdfs:label": "Be creative and detailed - GIFs should look polished not like placeholder graphics",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:thin_lines",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Thin lines (width=1) that look choppy and amateurish",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:basic_graphics",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Basic graphics that look unprofessional",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "antipattern:placeholder_graphics",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Graphics that look like placeholders rather than polished content",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:gradient_backgrounds",
+      "@type": "skill:Technique",
+      "rdfs:label": "Create gradient backgrounds using create_gradient_background",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:frame_composer"
+      ]
+    },
+    {
+      "@id": "technique:shape_layering",
+      "@type": "skill:Technique",
+      "rdfs:label": "Layer multiple shapes for complexity",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:visual_quality",
+      "@type": "skill:Concept",
+      "rdfs:label": "Visual Quality",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:polished_graphics",
+        "concept:color_composition"
+      ]
+    },
+    {
+      "@id": "concept:color_composition",
+      "@type": "skill:Concept",
+      "rdfs:label": "Color Composition",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:color_attention"
+      ]
+    },
+    {
+      "@id": "concept:creative_combinations",
+      "@type": "skill:Concept",
+      "rdfs:label": "Creative Combinations",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:shape_layering",
+        "technique:complex_combinations"
+      ]
+    },
+    {
+      "@id": "technique:complex_combinations",
+      "@type": "skill:Technique",
+      "rdfs:label": "Combine multiple shapes like stars with sparkles or circles with rings",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:artistic_quality",
+      "@type": "skill:Concept",
+      "rdfs:label": "Artistic Quality",
+      "aether:origin": "core",
+      "skill:rules": [
+        "rule:artistic_quality_over_basic"
+      ]
+    },
+    {
+      "@id": "concept:available_utilities",
+      "@type": "skill:Concept",
+      "rdfs:label": "Available Utilities",
+      "aether:origin": "core",
+      "skill:contains": [
+        "tool:gif_builder",
+        "tool:validators",
+        "tool:easing",
+        "tool:frame_composer"
+      ]
+    },
+    {
+      "@id": "tool:gif_builder",
+      "@type": "skill:Tool",
+      "rdfs:label": "GIFBuilder from core.gif_builder",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:create_builder",
+        "technique:add_frames",
+        "technique:save_optimized"
+      ]
+    },
+    {
+      "@id": "technique:add_frames",
+      "@type": "skill:Technique",
+      "rdfs:label": "Add PIL Image frames to builder",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:save_optimized",
+      "@type": "skill:Technique",
+      "rdfs:label": "Save with num_colors, optimize_for_emoji, and remove_duplicates options",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:validators",
+      "@type": "skill:Tool",
+      "rdfs:label": "Validators from core.validators",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:validate_gif",
+        "technique:quick_slack_check"
+      ]
+    },
+    {
+      "@id": "technique:validate_gif",
+      "@type": "skill:Technique",
+      "rdfs:label": "Detailed validation with validate_gif function",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:quick_slack_check",
+      "@type": "skill:Technique",
+      "rdfs:label": "Quick Slack readiness check with is_slack_ready",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:easing",
+      "@type": "skill:Tool",
+      "rdfs:label": "Easing Functions from core.easing",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:smooth_interpolation"
+      ],
+      "skill:enables": [
+        "concept:smooth_motion"
+      ]
+    },
+    {
+      "@id": "technique:smooth_interpolation",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use interpolate function with easing types for smooth motion",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:smooth_motion",
+      "@type": "skill:Concept",
+      "rdfs:label": "Smooth Motion",
+      "aether:origin": "core",
+      "skill:requires": [
+        "tool:easing"
+      ]
+    },
+    {
+      "@id": "tool:frame_composer",
+      "@type": "skill:Tool",
+      "rdfs:label": "Frame Helpers from core.frame_composer",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:create_blank_frame",
+        "technique:gradient_backgrounds",
+        "technique:draw_helpers"
+      ]
+    },
+    {
+      "@id": "technique:create_blank_frame",
+      "@type": "skill:Technique",
+      "rdfs:label": "Create solid color background frames",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "technique:draw_helpers",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use helper functions for circles, text, and stars",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:pil_image",
+      "@type": "skill:Tool",
+      "rdfs:label": "PIL Image",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "tool:image_draw",
+      "@type": "skill:Tool",
+      "rdfs:label": "PIL ImageDraw",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:animation_concepts",
+      "@type": "skill:Concept",
+      "rdfs:label": "Animation Concepts",
+      "aether:origin": "core",
+      "skill:contains": [
+        "concept:shake_vibrate",
+        "concept:pulse_heartbeat",
+        "concept:bounce",
+        "concept:spin_rotate",
+        "concept:fade",
+        "concept:slide",
+        "concept:zoom",
+        "concept:explode_particles"
+      ],
+      "skill:techniques": [
+        "technique:oscillation_offset",
+        "technique:rhythmic_scaling",
+        "technique:gravity_bounce",
+        "technique:rotation_wobble",
+        "technique:alpha_blending",
+        "technique:eased_movement",
+        "technique:scale_crop",
+        "technique:particle_burst"
+      ]
+    },
+    {
+      "@id": "concept:shake_vibrate",
+      "@type": "skill:Concept",
+      "rdfs:label": "Shake/Vibrate Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:oscillation_offset"
+      ]
+    },
+    {
+      "@id": "technique:oscillation_offset",
+      "@type": "skill:Technique",
+      "rdfs:label": "Offset object position with math.sin/cos oscillation",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:pulse_heartbeat",
+      "@type": "skill:Concept",
+      "rdfs:label": "Pulse/Heartbeat Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:rhythmic_scaling"
+      ]
+    },
+    {
+      "@id": "technique:rhythmic_scaling",
+      "@type": "skill:Technique",
+      "rdfs:label": "Scale object size rhythmically using sine waves",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:bounce",
+      "@type": "skill:Concept",
+      "rdfs:label": "Bounce Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:gravity_bounce"
+      ],
+      "skill:requires": [
+        "tool:easing"
+      ]
+    },
+    {
+      "@id": "technique:gravity_bounce",
+      "@type": "skill:Technique",
+      "rdfs:label": "Use bounce_out easing for landing and ease_in for falling",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:spin_rotate",
+      "@type": "skill:Concept",
+      "rdfs:label": "Spin/Rotate Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:rotation_wobble"
+      ]
+    },
+    {
+      "@id": "technique:rotation_wobble",
+      "@type": "skill:Technique",
+      "rdfs:label": "Rotate object around center with optional sine wave wobble",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:fade",
+      "@type": "skill:Concept",
+      "rdfs:label": "Fade In/Out Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:alpha_blending"
+      ]
+    },
+    {
+      "@id": "technique:alpha_blending",
+      "@type": "skill:Technique",
+      "rdfs:label": "Gradually adjust alpha channel or use Image.blend",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:slide",
+      "@type": "skill:Concept",
+      "rdfs:label": "Slide Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:eased_movement"
+      ],
+      "skill:requires": [
+        "tool:easing"
+      ]
+    },
+    {
+      "@id": "technique:eased_movement",
+      "@type": "skill:Technique",
+      "rdfs:label": "Move object from off-screen using ease_out or back_out easing",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:zoom",
+      "@type": "skill:Concept",
+      "rdfs:label": "Zoom Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:scale_crop"
+      ]
+    },
+    {
+      "@id": "technique:scale_crop",
+      "@type": "skill:Technique",
+      "rdfs:label": "Scale and position for zoom effect with center cropping",
+      "aether:origin": "core"
+    },
+    {
+      "@id": "concept:explode_particles",
+      "@type": "skill:Concept",
+      "rdfs:label": "Explode/Particle Burst Animation",
+      "aether:origin": "core",
+      "skill:techniques": [
+        "technique:particle_burst"
+      ]
+    },
+    {
+      "@id": "technique:particle_burst",
+      "@type": "skill:Technique",
+      "rdfs:label": "Generate particles with random angles and velocities radiating outward",
+      "aether:origin": "core"
+    }
+  ]
+}
