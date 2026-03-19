@@ -133,5 +133,20 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-18T09-55-02-3e941b4d",
+    "timestamp": "2026-03-18T09:55:02.955809",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
   }
 ]

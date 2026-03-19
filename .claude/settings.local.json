@@ -21,7 +21,15 @@
       "Bash(timeout:*)",
       "Bash(start http://localhost:8864)",
       "Bash(findstr:*)",
-      "Bash(if not exist static mkdir static)"
+      "Bash(if not exist static mkdir static)",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\\\Users\\\\I820965\\\\dev\\\\aether\\\\examples'' -Directory | Where-Object { Test-Path \\(Join-Path $_FullName ''*-manifest.json''\\) } | Select-Object -ExpandProperty Name | Sort-Object\")",
+      "Bash(ls:*)",
+      "Bash(while read dir)",
+      "Bash(do if ls \"$dir\"/*-manifest.json)",
+      "Bash(then basename \"$dir\")",
+      "Bash(fi)",
+      "Bash(done)",
+      "Bash(rm:*)"
     ]
   }
 }
