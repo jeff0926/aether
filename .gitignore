@@ -13,3 +13,4 @@ build/
 *.swo
 IGNORE/
 input/skills/
+model_registry.json

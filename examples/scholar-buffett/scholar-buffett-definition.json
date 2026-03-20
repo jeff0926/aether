@@ -33,6 +33,12 @@
     "generate": {"enabled": true},
     "review": {"enabled": true}
   },
+  "llm": {
+    "capability": "reasoning_heavy",
+    "preferred_provider": "anthropic",
+    "preferred_model": "claude-opus-4-6",
+    "rationale": "Deep financial reasoning and long-form value investing synthesis"
+  },
   "review": {
     "threshold": 0.8,
     "min_length": 10,

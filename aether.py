@@ -40,6 +40,8 @@ class Capsule:
         self.path = Path(path)
         self.llm_fn = llm_fn or (lambda p, **kw: f"[No LLM. Prompt: {len(p)} chars]")
         self.files = self._load_files()
+        self.resolved_provider = None
+        self.resolved_model = None
         self._compiled_kg = self._compile_kg_if_typed()
 
         # PSI Layer (optional)
@@ -56,6 +58,30 @@ class Capsule:
             self._emitter = AetherEmitter(agent_name, scope)
         else:
             self._emitter = None
+
+        # Resolve LLM from definition.json if present
+        self._resolve_llm()
+
+    def _resolve_llm(self):
+        """Resolve provider/model from definition.json llm block if present."""
+        from llm import resolve_model, make_llm_fn
+
+        llm_block = self.files["definition"].get("llm")
+        if not llm_block:
+            return  # no llm block — leave everything unchanged
+
+        provider, model = resolve_model(
+            capability=llm_block.get("capability", "default"),
+            preferred_provider=llm_block.get("preferred_provider"),
+            preferred_model=llm_block.get("preferred_model")
+        )
+        self.resolved_provider = provider
+        self.resolved_model = model
+
+        # Only replace llm_fn if caller did not supply one
+        # (i.e. it's still the default no-op lambda)
+        if self.llm_fn.__name__ == "<lambda>":
+            self.llm_fn = make_llm_fn(provider=provider, model=model)
 
     def _load_files(self) -> dict:
         if not self.path.is_dir():

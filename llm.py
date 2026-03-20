@@ -3,6 +3,7 @@ LLM - Simple wrapper for LLM API calls.
 No abstractions, no retry, no async. Just call and return.
 """
 
+import json
 import os
 from pathlib import Path
 
@@ -42,6 +43,87 @@ def estimate_cost(model: str, tokens_in: int, tokens_out: int) -> float:
     """Estimate cost in USD for a given model and token counts."""
     rates = COST_PER_1K_TOKENS.get(model, {"input": 0, "output": 0})
     return (tokens_in / 1000 * rates["input"]) + (tokens_out / 1000 * rates["output"])
+
+
+def resolve_model(
+    capability: str,
+    preferred_provider: str = None,
+    preferred_model: str = None,
+    registry_path: str = None
+) -> tuple:
+    """
+    Resolve provider and model from capability using model_registry.json.
+
+    Resolution chain:
+    1. Load registry from registry_path or default location
+    2. If both preferred_provider and preferred_model given, validate and return
+    3. If only preferred_provider given, find matching capability_map entry
+    4. Look up capability in capability_map
+    5. Fall back to capability_map["default"]
+    6. Hard fallback to anthropic defaults
+
+    Never raises. Always returns (provider, model) tuple.
+    """
+    # Step 1: Load registry
+    registry = None
+    if registry_path:
+        reg_file = Path(registry_path)
+    else:
+        reg_file = Path(__file__).parent / "model_registry.json"
+
+    if reg_file.exists():
+        try:
+            registry = json.loads(reg_file.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, IOError):
+            print(f"[LLM] Warning: Could not parse {reg_file}")
+            registry = None
+
+    if not registry:
+        # Skip to step 6
+        print("[LLM] resolve_model fallback to default")
+        return (
+            preferred_provider or "anthropic",
+            preferred_model or DEFAULT_MODELS.get("anthropic")
+        )
+
+    providers = registry.get("providers", {})
+    capability_map = registry.get("capability_map", {})
+
+    def is_disabled(prov: str) -> bool:
+        return providers.get(prov, {}).get("disabled", False)
+
+    # Step 2: Both preferred_provider and preferred_model provided
+    if preferred_provider and preferred_model:
+        if preferred_provider in providers and not is_disabled(preferred_provider):
+            return (preferred_provider, preferred_model)
+
+    # Step 3: Only preferred_provider provided
+    if preferred_provider and not preferred_model:
+        if not is_disabled(preferred_provider):
+            for cap, entry in capability_map.items():
+                if entry.get("provider") == preferred_provider:
+                    return (preferred_provider, entry.get("model"))
+
+    # Step 4: Look up capability
+    if capability in capability_map:
+        entry = capability_map[capability]
+        prov = entry.get("provider")
+        if not is_disabled(prov):
+            return (prov, entry.get("model"))
+
+    # Step 5: Fall back to default
+    if "default" in capability_map:
+        entry = capability_map["default"]
+        prov = entry.get("provider")
+        if not is_disabled(prov):
+            return (prov, entry.get("model"))
+
+    # Step 6: Hard fallback
+    print("[LLM] resolve_model fallback to default")
+    return (
+        preferred_provider or "anthropic",
+        preferred_model or DEFAULT_MODELS.get("anthropic")
+    )
 
 
 def call_llm(prompt: str, provider: str = "anthropic", model: str = None,

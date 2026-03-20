@@ -27,6 +27,12 @@
     "generate": {"enabled": false},
     "review": {"enabled": true}
   },
+  "llm": {
+    "capability": "reasoning_medium",
+    "preferred_provider": "anthropic",
+    "preferred_model": "claude-sonnet-4-6",
+    "rationale": "Structured validation — Sonnet sufficient, Opus not needed"
+  },
   "review": {
     "threshold": 1.0,
     "min_length": 1,

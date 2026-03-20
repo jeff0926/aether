@@ -1,0 +1,31 @@
+{
+  "providers": {
+    "anthropic": {
+      "api_key_env": "ANTHROPIC_API_KEY"
+    },
+    "openai": {
+      "api_key_env": "OPENAI_API_KEY"
+    },
+    "google": {
+      "api_key_env": "GOOGLE_API_KEY"
+    },
+    "azure_openai": {
+      "endpoint_env": "AZURE_OAI_ENDPOINT",
+      "api_key_env": "AZURE_OAI_KEY",
+      "disabled": true
+    },
+    "ollama": {
+      "endpoint": "http://localhost:11434",
+      "disabled": true
+    }
+  },
+  "capability_map": {
+    "reasoning_heavy":   {"provider": "anthropic", "model": "claude-opus-4-6"},
+    "reasoning_medium":  {"provider": "anthropic", "model": "claude-sonnet-4-6"},
+    "fast_cheap":        {"provider": "anthropic", "model": "claude-haiku-4-5"},
+    "code":              {"provider": "anthropic", "model": "claude-sonnet-4-6"},
+    "research":          {"provider": "google",    "model": "gemini-2.0-pro"},
+    "creative":          {"provider": "anthropic", "model": "claude-opus-4-6"},
+    "default":           {"provider": "anthropic", "model": "claude-sonnet-4-6"}
+  }
+}
