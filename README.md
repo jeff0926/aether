@@ -7,7 +7,8 @@
 Skill.md in. Smarter skill.md out. Works with Claude, GPT-4, Gemini, Copilot, or any LLM.
 The model is replaceable. The skill is the asset.
 
-[![arXiv](https://img.shields.io/badge/arXiv-2026-b31b1b.svg)](https://arxiv.org/abs/XXXX.XXXXX)
+> Zenodo: https://zenodo.org/records/19212829
+> DOI: 10.5281/zenodo.19212829
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-864%20Zeros%20LLC-purple.svg)](LICENSE)
 [![Stdlib only](https://img.shields.io/badge/dependencies-stdlib%20only-green.svg)]()
