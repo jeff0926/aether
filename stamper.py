@@ -36,6 +36,9 @@ DEFAULT_PSI = {
 PSI_PROJECTION_WARN_LIMIT = 80
 PSI_PROJECTION_MAX_LIMIT = 100
 
+# Optional capsule sidecar files (included when present, never required)
+OPTIONAL_CAPSULE_FILES = ["engram.jsonld"]
+
 
 def _parse_claude_md(content: str) -> dict:
     """
@@ -318,6 +321,12 @@ def restamp(path: str | Path, new_version: str) -> Path:
                         "previous_version": manifest["version"], "previous_id": manifest["id"],
                         "restamped": datetime.now().isoformat()}
             _write_json(new_filepath, data)
+
+    # Copy optional sidecar files if present (e.g., engram.jsonld)
+    for optional_file in OPTIONAL_CAPSULE_FILES:
+        optional_path = path / optional_file
+        if optional_path.exists():
+            shutil.copy(optional_path, new_path / optional_file)
 
     return new_path
 

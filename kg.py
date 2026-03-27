@@ -103,6 +103,8 @@ def add_knowledge(kg: dict, triple: dict, origin: str = "acquired") -> dict:
             "aether:confidence": triple.get("confidence", 0.5),
             "aether:acquired_date": datetime.now().isoformat(),
             "aether:aec_trigger": triple.get("aec_trigger", "unknown"),
+            "aether:last_accessed": datetime.now().isoformat(),
+            "aether:access_count": 0,
         })
     return kg
 
@@ -131,6 +133,16 @@ def mark_updated(kg: dict, node_id: str, updates: dict) -> dict:
                 node[k] = v
             node["aether:origin"] = "updated"
             node["aether:updated_date"] = datetime.now().isoformat()
+            break
+    return kg
+
+
+def touch_node(kg: dict, node_id: str) -> dict:
+    """Increment access_count and update last_accessed on a node."""
+    for node in get_nodes(kg):
+        if node.get("@id") == node_id:
+            node["aether:last_accessed"] = datetime.now().isoformat()
+            node["aether:access_count"] = node.get("aether:access_count", 0) + 1
             break
     return kg
 
