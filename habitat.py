@@ -101,6 +101,50 @@ class Habitat:
             )),
         }
 
+    def execute_all(
+        self,
+        topic: str,
+        query: str,
+        capsules: dict,
+        max_agents: int = 3
+    ) -> list[dict]:
+        """
+        Route topic to matching capsules and execute all of them.
+
+        Args:
+            topic: routing topic
+            query: input query to run on each capsule
+            capsules: dict of capsule_id -> Capsule instance
+            max_agents: max capsules to execute (default 3)
+
+        Returns:
+            list of results, one per executed capsule
+        """
+        matches = self.route(topic)[:max_agents]
+        results = []
+
+        for capsule_id in matches:
+            capsule = capsules.get(capsule_id)
+            if not capsule:
+                continue
+            try:
+                ctx = capsule.run(query)
+                results.append({
+                    "capsule_id": capsule_id,
+                    "capsule_name": capsule.name,
+                    "response": ctx["generated"],
+                    "aec_score": ctx["review"]["aec"]["score"],
+                    "aec_passed": ctx["review"]["aec"]["passed"],
+                    "ghost": ctx["review"]["aec"].get("ghost", False)
+                })
+            except Exception as e:
+                results.append({
+                    "capsule_id": capsule_id,
+                    "error": str(e)
+                })
+
+        return results
+
 
 # -----------------------------------------------------------------------------
 # Orchestration - Query-to-Capsule Routing
