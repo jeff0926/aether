@@ -7,7 +7,7 @@
   "@id": "aether:agent-registry",
   "rdfs:label": "AETHER Agent Registry",
   "aether:version": "1.0.0",
-  "aether:generated": "2026-04-21T15:39:21.150853",
+  "aether:generated": "2026-04-21T15:56:44.340699",
   "aether:capsuleCount": 67,
   "@graph": [
     {
@@ -17,14 +17,12 @@
       "aether:capsuleId": "aether-validator-v1.0.0-d5a16071",
       "aether:version": "1.0.0",
       "aether:domain": "validation",
-      "aether:description": "Aether Validator — validates and verifies Validation. Use for quality checks.",
+      "aether:description": "Validates AETHER capsule structure and AEC verification results. Use for capsule quality checks.",
       "aether:topics": [
-        "aether",
-        "capsule.validate",
         "validate",
-        "validation",
-        "validator",
-        "verify"
+        "aec",
+        "capsule.validate",
+        "verification"
       ],
       "aether:agentType": "validator",
       "aether:capability": [
@@ -40,15 +38,12 @@
       "rdfs:label": "Aether_Alpha",
       "aether:capsuleId": "Aether_Alpha-v1.0.0-alpha01",
       "aether:version": "1.0.0",
-      "aether:domain": "validation",
-      "aether:description": "Aether_Alpha — creates and formats Validation artifacts. Use for validation tasks.",
+      "aether:domain": "general",
+      "aether:description": "Aether_Alpha — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "aether",
         "alpha",
-        "capsule.validate",
-        "validate",
-        "validation",
-        "verify"
+        "general"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -87,23 +82,20 @@
       "rdfs:label": "algorithmic-art-skill-agent",
       "aether:capsuleId": "algorithmic-art-skill-agent-v1.1.0-6934ca74",
       "aether:version": "1.1.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Algorithmic Art Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "generative-art",
+      "aether:description": "Algorithmic Art Skill Agent — creates and formats Generative Art artifacts. Use for generative art tasks.",
       "aether:topics": [
+        "generative-art",
         "algorithmic",
-        "art",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "procedural",
+        "creative-coding",
+        "art-generation"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 43,
       "aether:antiPatternCount": 8,
@@ -115,23 +107,20 @@
       "rdfs:label": "algorithmic-art",
       "aether:capsuleId": "algorithmic-art-v1.0.0-1293f494",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Algorithmic Art — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "generative-art",
+      "aether:description": "Algorithmic Art — creates and formats Generative Art artifacts. Use for generative art tasks.",
       "aether:topics": [
+        "generative-art",
         "algorithmic",
-        "art",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "procedural",
+        "creative-coding",
+        "art-generation"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 43,
       "aether:antiPatternCount": 8,
@@ -143,12 +132,14 @@
       "rdfs:label": "algorithmic-art",
       "aether:capsuleId": "algorithmic-art-v1.0.0-96ad66bb",
       "aether:version": "1.0.0",
-      "aether:domain": "general",
-      "aether:description": "Algorithmic Art — creates and formats General artifacts. Use for general tasks.",
+      "aether:domain": "generative-art",
+      "aether:description": "Algorithmic Art — creates and formats Generative Art artifacts. Use for generative art tasks.",
       "aether:topics": [
+        "generative-art",
         "algorithmic",
-        "art",
-        "general"
+        "procedural",
+        "creative-coding",
+        "art-generation"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -166,22 +157,18 @@
       "rdfs:label": "brand-guidelines-skill-agent",
       "aether:capsuleId": "brand-guidelines-skill-agent-v1.1.0-7273283b",
       "aether:version": "1.1.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Brand Guidelines Skill Agent — creates and formats Ui Design artifacts. Use for ui design tasks.",
+      "aether:domain": "general",
+      "aether:description": "Brand Guidelines Skill Agent — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "brand",
-        "css",
-        "design",
-        "frontend",
-        "guidelines",
-        "ui",
-        "ui.design"
+        "general",
+        "guidelines"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 4,
       "aether:ruleCount": 4
@@ -192,22 +179,18 @@
       "rdfs:label": "brand-guidelines",
       "aether:capsuleId": "brand-guidelines-v1.0.0-52d9130a",
       "aether:version": "1.0.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Brand Guidelines — creates and formats Ui Design artifacts. Use for ui design tasks.",
+      "aether:domain": "general",
+      "aether:description": "Brand Guidelines — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "brand",
-        "css",
-        "design",
-        "frontend",
-        "guidelines",
-        "ui",
-        "ui.design"
+        "general",
+        "guidelines"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 4,
       "aether:ruleCount": 4
@@ -218,22 +201,18 @@
       "rdfs:label": "brand-guidelines",
       "aether:capsuleId": "brand-guidelines-v1.0.0-e6dde892",
       "aether:version": "1.0.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Brand Guidelines — creates and formats Ui Design artifacts. Use for ui design tasks.",
+      "aether:domain": "general",
+      "aether:description": "Brand Guidelines — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "brand",
-        "css",
-        "design",
-        "frontend",
-        "guidelines",
-        "ui",
-        "ui.design"
+        "general",
+        "guidelines"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 52,
       "aether:ruleCount": 14
@@ -245,10 +224,14 @@
       "aether:capsuleId": "buffett-v1.0.0-3b667668",
       "aether:version": "1.0.0",
       "aether:domain": "investment",
-      "aether:description": "Buffett — creates and formats Investment artifacts. Use for investment tasks.",
+      "aether:description": "Investment advisor specializing in Warren Buffett's value investing principles. Use for investment strategy and stock analysis.",
       "aether:topics": [
+        "investment",
         "buffett",
-        "investment"
+        "value-investing",
+        "stocks",
+        "portfolio",
+        "warren-buffett"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -264,21 +247,19 @@
       "rdfs:label": "canvas-design-skill-agent",
       "aether:capsuleId": "canvas-design-skill-agent-v1.1.0-4a405b8a",
       "aether:version": "1.1.0",
-      "aether:domain": "frontend-design",
-      "aether:description": "Canvas Design Skill Agent — creates and formats Frontend Design artifacts. Use for frontend design tasks.",
+      "aether:domain": "generative-art",
+      "aether:description": "Canvas Design Skill Agent — creates and formats Generative Art artifacts. Use for generative art tasks.",
       "aether:topics": [
         "canvas",
-        "css",
-        "design",
-        "frontend",
-        "frontend.design",
-        "ui"
+        "html-canvas",
+        "2d-graphics",
+        "drawing"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 31,
       "aether:antiPatternCount": 9,
@@ -290,21 +271,19 @@
       "rdfs:label": "canvas-design",
       "aether:capsuleId": "canvas-design-v1.0.0-3d4cc9ec",
       "aether:version": "1.0.0",
-      "aether:domain": "frontend-design",
-      "aether:description": "Canvas Design — creates and formats Frontend Design artifacts. Use for frontend design tasks.",
+      "aether:domain": "generative-art",
+      "aether:description": "Canvas Design — creates and formats Generative Art artifacts. Use for generative art tasks.",
       "aether:topics": [
         "canvas",
-        "css",
-        "design",
-        "frontend",
-        "frontend.design",
-        "ui"
+        "html-canvas",
+        "2d-graphics",
+        "drawing"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 31,
       "aether:antiPatternCount": 9,
@@ -316,23 +295,19 @@
       "rdfs:label": "canvas-design",
       "aether:capsuleId": "canvas-design-v1.0.0-43dab6e6",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Canvas Design — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "generative-art",
+      "aether:description": "Canvas Design — creates and formats Generative Art artifacts. Use for generative art tasks.",
       "aether:topics": [
         "canvas",
-        "design",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "html-canvas",
+        "2d-graphics",
+        "drawing"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 60,
       "aether:antiPatternCount": 5,
@@ -344,23 +319,22 @@
       "rdfs:label": "Strategic Architect CEO Agent",
       "aether:capsuleId": "ceo-engine-v1.0.0-f3a2b9d1",
       "aether:version": "1.0.0",
-      "aether:domain": "presentation",
-      "aether:description": "Strategic Architect Ceo Agent — strategic advisor for Presentation. Use for business decisions.",
+      "aether:domain": "executive-strategy",
+      "aether:description": "Strategic Architect Ceo Agent — strategic advisor for Executive Strategy. Use for business decisions.",
       "aether:topics": [
         "architect",
+        "business",
         "ceo",
-        "pptx",
-        "presentation",
-        "presentation.create",
-        "slides",
-        "strategic"
+        "executive",
+        "executive.strategy",
+        "strategic",
+        "strategy"
       ],
       "aether:agentType": "executive",
       "aether:capability": [
         "advise",
         "strategize",
-        "evaluate",
-        "structure"
+        "evaluate"
       ],
       "aether:kgNodes": 60,
       "aether:antiPatternCount": 10,
@@ -382,7 +356,8 @@
         "cds",
         "cfo",
         "odata",
-        "sap"
+        "sap",
+        "sap.development"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -423,23 +398,21 @@
       "rdfs:label": "claude-api-skill-agent",
       "aether:capsuleId": "claude-api-skill-agent-v1.1.0-9623a332",
       "aether:version": "1.1.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Claude Api Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "api-integration",
+      "aether:description": "Expert on Claude API and Anthropic SDK. Use for questions about integrating Claude, API usage, and SDK setup.",
       "aether:topics": [
-        "api",
-        "claude",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "claude-api",
+        "anthropic-api",
+        "api-integration",
+        "claude-integration",
+        "api-key",
+        "sdk"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 76,
       "aether:antiPatternCount": 29,
@@ -451,23 +424,21 @@
       "rdfs:label": "claude-api",
       "aether:capsuleId": "claude-api-v1.0.0-53ecf265",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Claude Api — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "api-integration",
+      "aether:description": "Expert on Claude API and Anthropic SDK. Use for questions about integrating Claude, API usage, and SDK setup.",
       "aether:topics": [
-        "api",
-        "claude",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "claude-api",
+        "anthropic-api",
+        "api-integration",
+        "claude-integration",
+        "api-key",
+        "sdk"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 47,
       "aether:antiPatternCount": 16,
@@ -479,12 +450,15 @@
       "rdfs:label": "claude-api",
       "aether:capsuleId": "claude-api-v1.0.0-c43fcb17",
       "aether:version": "1.0.0",
-      "aether:domain": "general",
-      "aether:description": "Claude Api — creates and formats General artifacts. Use for general tasks.",
+      "aether:domain": "api-integration",
+      "aether:description": "Expert on Claude API and Anthropic SDK. Use for questions about integrating Claude, API usage, and SDK setup.",
       "aether:topics": [
-        "api",
-        "claude",
-        "general"
+        "claude-api",
+        "anthropic-api",
+        "api-integration",
+        "claude-integration",
+        "api-key",
+        "sdk"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -574,23 +548,20 @@
       "rdfs:label": "doc-coauthoring-skill-agent",
       "aether:capsuleId": "doc-coauthoring-skill-agent-v1.1.0-de00dbb8",
       "aether:version": "1.1.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Doc Coauthoring Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "collaboration",
+      "aether:description": "Doc Coauthoring Skill Agent — creates and formats Collaboration artifacts. Use for collaboration tasks.",
       "aether:topics": [
         "coauthoring",
-        "doc",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "collaboration",
+        "document-editing",
+        "track-changes",
+        "comments"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 62,
       "aether:antiPatternCount": 8,
@@ -602,23 +573,20 @@
       "rdfs:label": "doc-coauthoring",
       "aether:capsuleId": "doc-coauthoring-v1.0.0-4bfea1b8",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Doc Coauthoring — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "collaboration",
+      "aether:description": "Doc Coauthoring — creates and formats Collaboration artifacts. Use for collaboration tasks.",
       "aether:topics": [
         "coauthoring",
-        "doc",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "collaboration",
+        "document-editing",
+        "track-changes",
+        "comments"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 67,
       "aether:antiPatternCount": 1,
@@ -630,23 +598,20 @@
       "rdfs:label": "doc-coauthoring",
       "aether:capsuleId": "doc-coauthoring-v1.0.0-91d65700",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Doc Coauthoring — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "collaboration",
+      "aether:description": "Doc Coauthoring — creates and formats Collaboration artifacts. Use for collaboration tasks.",
       "aether:topics": [
         "coauthoring",
-        "doc",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "collaboration",
+        "document-editing",
+        "track-changes",
+        "comments"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 62,
       "aether:antiPatternCount": 8,
@@ -659,13 +624,16 @@
       "aether:capsuleId": "docx-skill-agent-v1.1.0-5bdcf3c8",
       "aether:version": "1.1.0",
       "aether:domain": "document-creation",
-      "aether:description": "Docx Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:description": "Creates professional Word (.docx) documents with correct heading styles, tables, and formatting. Use for ANY request to create a Word document, report, memo, or .docx file.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
         "docx",
+        "word",
+        "word-document",
+        "document.create",
         "report",
-        "word"
+        "status-report",
+        "project-report",
+        "docx-file"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -685,13 +653,16 @@
       "aether:capsuleId": "docx-v1.0.0-a45b0e02",
       "aether:version": "1.0.0",
       "aether:domain": "document-creation",
-      "aether:description": "Docx — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:description": "Creates professional Word (.docx) documents with correct heading styles, tables, and formatting. Use for ANY request to create a Word document, report, memo, or .docx file.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
         "docx",
+        "word",
+        "word-document",
+        "document.create",
         "report",
-        "word"
+        "status-report",
+        "project-report",
+        "docx-file"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -711,13 +682,16 @@
       "aether:capsuleId": "docx-v1.0.0-a7c21b93",
       "aether:version": "1.0.0",
       "aether:domain": "document-creation",
-      "aether:description": "Docx — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:description": "Creates professional Word (.docx) documents with correct heading styles, tables, and formatting. Use for ANY request to create a Word document, report, memo, or .docx file.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
         "docx",
+        "word",
+        "word-document",
+        "document.create",
         "report",
-        "word"
+        "status-report",
+        "project-report",
+        "docx-file"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -736,22 +710,17 @@
       "rdfs:label": "domain-agent-builder",
       "aether:capsuleId": "domain-agent-builder-v1.0.0-d7a310f8",
       "aether:version": "1.0.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Domain Agent Builder — technical expert in Ui Design. Use for domain-specific questions.",
+      "aether:domain": "general",
+      "aether:description": "Domain Agent Builder — technical expert in General. Use for domain-specific questions.",
       "aether:topics": [
-        "builder",
-        "css",
-        "design",
         "domain",
-        "frontend",
-        "ui",
-        "ui.design"
+        "general"
       ],
       "aether:agentType": "domain",
       "aether:capability": [
-        "design",
         "advise",
-        "review"
+        "review",
+        "generate"
       ],
       "aether:kgNodes": 22,
       "aether:ruleCount": 12
@@ -763,15 +732,18 @@
       "aether:capsuleId": "domain-sap-cap-v1.0.0-f23f10ee",
       "aether:version": "1.0.0",
       "aether:domain": "sap-development",
-      "aether:description": "Domain Sap Cap — technical expert in Sap Development. Use for domain-specific questions.",
+      "aether:description": "SAP CAP development expert. Use for SAP Cloud Application Programming model, CDS, OData, and BTP questions.",
       "aether:topics": [
-        "btp",
+        "sap",
         "cap",
         "cds",
-        "domain",
         "odata",
-        "sap",
-        "sap.development"
+        "btp",
+        "sap-cap",
+        "cloud-application-programming",
+        "abap",
+        "fiori",
+        "s4hana"
       ],
       "aether:agentType": "domain",
       "aether:capability": [
@@ -788,13 +760,18 @@
       "aether:capsuleId": "frontend-design-skill-agent-v1.1.0-9977ab18",
       "aether:version": "1.1.0",
       "aether:domain": "frontend-design",
-      "aether:description": "Frontend Design Skill Agent — creates and formats Frontend Design artifacts. Use for frontend design tasks.",
+      "aether:description": "Frontend design and CSS expert. Use for design system questions, typography, CSS patterns, and UI guidance.",
       "aether:topics": [
         "css",
         "design",
         "frontend",
-        "frontend.design",
-        "ui"
+        "typography",
+        "ui",
+        "ux",
+        "design-system",
+        "color",
+        "layout",
+        "component"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -813,13 +790,18 @@
       "aether:capsuleId": "frontend-design-v1.0.0-9c74988c",
       "aether:version": "1.0.0",
       "aether:domain": "frontend-design",
-      "aether:description": "Frontend Design — creates and formats Frontend Design artifacts. Use for frontend design tasks.",
+      "aether:description": "Frontend design and CSS expert. Use for design system questions, typography, CSS patterns, and UI guidance.",
       "aether:topics": [
         "css",
         "design",
         "frontend",
-        "frontend.design",
-        "ui"
+        "typography",
+        "ui",
+        "ux",
+        "design-system",
+        "color",
+        "layout",
+        "component"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -838,13 +820,18 @@
       "aether:capsuleId": "frontend-design-v1.0.0-ff6ab491",
       "aether:version": "1.0.0",
       "aether:domain": "frontend-design",
-      "aether:description": "Frontend Design — creates and formats Frontend Design artifacts. Use for frontend design tasks.",
+      "aether:description": "Frontend design and CSS expert. Use for design system questions, typography, CSS patterns, and UI guidance.",
       "aether:topics": [
         "css",
         "design",
         "frontend",
-        "frontend.design",
-        "ui"
+        "typography",
+        "ui",
+        "ux",
+        "design-system",
+        "color",
+        "layout",
+        "component"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -884,23 +871,18 @@
       "rdfs:label": "internal-comms",
       "aether:capsuleId": "internal-comms-v1.0.0-61bbe47d",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Internal Comms — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "general",
+      "aether:description": "Internal Comms — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "comms",
-        "document.create",
-        "document.creation",
-        "docx",
-        "internal",
-        "report",
-        "word"
+        "general",
+        "internal"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 64,
       "aether:antiPatternCount": 3,
@@ -957,23 +939,17 @@
       "rdfs:label": "mcp-builder-skill-agent",
       "aether:capsuleId": "mcp-builder-skill-agent-v1.1.0-89349393",
       "aether:version": "1.1.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Mcp Builder Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "general",
+      "aether:description": "Mcp Builder Skill Agent — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
-        "builder",
-        "document.create",
-        "document.creation",
-        "docx",
-        "mcp",
-        "report",
-        "word"
+        "general",
+        "mcp"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 8,
       "aether:ruleCount": 8
@@ -984,23 +960,17 @@
       "rdfs:label": "mcp-builder",
       "aether:capsuleId": "mcp-builder-v1.0.0-689f2526",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Mcp Builder — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "general",
+      "aether:description": "Mcp Builder — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
-        "builder",
-        "document.create",
-        "document.creation",
-        "docx",
-        "mcp",
-        "report",
-        "word"
+        "general",
+        "mcp"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 63,
       "aether:ruleCount": 25
@@ -1011,42 +981,34 @@
       "rdfs:label": "mcp-builder",
       "aether:capsuleId": "mcp-builder-v1.0.0-85cb8591",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Mcp Builder — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "general",
+      "aether:description": "Mcp Builder — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
-        "builder",
-        "document.create",
-        "document.creation",
-        "docx",
-        "mcp",
-        "report",
-        "word"
+        "general",
+        "mcp"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 8,
       "aether:ruleCount": 8
     },
     {
-      "@id": "capsule:orchestrator-v1.0.0-6cb4ea81",
+      "@id": "capsule:orchestrator-v1.0.0-cb57a1d4",
       "@type": "aether:CapsuleAgent",
       "rdfs:label": "AETHER Orchestrator",
-      "aether:capsuleId": "orchestrator-v1.0.0-6cb4ea81",
+      "aether:capsuleId": "orchestrator-v1.0.0-cb57a1d4",
       "aether:version": "1.0.0",
-      "aether:domain": "validation",
-      "aether:description": "Aether Orchestrator — routes queries to appropriate agents. Meta-level coordination.",
+      "aether:domain": "orchestration",
+      "aether:description": "Routes queries to appropriate domain agents. Meta-level coordination. Never answers directly.",
       "aether:topics": [
-        "aether",
-        "capsule.validate",
-        "orchestrator",
-        "validate",
-        "validation",
-        "verify"
+        "orchestrate",
+        "route",
+        "coordinate",
+        "multi-agent"
       ],
       "aether:agentType": "orchestrator",
       "aether:capability": [
@@ -1054,7 +1016,9 @@
         "coordinate",
         "delegate"
       ],
-      "aether:kgNodes": 0
+      "aether:kgNodes": 9,
+      "aether:antiPatternCount": 2,
+      "aether:ruleCount": 4
     },
     {
       "@id": "capsule:pdf-skill-agent-v1.1.0-4be5b762",
@@ -1063,10 +1027,12 @@
       "aether:capsuleId": "pdf-skill-agent-v1.1.0-4be5b762",
       "aether:version": "1.1.0",
       "aether:domain": "pdf-processing",
-      "aether:description": "Pdf Skill Agent — creates and formats Pdf Processing artifacts. Use for pdf processing tasks.",
+      "aether:description": "Creates and manipulates PDF files. Use for ANY request involving PDF creation or editing.",
       "aether:topics": [
         "pdf",
-        "pdf.processing"
+        "pdf-file",
+        "pdf.create",
+        "portable-document"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -1084,22 +1050,19 @@
       "rdfs:label": "pdf",
       "aether:capsuleId": "pdf-v1.0.0-4a7beb53",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Pdf — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "pdf-processing",
+      "aether:description": "Creates and manipulates PDF files. Use for ANY request involving PDF creation or editing.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
-        "docx",
         "pdf",
-        "report",
-        "word"
+        "pdf-file",
+        "pdf.create",
+        "portable-document"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 48,
       "aether:antiPatternCount": 1,
@@ -1112,10 +1075,12 @@
       "aether:capsuleId": "pdf-v1.0.0-ced6cea7",
       "aether:version": "1.0.0",
       "aether:domain": "pdf-processing",
-      "aether:description": "Pdf — creates and formats Pdf Processing artifacts. Use for pdf processing tasks.",
+      "aether:description": "Creates and manipulates PDF files. Use for ANY request involving PDF creation or editing.",
       "aether:topics": [
         "pdf",
-        "pdf.processing"
+        "pdf-file",
+        "pdf.create",
+        "portable-document"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -1134,12 +1099,15 @@
       "aether:capsuleId": "pptx-skill-agent-v1.1.0-7fb9870a",
       "aether:version": "1.1.0",
       "aether:domain": "presentation",
-      "aether:description": "Pptx Skill Agent — creates and formats Presentation artifacts. Use for presentation tasks.",
+      "aether:description": "Creates PowerPoint presentations (.pptx). Use for ANY request to create slides, a deck, or a presentation.",
       "aether:topics": [
         "pptx",
+        "powerpoint",
         "presentation",
-        "presentation.create",
-        "slides"
+        "slides",
+        "deck",
+        "slide-deck",
+        "presentation.create"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -1159,12 +1127,15 @@
       "aether:capsuleId": "pptx-v1.0.0-2f16d57c",
       "aether:version": "1.0.0",
       "aether:domain": "presentation",
-      "aether:description": "Pptx — creates and formats Presentation artifacts. Use for presentation tasks.",
+      "aether:description": "Creates PowerPoint presentations (.pptx). Use for ANY request to create slides, a deck, or a presentation.",
       "aether:topics": [
         "pptx",
+        "powerpoint",
         "presentation",
-        "presentation.create",
-        "slides"
+        "slides",
+        "deck",
+        "slide-deck",
+        "presentation.create"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -1184,12 +1155,15 @@
       "aether:capsuleId": "pptx-v1.0.0-4501fac8",
       "aether:version": "1.0.0",
       "aether:domain": "presentation",
-      "aether:description": "Pptx — creates and formats Presentation artifacts. Use for presentation tasks.",
+      "aether:description": "Creates PowerPoint presentations (.pptx). Use for ANY request to create slides, a deck, or a presentation.",
       "aether:topics": [
         "pptx",
+        "powerpoint",
         "presentation",
-        "presentation.create",
-        "slides"
+        "slides",
+        "deck",
+        "slide-deck",
+        "presentation.create"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -1208,22 +1182,21 @@
       "rdfs:label": "skill-creator-skill-agent",
       "aether:capsuleId": "skill-creator-skill-agent-v1.1.0-e9958bbe",
       "aether:version": "1.1.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Skill Creator Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "skill-development",
+      "aether:description": "Creates new AETHER skills and capsules. Use ONLY for requests to build, create, or define new agent skills. Do NOT use for document, presentation, or content creation.",
       "aether:topics": [
-        "creator",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "skill.create",
+        "skill-builder",
+        "skill-creator",
+        "aether-skill",
+        "new-skill",
+        "build-skill"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 89,
       "aether:antiPatternCount": 18,
@@ -1235,22 +1208,21 @@
       "rdfs:label": "skill-creator",
       "aether:capsuleId": "skill-creator-v1.0.0-8e6347eb",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Skill Creator — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "skill-development",
+      "aether:description": "Creates new AETHER skills and capsules. Use ONLY for requests to build, create, or define new agent skills. Do NOT use for document, presentation, or content creation.",
       "aether:topics": [
-        "creator",
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word"
+        "skill.create",
+        "skill-builder",
+        "skill-creator",
+        "aether-skill",
+        "new-skill",
+        "build-skill"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 89,
       "aether:antiPatternCount": 18,
@@ -1262,11 +1234,15 @@
       "rdfs:label": "skill-creator",
       "aether:capsuleId": "skill-creator-v1.0.0-9a0ea093",
       "aether:version": "1.0.0",
-      "aether:domain": "general",
-      "aether:description": "Skill Creator — creates and formats General artifacts. Use for general tasks.",
+      "aether:domain": "skill-development",
+      "aether:description": "Creates new AETHER skills and capsules. Use ONLY for requests to build, create, or define new agent skills. Do NOT use for document, presentation, or content creation.",
       "aether:topics": [
-        "creator",
-        "general"
+        "skill.create",
+        "skill-builder",
+        "skill-creator",
+        "aether-skill",
+        "new-skill",
+        "build-skill"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
@@ -1287,7 +1263,6 @@
       "aether:domain": "general",
       "aether:description": "Slack Gif Creator Skill Agent — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
-        "creator",
         "general",
         "gif",
         "slack"
@@ -1311,7 +1286,6 @@
       "aether:domain": "general",
       "aether:description": "Slack Gif Creator — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
-        "creator",
         "general",
         "gif",
         "slack"
@@ -1335,7 +1309,6 @@
       "aether:domain": "general",
       "aether:description": "Slack Gif Creator — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
-        "creator",
         "general",
         "gif",
         "slack"
@@ -1445,15 +1418,17 @@
       "aether:capsuleId": "thomas-jefferson-scholar-agent-v1.0.0-ff1c0211",
       "aether:version": "1.0.0",
       "aether:domain": "american-history",
-      "aether:description": "Thomas Jefferson Scholar Agent — expert knowledge on American History. Use for research and factual questions.",
+      "aether:description": "Expert scholar on Thomas Jefferson. Use for questions about Jefferson, his presidency, the Declaration of Independence, or early American history.",
       "aether:topics": [
-        "american.history",
-        "facts",
-        "history",
         "jefferson",
-        "research",
-        "scholar",
-        "thomas"
+        "thomas-jefferson",
+        "history",
+        "american-history",
+        "founding-fathers",
+        "declaration-of-independence",
+        "louisiana-purchase",
+        "president",
+        "monticello"
       ],
       "aether:agentType": "scholar",
       "aether:capability": [
@@ -1469,23 +1444,18 @@
       "rdfs:label": "web-artifacts-builder-skill-agent",
       "aether:capsuleId": "web-artifacts-builder-skill-agent-v1.1.0-68eb2966",
       "aether:version": "1.1.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Web Artifacts Builder Skill Agent — creates and formats Ui Design artifacts. Use for ui design tasks.",
+      "aether:domain": "general",
+      "aether:description": "Web Artifacts Builder Skill Agent — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "artifacts",
-        "builder",
-        "css",
-        "design",
-        "frontend",
-        "ui",
-        "ui.design",
+        "general",
         "web"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 9,
       "aether:antiPatternCount": 3,
@@ -1497,23 +1467,18 @@
       "rdfs:label": "web-artifacts-builder",
       "aether:capsuleId": "web-artifacts-builder-v1.0.0-44384f99",
       "aether:version": "1.0.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Web Artifacts Builder — creates and formats Ui Design artifacts. Use for ui design tasks.",
+      "aether:domain": "general",
+      "aether:description": "Web Artifacts Builder — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "artifacts",
-        "builder",
-        "css",
-        "design",
-        "frontend",
-        "ui",
-        "ui.design",
+        "general",
         "web"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 9,
       "aether:antiPatternCount": 3,
@@ -1525,23 +1490,18 @@
       "rdfs:label": "web-artifacts-builder",
       "aether:capsuleId": "web-artifacts-builder-v1.0.0-b11e4531",
       "aether:version": "1.0.0",
-      "aether:domain": "ui-design",
-      "aether:description": "Web Artifacts Builder — creates and formats Ui Design artifacts. Use for ui design tasks.",
+      "aether:domain": "general",
+      "aether:description": "Web Artifacts Builder — creates and formats General artifacts. Use for general tasks.",
       "aether:topics": [
         "artifacts",
-        "builder",
-        "css",
-        "design",
-        "frontend",
-        "ui",
-        "ui.design",
+        "general",
         "web"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
-        "design",
-        "advise",
-        "review"
+        "create",
+        "generate",
+        "format"
       ],
       "aether:kgNodes": 51,
       "aether:antiPatternCount": 5,
@@ -1622,22 +1582,21 @@
       "rdfs:label": "xlsx-skill-agent",
       "aether:capsuleId": "xlsx-skill-agent-v1.1.0-5af2ef86",
       "aether:version": "1.1.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Xlsx Skill Agent — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "spreadsheet",
+      "aether:description": "Creates Excel spreadsheets (.xlsx). Use for ANY request to create a spreadsheet, worksheet, or Excel file.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word",
-        "xlsx"
+        "xlsx",
+        "excel",
+        "spreadsheet",
+        "worksheet",
+        "excel-file",
+        "spreadsheet.create"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 19,
       "aether:antiPatternCount": 4,
@@ -1649,22 +1608,21 @@
       "rdfs:label": "xlsx",
       "aether:capsuleId": "xlsx-v1.0.0-8e569a7d",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Xlsx — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "spreadsheet",
+      "aether:description": "Creates Excel spreadsheets (.xlsx). Use for ANY request to create a spreadsheet, worksheet, or Excel file.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word",
-        "xlsx"
+        "xlsx",
+        "excel",
+        "spreadsheet",
+        "worksheet",
+        "excel-file",
+        "spreadsheet.create"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 19,
       "aether:antiPatternCount": 4,
@@ -1676,22 +1634,21 @@
       "rdfs:label": "xlsx",
       "aether:capsuleId": "xlsx-v1.0.0-f6f859fc",
       "aether:version": "1.0.0",
-      "aether:domain": "document-creation",
-      "aether:description": "Xlsx — creates and formats Document Creation artifacts. Use for document creation tasks.",
+      "aether:domain": "spreadsheet",
+      "aether:description": "Creates Excel spreadsheets (.xlsx). Use for ANY request to create a spreadsheet, worksheet, or Excel file.",
       "aether:topics": [
-        "document.create",
-        "document.creation",
-        "docx",
-        "report",
-        "word",
-        "xlsx"
+        "xlsx",
+        "excel",
+        "spreadsheet",
+        "worksheet",
+        "excel-file",
+        "spreadsheet.create"
       ],
       "aether:agentType": "skill",
       "aether:capability": [
         "create",
         "generate",
-        "format",
-        "structure"
+        "format"
       ],
       "aether:kgNodes": 67,
       "aether:antiPatternCount": 8,

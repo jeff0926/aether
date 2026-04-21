@@ -87,10 +87,19 @@ class OrchestratorCapsule(Capsule):
         Search registry KG for capsules matching intent and entities.
         Returns list of CapsuleAgent nodes sorted by relevance.
         """
+        import re
         nodes = self.registry.get("@graph", [])
         matches = []
         query_lower = query.lower()
-        query_words = set(query_lower.split())
+
+        # Tokenize query: extract words, strip punctuation, handle hyphens
+        raw_words = re.findall(r'[a-z0-9]+(?:-[a-z0-9]+)*', query_lower)
+        query_words = set()
+        for word in raw_words:
+            query_words.add(word)
+            # Also add hyphenated parts separately
+            if '-' in word:
+                query_words.update(word.split('-'))
 
         for node in nodes:
             if node.get("@type") != "aether:CapsuleAgent":

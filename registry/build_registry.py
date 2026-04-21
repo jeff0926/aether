@@ -13,6 +13,73 @@ from pathlib import Path
 from datetime import datetime
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# DOMAIN-SPECIFIC TOPICS AND DESCRIPTIONS
+# These override auto-generated topics for precise routing
+# ─────────────────────────────────────────────────────────────────────────────
+
+DOMAIN_TOPICS = {
+    "docx": ["docx", "word", "word-document", "document.create",
+             "report", "status-report", "project-report", "docx-file"],
+    "pptx": ["pptx", "powerpoint", "presentation", "slides",
+             "deck", "slide-deck", "presentation.create"],
+    "pdf": ["pdf", "pdf-file", "pdf.create", "portable-document"],
+    "xlsx": ["xlsx", "excel", "spreadsheet", "worksheet",
+             "excel-file", "spreadsheet.create"],
+    "frontend-design": ["css", "design", "frontend", "typography",
+                        "ui", "ux", "design-system", "color", "layout",
+                        "component", "stylesheet"],
+    "jefferson": ["jefferson", "thomas-jefferson", "history",
+                  "american-history", "founding-fathers",
+                  "declaration-of-independence", "louisiana-purchase",
+                  "president", "monticello"],
+    "ceo-engine": ["strategy", "ceo", "executive", "business-strategy",
+                   "market", "leadership", "go-to-market",
+                   "competitive-analysis", "board"],
+    "sap-cap": ["sap", "cap", "cds", "odata", "btp",
+                "sap-cap", "cloud-application-programming",
+                "abap", "fiori", "s4hana"],
+    "skill-creator": ["skill.create", "skill-builder", "skill-creator",
+                      "aether-skill", "new-skill", "build-skill"],
+    "claude-api": ["claude-api", "anthropic-api", "api-integration",
+                   "claude-integration", "api-key", "sdk"],
+    "algorithmic-art": ["generative-art", "algorithmic", "procedural",
+                        "creative-coding", "art-generation"],
+    "canvas-design": ["canvas", "html-canvas", "2d-graphics", "drawing"],
+    "doc-coauthoring": ["coauthoring", "collaboration", "document-editing",
+                        "track-changes", "comments"],
+    "buffett": ["investment", "buffett", "value-investing", "stocks",
+                "portfolio", "warren-buffett"],
+    "orchestrator": ["orchestrate", "route", "coordinate", "multi-agent"],
+    "aether-validator": ["validate", "aec", "capsule.validate", "verification"],
+}
+
+DOMAIN_DESCRIPTIONS = {
+    "docx": "Creates professional Word (.docx) documents with correct heading styles, tables, and formatting. Use for ANY request to create a Word document, report, memo, or .docx file.",
+    "pptx": "Creates PowerPoint presentations (.pptx). Use for ANY request to create slides, a deck, or a presentation.",
+    "pdf": "Creates and manipulates PDF files. Use for ANY request involving PDF creation or editing.",
+    "xlsx": "Creates Excel spreadsheets (.xlsx). Use for ANY request to create a spreadsheet, worksheet, or Excel file.",
+    "frontend-design": "Frontend design and CSS expert. Use for design system questions, typography, CSS patterns, and UI guidance.",
+    "jefferson": "Expert scholar on Thomas Jefferson. Use for questions about Jefferson, his presidency, the Declaration of Independence, or early American history.",
+    "ceo-engine": "CEO-level strategic advisor. Use for business strategy, market positioning, and executive decisions. Does NOT handle technical architecture or HR.",
+    "sap-cap": "SAP CAP development expert. Use for SAP Cloud Application Programming model, CDS, OData, and BTP questions.",
+    "skill-creator": "Creates new AETHER skills and capsules. Use ONLY for requests to build, create, or define new agent skills. Do NOT use for document, presentation, or content creation.",
+    "claude-api": "Expert on Claude API and Anthropic SDK. Use for questions about integrating Claude, API usage, and SDK setup.",
+    "buffett": "Investment advisor specializing in Warren Buffett's value investing principles. Use for investment strategy and stock analysis.",
+    "orchestrator": "Routes queries to appropriate domain agents. Meta-level coordination. Never answers directly.",
+    "aether-validator": "Validates AETHER capsule structure and AEC verification results. Use for capsule quality checks.",
+}
+
+
+def get_domain_key(name: str) -> str | None:
+    """Get the matching domain key for a capsule name."""
+    name_lower = name.lower()
+    for key in DOMAIN_TOPICS:
+        if key in name_lower:
+            return key
+    return None
+
+
 def detect_agent_type(name: str, domain: str) -> str:
     """Detect agent type from name and domain."""
     name_lower = name.lower()
@@ -37,44 +104,51 @@ def detect_domain(name: str, kg_labels: list) -> str:
     name_lower = name.lower()
     labels_text = " ".join(kg_labels).lower()
 
-    # Document domains
-    if "docx" in name_lower or "word" in name_lower or "document" in labels_text:
+    # Check explicit domain mappings first (order matters!)
+    # Skill-creator is NOT document-creation
+    if "skill-creator" in name_lower:
+        return "skill-development"
+    if "claude-api" in name_lower:
+        return "api-integration"
+    if "orchestrator" in name_lower:
+        return "orchestration"
+    if "doc-coauthoring" in name_lower:
+        return "collaboration"
+    if "algorithmic-art" in name_lower or "canvas-design" in name_lower:
+        return "generative-art"
+
+    # Document domains (must check name specifically, not just labels)
+    if "docx" in name_lower:
         return "document-creation"
-    if "pptx" in name_lower or "powerpoint" in name_lower or "presentation" in labels_text:
+    if "pptx" in name_lower:
         return "presentation"
-    if "xlsx" in name_lower or "excel" in name_lower or "spreadsheet" in labels_text:
+    if "xlsx" in name_lower:
         return "spreadsheet"
     if "pdf" in name_lower:
         return "pdf-processing"
 
     # Design domains
-    if "frontend" in name_lower or "css" in name_lower or "design" in name_lower:
+    if "frontend" in name_lower or ("design" in name_lower and "css" in labels_text):
         return "frontend-design"
-    if "ui" in name_lower or "ux" in name_lower:
-        return "ui-design"
 
     # History/knowledge domains
-    if "jefferson" in name_lower or "history" in name_lower:
+    if "jefferson" in name_lower:
         return "american-history"
+    if "buffett" in name_lower:
+        return "investment"
     if "scholar" in name_lower:
         return "knowledge"
-    if "buffett" in name_lower or "investment" in name_lower:
-        return "investment"
 
     # Technical domains
     if "sap" in name_lower or "cap" in name_lower:
         return "sap-development"
-    if "python" in name_lower:
-        return "python-development"
-    if "sql" in name_lower or "database" in name_lower:
-        return "database"
 
     # Business domains
-    if "ceo" in name_lower or "executive" in name_lower:
+    if "ceo" in name_lower or "ceo-engine" in name_lower:
         return "executive-strategy"
 
     # Validation
-    if "validator" in name_lower or "aether" in name_lower:
+    if "validator" in name_lower or "aether-validator" in name_lower:
         return "validation"
 
     return "general"
@@ -82,36 +156,51 @@ def detect_domain(name: str, kg_labels: list) -> str:
 
 def detect_topics(name: str, domain: str, kg_labels: list) -> list:
     """Generate topic subscriptions from name, domain, and KG."""
+    # First check if we have explicit topics for this capsule type
+    domain_key = get_domain_key(name)
+    if domain_key and domain_key in DOMAIN_TOPICS:
+        return DOMAIN_TOPICS[domain_key][:10]
+
+    # Fall back to auto-generated topics
     topics = set()
     name_lower = name.lower()
 
     # Add domain as topic
     topics.add(domain.replace("-", "."))
 
-    # Extract keywords from name
+    # Extract keywords from name (exclude common words)
+    skip_words = {"v1", "v2", "agent", "skill", "the", "and", "for",
+                  "creator", "builder", "maker", "helper"}
     words = re.findall(r'[a-z]+', name_lower)
     for word in words:
-        if word not in ["v1", "v2", "agent", "skill", "the", "and", "for"]:
-            if len(word) > 2:
-                topics.add(word)
+        if word not in skip_words and len(word) > 2:
+            topics.add(word)
 
-    # Domain-specific topics
-    if "document" in domain:
+    # Domain-specific fallback topics (more conservative)
+    if "document" in domain and "docx" in name_lower:
         topics.update(["document.create", "docx", "word", "report"])
     if "presentation" in domain:
         topics.update(["presentation.create", "pptx", "slides"])
+    if "spreadsheet" in domain:
+        topics.update(["spreadsheet.create", "xlsx", "excel"])
+    if "pdf" in domain:
+        topics.update(["pdf", "pdf.create"])
     if "frontend" in domain or "design" in domain:
         topics.update(["design", "css", "frontend", "ui"])
     if "history" in domain:
         topics.update(["history", "research", "facts"])
     if "strategy" in domain or "executive" in domain:
-        topics.update(["strategy", "business", "executive", "leadership"])
+        topics.update(["strategy", "business", "executive"])
     if "sap" in domain:
         topics.update(["sap", "cap", "cds", "odata", "btp"])
     if "validation" in domain:
         topics.update(["validate", "verify", "capsule.validate"])
 
-    return sorted(list(topics))[:8]  # Limit to 8 topics
+    # If no specific topics, use general
+    if len(topics) <= 1:
+        topics.add("general")
+
+    return sorted(list(topics))[:10]
 
 
 def detect_capabilities(agent_type: str, domain: str) -> list:
@@ -138,9 +227,13 @@ def detect_capabilities(agent_type: str, domain: str) -> list:
 
 def generate_description(name: str, domain: str, agent_type: str, kg_labels: list) -> str:
     """Generate a one-sentence description."""
-    # Clean name
-    clean_name = re.sub(r'-v\d.*', '', name).replace('-', ' ').title()
+    # First check if we have an explicit description
+    domain_key = get_domain_key(name)
+    if domain_key and domain_key in DOMAIN_DESCRIPTIONS:
+        return DOMAIN_DESCRIPTIONS[domain_key]
 
+    # Fall back to auto-generated description
+    clean_name = re.sub(r'-v\d.*', '', name).replace('-', ' ').title()
     domain_desc = domain.replace("-", " ").title()
 
     if agent_type == "skill":
