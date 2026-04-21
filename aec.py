@@ -193,9 +193,23 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
     if not statements:
         return {
             "score": 0.0, "threshold": threshold, "passed": False,
+            "ghost": True,
+            "ghost_message": "[GHOST] Response could not be verified against knowledge graph. Confidence: 0.0",
             "total_statements": 0, "grounded_statements": 0,
             "ungrounded_statements": 0, "persona_statements": 0, "persona_ratio": 0.0,
             "statements": [], "gaps": [{"text": response[:100], "reason": "no_statements"}],
+        }
+
+    # GHOST state: no KG to verify against
+    if not kg_nodes and compiled_kg is None:
+        return {
+            "score": 0.0, "threshold": threshold, "passed": False,
+            "ghost": True,
+            "ghost_message": "[GHOST] Response could not be verified against knowledge graph. Confidence: 0.0",
+            "total_statements": len(statements), "grounded_statements": 0,
+            "ungrounded_statements": len(statements), "persona_statements": 0, "persona_ratio": 0.0,
+            "statements": [{"text": s, "grounded": False, "method": "no_kg", "category": "ungrounded"} for s in statements],
+            "gaps": [{"text": s, "reason": "no_kg"} for s in statements],
         }
 
     # Phase 1: Run factual AEC on all statements
@@ -337,10 +351,13 @@ def verify(response: str, kg_nodes: list[dict], threshold: float = DEFAULT_THRES
     score = grounded / verifiable if verifiable > 0 else 1.0
     persona_ratio = persona / len(statements) if statements else 0.0
 
+    passed = score >= threshold
     return {
         "score": round(score, 3),
         "threshold": threshold,
-        "passed": score >= threshold,
+        "passed": passed,
+        "ghost": not passed,
+        "ghost_message": "[GHOST] Response could not be verified against knowledge graph. Confidence: 0.0" if not passed else None,
         "total_statements": len(statements),
         "grounded_statements": grounded,
         "ungrounded_statements": ungrounded,
