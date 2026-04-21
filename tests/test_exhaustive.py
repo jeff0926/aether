@@ -352,7 +352,14 @@ def test_capsule():
 
 def test_stamper():
     """Stamper tests."""
-    from stamper import stamp_empty, stamp_from_source, validate_capsule, restamp
+    import importlib.util
+    _spec = importlib.util.spec_from_file_location("stamper_module", "stamper.py")
+    _stamper_mod = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_stamper_mod)
+    stamp_empty = _stamper_mod.stamp_empty
+    stamp_from_source = _stamper_mod.stamp_from_source
+    validate_capsule = _stamper_mod.validate_capsule
+    restamp = _stamper_mod.restamp
 
     results = []
 

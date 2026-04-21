@@ -9,7 +9,15 @@ import io
 from pathlib import Path
 
 from aether import Capsule, validate_folder, get_required_files
-from stamper import stamp_empty, stamp_from_source, validate_capsule, export_capsule
+import importlib.util
+# Import from stamper.py file (not stamper/ package)
+_spec = importlib.util.spec_from_file_location("stamper_module", "stamper.py")
+_stamper_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_stamper_mod)
+stamp_empty = _stamper_mod.stamp_empty
+stamp_from_source = _stamper_mod.stamp_from_source
+validate_capsule = _stamper_mod.validate_capsule
+export_capsule = _stamper_mod.export_capsule
 from llm import make_llm_fn
 from kg import load_kg, stats as kg_stats
 from education import queue_stats, get_pending, get_oldest_pending, educate, refine_session

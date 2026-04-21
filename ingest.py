@@ -10,7 +10,14 @@ import tempfile
 from pathlib import Path
 from datetime import datetime
 from aether import generate_id, REQUIRED_SUFFIXES
-from stamper import DEFAULT_DEFINITION, DEFAULT_KG, _write_json
+import importlib.util
+# Import from stamper.py file (not stamper/ package)
+_spec = importlib.util.spec_from_file_location("stamper_module", "stamper.py")
+_stamper_mod = importlib.util.module_from_spec(_spec)
+_spec.loader.exec_module(_stamper_mod)
+DEFAULT_DEFINITION = _stamper_mod.DEFAULT_DEFINITION
+DEFAULT_KG = _stamper_mod.DEFAULT_KG
+_write_json = _stamper_mod._write_json
 
 
 # Binary extensions to skip during recursive walk
