@@ -10,6 +10,7 @@ import sys
 import textwrap
 import time
 import threading
+from datetime import datetime
 from pathlib import Path
 
 # ═══════════════════════════════════════════════════════════════════════════════
@@ -679,12 +680,13 @@ def run_demo(capsule_path: Path, stub_mode: bool, no_docx: bool):
         print(f"{CYAN}{'━'*WIDTH}{RESET}")
         print()
 
-        output_path = Path("outputs/docx-demo-output.docx")
+        timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
+        output_path = Path("outputs") / f"docx-demo-output-{timestamp}.docx"
         success, size_kb = create_docx_file(response, output_path)
 
         if success:
             print_box_top()
-            print_box_line(f"📄  {GREEN}outputs/docx-demo-output.docx{RESET}  ({size_kb:.0f} KB)")
+            print_box_line(f"📄  {GREEN}{output_path}{RESET}  ({size_kb:.0f} KB)")
             print_box_empty()
             print_box_line(f"{DIM}Contents:{RESET}")
             print_box_line(f"  · Title Page")
