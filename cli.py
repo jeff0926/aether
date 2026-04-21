@@ -492,95 +492,136 @@ def cmd_export(args):
 
 
 def cmd_orchestrate(args):
-    """Route query to best matching capsule and execute."""
-    from habitat import orchestrate
+    """Route query to best matching capsule and execute via registry."""
+    from pathlib import Path
+    from habitat import Habitat
+    from orchestrator import OrchestratorCapsule
+    from aether import Capsule
     from llm import make_llm_fn
 
-    # Build LLM function if not dry run
-    llm_fn = None
-    if not args.dry_run:
-        llm_fn = make_llm_fn(provider=args.provider, model=args.model)
+    registry_path = Path(args.registry)
 
-    result = orchestrate(
-        query=args.query,
-        registry_path=args.registry,
-        llm_fn=llm_fn,
-        dry_run=args.dry_run
+    # Check for registry KG file
+    if registry_path.suffix == ".jsonld":
+        registry_kg_path = registry_path
+        examples_dir = Path("examples")
+    else:
+        # Assume it's a directory, use default registry
+        registry_kg_path = Path("registry/agent-registry.jsonld")
+        examples_dir = registry_path
+
+    if not registry_kg_path.exists():
+        print(f"Registry not found: {registry_kg_path}")
+        print("Run: python registry/build_registry.py")
+        return
+
+    # Build LLM function
+    llm_fn = make_llm_fn(provider=args.provider, model=args.model)
+
+    # Load habitat from registry
+    h = Habitat()
+    count = h.load_registry(str(registry_kg_path))
+    print(f"Loaded {count} capsules from registry")
+
+    # Load capsule instances
+    capsules = {}
+    for d in examples_dir.iterdir():
+        if d.is_dir():
+            try:
+                c = Capsule(str(d), llm_fn=llm_fn)
+                capsules[d.name] = c
+            except:
+                pass
+
+    # Find orchestrator capsule
+    orch_path = next(examples_dir.glob("orchestrator*"), None)
+    if not orch_path:
+        print("No orchestrator capsule found. Create one first.")
+        return
+
+    # Create capsule loader
+    def loader(cid):
+        return capsules.get(cid)
+
+    # Create orchestrator
+    orch = OrchestratorCapsule(
+        str(orch_path),
+        habitat=h,
+        registry_path=str(registry_kg_path),
+        capsule_loader=loader,
+        llm_fn=llm_fn
     )
 
-    # Output routing decision
-    print(f"Routing: \"{args.query}\"")
+    print(f"Orchestrator: {orch_path.name}")
+    print(f"Query: \"{args.query}\"")
     print()
 
-    # Show candidates
-    if result.get("candidates"):
-        print("  Candidates:")
-        for i, c in enumerate(result["candidates"][:5]):
-            marker = " * SELECTED" if c["capsule_id"] == result.get("routed_to") else ""
-            print(f"    {c['capsule_name']:<25} score={c['score']:.4f}{marker}")
-        print()
-
-    # Handle gap
-    if result.get("gap"):
-        gap = result["gap"]
-        print(f"  GAP DETECTED")
-        print(f"  Topic: {gap.get('topic', 'unknown')}")
-        if gap.get("closest_capsule"):
-            print(f"  Closest: {gap['closest_capsule']} (score={gap['closest_score']:.4f})")
-        print(f"  {gap.get('recommendation', '')}")
-        return
-
-    # Handle dry run
+    # Handle dry run - just show matching agents
     if args.dry_run:
-        print(f"  Would dispatch to: {result['routed_name']} ({result['routed_to']})")
-        print(f"  [dry-run mode - not executing]")
+        ctx = {"input": args.query}
+        ctx = orch.distill(ctx)
+        ctx = orch.augment(ctx)
+        matching = ctx["augmented"].get("matching_agents", [])
+
+        print("  Matching agents:")
+        for m in matching[:5]:
+            cid = m.get("aether:capsuleId", "")
+            score = m.get("_match_score", 0)
+            name = m.get("rdfs:label", cid)
+            print(f"    {score:.3f} | {name}")
+
+        if not matching:
+            print("    [No matches - would return GHOST]")
+        print()
+        print("  [dry-run mode - not executing]")
         return
 
-    # Show execution
-    print(f"  Dispatching to: {result['routed_name']} ({result['routed_to']})")
-    print()
+    # Execute orchestration
+    result = orch.run(args.query)
 
-    pipeline_result = result.get("result", {})
+    # Show routing
+    routed_to = result.get("_routed_to", [])
+    print(f"  Routed to: {routed_to}")
+    print()
 
     # Show response
-    response = pipeline_result.get("generated", "")
+    response = result.get("generated", "")
     if response:
         print("─" * 60)
-        print(response[:1000])
-        if len(response) > 1000:
+        print(response[:1500])
+        if len(response) > 1500:
             print(f"... ({len(response)} chars total)")
         print("─" * 60)
         print()
 
-    # Show AEC result
-    review = pipeline_result.get("review", {})
+    # Show AEC results
+    review = result.get("review", {})
     aec = review.get("aec", {})
 
     if aec:
         score = aec.get("score", 0)
-        threshold = aec.get("threshold", 0.8)
         passed = aec.get("passed", False)
+        agents = aec.get("agents_executed", 0)
 
-        print(f"  AEC Score: {score:.2f} (threshold: {threshold})")
+        print(f"  AEC Score: {score:.3f}")
         print(f"  AEC Passed: {passed}")
+        print(f"  Agents executed: {agents}")
 
         if review.get("ghost"):
             print(f"  Status: GHOST (unverifiable)")
-        elif review.get("self_corrected"):
-            print(f"  Status: Self-corrected on retry")
 
     # Full report mode
-    if args.report == "full" and aec:
-        print()
-        print("  AEC Details:")
-        if aec.get("grounded"):
-            print(f"    Grounded: {len(aec['grounded'])}")
-        if aec.get("ungrounded"):
-            print(f"    Ungrounded: {len(aec['ungrounded'])}")
-        if aec.get("gaps"):
-            print(f"    Gaps: {len(aec['gaps'])}")
-            for gap in aec["gaps"][:3]:
-                print(f"      - {gap.get('text', '')[:60]}...")
+    if args.report == "full":
+        agent_results = result.get("_agent_results", [])
+        if agent_results:
+            print()
+            print("  Per-agent results:")
+            for r in agent_results:
+                name = r.get("capsule_name", r.get("capsule_id"))
+                score = r.get("aec_score", 0)
+                ghost = r.get("ghost", False)
+                status = "GHOST" if ghost else "OK"
+                print(f"    {name}: score={score:.3f} [{status}]")
 
 
 def main():

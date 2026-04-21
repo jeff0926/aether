@@ -1,0 +1,72 @@
+{
+  "@context": {
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "http://aether.dev/ontology#"
+  },
+  "@graph": [
+    {
+      "@id": "rule:always_route_to_specialist",
+      "@type": "aether:Rule",
+      "rdfs:label": "Always route to the most domain-specific agent available",
+      "aether:source": "orchestrator-kb"
+    },
+    {
+      "@id": "rule:include_aec_score",
+      "@type": "aether:Rule",
+      "rdfs:label": "Always include AEC score in orchestrated response",
+      "aether:source": "orchestrator-kb"
+    },
+    {
+      "@id": "rule:ghost_on_no_match",
+      "@type": "aether:Rule",
+      "rdfs:label": "Return GHOST state when no suitable agent found in registry",
+      "aether:source": "orchestrator-kb"
+    },
+    {
+      "@id": "rule:multi_agent_execution",
+      "@type": "aether:Rule",
+      "rdfs:label": "Execute multiple agents when query spans domains",
+      "aether:source": "orchestrator-kb"
+    },
+    {
+      "@id": "antipattern:answer_directly",
+      "@type": "aether:AntiPattern",
+      "rdfs:label": "Orchestrator must never answer domain questions directly",
+      "aether:source": "orchestrator-kb",
+      "aether:blacklist": [
+        "answer directly",
+        "respond directly",
+        "I think",
+        "In my opinion"
+      ]
+    },
+    {
+      "@id": "antipattern:route_without_aec",
+      "@type": "aether:AntiPattern",
+      "rdfs:label": "Never return routed response without AEC score",
+      "aether:source": "orchestrator-kb",
+      "aether:blacklist": [
+        "without score",
+        "no verification"
+      ]
+    },
+    {
+      "@id": "concept:agent_registry",
+      "@type": "aether:Concept",
+      "rdfs:label": "The registry KG describing all available capsule agents",
+      "aether:source": "orchestrator-kb"
+    },
+    {
+      "@id": "concept:routing_decision",
+      "@type": "aether:Concept",
+      "rdfs:label": "The act of selecting one or more agents for a given query",
+      "aether:source": "orchestrator-kb"
+    },
+    {
+      "@id": "technique:domain_matching",
+      "@type": "aether:Technique",
+      "rdfs:label": "Match query intent to agent domain using registry KG topics",
+      "aether:source": "orchestrator-kb"
+    }
+  ]
+}

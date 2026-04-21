@@ -106,21 +106,28 @@ class Habitat:
         topic: str,
         query: str,
         capsules: dict,
-        max_agents: int = 3
+        max_agents: int = 3,
+        capsule_ids: list = None
     ) -> list[dict]:
         """
         Route topic to matching capsules and execute all of them.
 
         Args:
-            topic: routing topic
+            topic: routing topic (used if capsule_ids not provided)
             query: input query to run on each capsule
             capsules: dict of capsule_id -> Capsule instance
             max_agents: max capsules to execute (default 3)
+            capsule_ids: explicit list of capsule IDs to execute (skips routing)
 
         Returns:
             list of results, one per executed capsule
         """
-        matches = self.route(topic)[:max_agents]
+        # Use explicit IDs if provided, otherwise route by topic
+        if capsule_ids:
+            matches = capsule_ids[:max_agents]
+        else:
+            matches = self.route(topic)[:max_agents]
+
         results = []
 
         for capsule_id in matches:
@@ -144,6 +151,40 @@ class Habitat:
                 })
 
         return results
+
+    def load_registry(self, registry_path: str) -> int:
+        """
+        Load all capsules from registry KG into Habitat.
+
+        Args:
+            registry_path: Path to agent-registry.jsonld
+
+        Returns:
+            Number of capsules registered
+        """
+        from kg import load_kg
+
+        kg = load_kg(registry_path)
+        count = 0
+
+        for node in kg.get("@graph", []):
+            if node.get("@type") == "aether:CapsuleAgent":
+                capsule_id = node.get("aether:capsuleId")
+                topics = node.get("aether:topics", [])
+                name = node.get("rdfs:label", capsule_id)
+
+                if capsule_id:
+                    self.register(capsule_id, {
+                        "name": name,
+                        "scent_subscriptions": topics,
+                        "domain": node.get("aether:domain"),
+                        "description": node.get("aether:description"),
+                        "agent_type": node.get("aether:agentType"),
+                        "kg_nodes": node.get("aether:kgNodes", 0),
+                    })
+                    count += 1
+
+        return count
 
 
 # -----------------------------------------------------------------------------

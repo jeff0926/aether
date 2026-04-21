@@ -1,0 +1,25 @@
+{
+  "pipeline": {
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
+  },
+  "review": {
+    "threshold": 0.7,
+    "mode": "routing"
+  },
+  "orchestrator": {
+    "registry": "registry/agent-registry.jsonld",
+    "max_agents": 3,
+    "require_aec_pass": false
+  }
+}
