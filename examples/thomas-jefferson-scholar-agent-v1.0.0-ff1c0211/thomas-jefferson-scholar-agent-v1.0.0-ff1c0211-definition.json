@@ -26,10 +26,18 @@
     "citation_verification"
   ],
   "pipeline": {
-    "distill": {"enabled": true},
-    "augment": {"enabled": true},
-    "generate": {"enabled": true},
-    "review": {"enabled": true}
+    "distill": {
+      "enabled": true
+    },
+    "augment": {
+      "enabled": true
+    },
+    "generate": {
+      "enabled": true
+    },
+    "review": {
+      "enabled": true
+    }
   },
   "review": {
     "threshold": 0.8,

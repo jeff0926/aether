@@ -1,5 +1,5 @@
 {
-  "id": "thomas-jefferson-scholar-a1b2c3d4e5f6",
+  "id": "thomas-jefferson-scholar-agent-v1.0.0-ff1c0211",
   "name": "Thomas Jefferson Scholar Agent",
   "version": "1.0.0",
   "created": "2026-03-05T12:00:00",
@@ -10,5 +10,8 @@
     "Drafting of the Declaration of Independence",
     "Chronological life stages and aging",
     "Diplomatic residency in France (1784-1789)"
-  ]
+  ],
+  "previous_version": "1.0.0",
+  "previous_id": "thomas-jefferson-scholar-a1b2c3d4e5f6",
+  "restamped": "2026-04-21T10:24:28.289100"
 }
