@@ -1,0 +1,569 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rule:unless_the_user_requests_otherwise_for_the_claude",
+      "@type": "skill:Rule",
+      "rdfs:label": "Unless the user requests otherwise: For the Claude model version, please use Claude Opus 4.6, which ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Defaults"
+    },
+    {
+      "@id": "rule:and_finally_please_default_to_streaming_for_any_r",
+      "@type": "skill:Rule",
+      "rdfs:label": "And finally, please default to streaming for any request that may involve long input, long output, o...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Defaults"
+    },
+    {
+      "@id": "rule:let_me_know_if_you_need_a_different_language_s",
+      "@type": "skill:Rule",
+      "rdfs:label": "Let me know if you need a different language.\" - Suggest cURL/raw HTTP examples from `curl/` and not...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "rule:if_language_can_t_be_inferred_empty_project",
+      "@type": "skill:Rule",
+      "rdfs:label": "**If language can't be inferred** (empty project, no source files, or unsupported language):",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "rule:single_api_calls_and_workflows_handle_most_use_cas",
+      "@type": "skill:Rule",
+      "rdfs:label": "Single API calls and workflows handle most use cases — only reach for agents when the task genuinely...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "Which Surface Should I Use?"
+    },
+    {
+      "@id": "rule:cost_of_error_can_errors_be_caught_and_recov",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Cost of error** — Can errors be caught and recovered from? (tests, review, rollback)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Should I Build an Agent?"
+    },
+    {
+      "@id": "rule:for_full_control_you_can_write_the_loop_manually",
+      "@type": "skill:Rule",
+      "rdfs:label": "For full control, you can write the loop manually. **Server-side tools** — Anthropic-hosted tools th...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Architecture"
+    },
+    {
+      "@id": "rule:computer_use_can_be_server_hosted_or_self_hosted",
+      "@type": "skill:Rule",
+      "rdfs:label": "Computer use can be server-hosted or self-hosted. **Structured outputs** — Constrains the Messages A...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Architecture"
+    },
+    {
+      "@id": "rule:the_recommended_approach_is_client_messages_parse",
+      "@type": "skill:Rule",
+      "rdfs:label": "The recommended approach is `client.messages.parse()` which validates responses against your schema ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "Architecture"
+    },
+    {
+      "@id": "rule:opus_4_6_adaptive_thinking_recommended_us",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Opus 4.6 — Adaptive thinking (recommended):** Use `thinking: {type: \"adaptive\"}`",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "rule:beta_opus_4_6_only_for_long_running_conversa",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Beta, Opus 4.6 only.** For long-running conversations that may exceed the 200K context window, ena...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Compaction (Quick Reference)"
+    },
+    {
+      "@id": "rule:single_text_classification_summarization_extract",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Single text classification/summarization/extraction/Q&A:** → Read only `{lang}/claude-api/README.m...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Quick Task Reference"
+    },
+    {
+      "@id": "rule:report_and_document_output_for_tasks_that_pro",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Report and document output:** For tasks that produce reports, documents, or visualizations, the co...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "rule:use_the_sdk_s_get_final_message_finalmess",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use the SDK's `.get_final_message()` / `.finalMessage()` helper to get the complete response if you ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Defaults"
+    },
+    {
+      "@id": "rule:before_reading_code_examples_determine_which_lang",
+      "@type": "skill:Rule",
+      "rdfs:label": "Before reading code examples, determine which language the user is working in: - `*.py`, `requiremen...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "antipattern:which_language_are_you_using_for_the_claude_api_in",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Which language are you using for the Claude API integration?\" - Use AskUserQuestion with options: Py...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "rule:if_multiple_languages_detected_e_g_both_pyt",
+      "@type": "skill:Rule",
+      "rdfs:label": "**If multiple languages detected** (e.g., both Python and TypeScript files):",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "rule:if_unsupported_language_detected_rust_swift",
+      "@type": "skill:Rule",
+      "rdfs:label": "**If unsupported language detected** (Rust, Swift, C++, Elixir, etc.):",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "rule:if_user_needs_curl_raw_http_examples_read_fro",
+      "@type": "skill:Rule",
+      "rdfs:label": "**If user needs cURL/raw HTTP examples**, read from `curl/`.",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Language Detection"
+    },
+    {
+      "@id": "rule:if_you_want_to_build_an_agent_with_your_own_tools",
+      "@type": "skill:Rule",
+      "rdfs:label": "If you want to build an agent with your own tools, Claude API is the right choice — use the tool run...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Which Surface Should I Use?"
+    },
+    {
+      "@id": "rule:before_choosing_the_agent_tier_check_all_four_cri",
+      "@type": "skill:Rule",
+      "rdfs:label": "Before choosing the agent tier, check all four criteria: If the answer is \"no\" to any of these, stay...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Should I Build an Agent?"
+    },
+    {
+      "@id": "antipattern:a_note_if_any_of_the_model_strings_above_look_unf",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "A note: if any of the model strings above look unfamiliar to you, that's to be expected — that just ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Current Models (cached: 2026-02-17)"
+    },
+    {
+      "@id": "rule:claude_dynamically_decides_when_and_how_much_to_th",
+      "@type": "skill:Rule",
+      "rdfs:label": "Claude dynamically decides when and how much to think",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "rule:the_api_automatically_summarizes_earlier_context_w",
+      "@type": "skill:Rule",
+      "rdfs:label": "The API automatically summarizes earlier context when it approaches the trigger threshold (default: ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Compaction (Quick Reference)"
+    },
+    {
+      "@id": "rule:shared_tool_use_concepts_md_read_when_the",
+      "@type": "skill:Rule",
+      "rdfs:label": "**`shared/tool-use-concepts.md`** — Read when the user needs function calling, code execution, memor...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Claude API (Full File Reference)"
+    },
+    {
+      "@id": "rule:language_claude_api_streaming_md_read_wh",
+      "@type": "skill:Rule",
+      "rdfs:label": "**`{language}/claude-api/streaming.md`** — Read when building chat UIs or interfaces that display re...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Claude API (Full File Reference)"
+    },
+    {
+      "@id": "antipattern:language_claude_api_batches_md_read_when",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**`{language}/claude-api/batches.md`** — Read when processing many requests offline (not latency-sen... (not latency-sensitive)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "not latency-sensitive"
+      ],
+      "aether:section": "Claude API (Full File Reference)"
+    },
+    {
+      "@id": "rule:language_claude_api_files_api_md_read_wh",
+      "@type": "skill:Rule",
+      "rdfs:label": "**`{language}/claude-api/files-api.md`** — Read when sending the same file across multiple requests ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Claude API (Full File Reference)"
+    },
+    {
+      "@id": "rule:shared_error_codes_md_read_when_debugging",
+      "@type": "skill:Rule",
+      "rdfs:label": "**`shared/error-codes.md`** — Read when debugging HTTP errors or implementing error handling.",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Claude API (Full File Reference)"
+    },
+    {
+      "@id": "rule:use_webfetch_to_get_the_latest_documentation_when",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use WebFetch to get the latest documentation when: Live documentation URLs are in `shared/live-sourc...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "When to Use WebFetch"
+    },
+    {
+      "@id": "antipattern:don_t_truncate_inputs_when_passing_files_or_conten",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Don't truncate inputs when passing files or content to the API. If the content is too long to fit in... (chunking, summarization, etc.)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "chunking",
+        "summarization",
+        "etc."
+      ],
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "rule:model_model_id_context_input_1m_output",
+      "@type": "skill:Rule",
+      "rdfs:label": "| Model | Model ID | Context | Input $/1M | Output $/1M | | ----------------- | ------------------- ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Current Models (cached: 2026-02-17)"
+    },
+    {
+      "@id": "rule:adaptive_thinking_also_automatically_enables_inter",
+      "@type": "skill:Rule",
+      "rdfs:label": "Adaptive thinking also automatically enables interleaved thinking (no beta header needed). **When th...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "rule:use_low_for_subagents_or_simple_tasks_max_for",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use `low` for subagents or simple tasks; `max` for the deepest reasoning. **Sonnet 4.6:** Supports a...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "rule:compaction_blocks_in_the_response_must_be_preserve",
+      "@type": "skill:Rule",
+      "rdfs:label": "Compaction blocks in the response must be preserved — the API uses them to replace the compacted his...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Compaction (Quick Reference)"
+    },
+    {
+      "@id": "antipattern:do_not_use_claude_sonnet_4_6_claude_sonnet_4_5",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Do not use `claude-sonnet-4-6`, `claude-sonnet-4-5`, or any other model unless the user literally sa...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Current Models (cached: 2026-02-17)"
+    },
+    {
+      "@id": "antipattern:never_downgrade_for_cost_that_s_the_user_s_decis",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Never downgrade for cost — that's the user's decision, not yours. **CRITICAL: Use only the exact mod...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Current Models (cached: 2026-02-17)"
+    },
+    {
+      "@id": "antipattern:do_not_append_date_suffixes_for_example_use_c",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Do not append date suffixes.** For example, use `claude-sonnet-4-5`, never `claude-sonnet-4-5-202505...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Current Models (cached: 2026-02-17)"
+    },
+    {
+      "@id": "antipattern:if_the_user_requests_an_older_model_not_in_the_tab",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "If the user requests an older model not in the table (e.g., \"opus 4.5\", \"sonnet 3.7\"), read `shared/... (e.g., \"opus 4.5\", \"sonnet 3.7\")",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "e.g.",
+        "\"opus 4.5\"",
+        "\"sonnet 3.7\""
+      ],
+      "aether:section": "Current Models (cached: 2026-02-17)"
+    },
+    {
+      "@id": "antipattern:no_budget_tokens_needed_budget_tokens_is_dep",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "No `budget_tokens` needed — `budget_tokens` is deprecated on Opus 4.6 and Sonnet 4.6 and must not be...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "antipattern:do_not_use_budget_tokens_and_do_not_switch_to_an",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Do NOT use `budget_tokens` and do NOT switch to an older model.** **Effort parameter (GA, no beta he... (ga, no beta header, inside `output_config`, not top-level)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "ga",
+        "no beta header",
+        "inside `output_config`",
+        "not top-level"
+      ],
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "antipattern:never_choose_an_older_model_just_because_the_user",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Never choose an older model just because the user mentions `budget_tokens` — use Opus 4.6 with adapt...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Thinking & Effort (Quick Reference)"
+    },
+    {
+      "@id": "antipattern:opus_4_6_sonnet_4_6_thinking_use_thinking",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Opus 4.6 / Sonnet 4.6 thinking:** Use `thinking: {type: \"adaptive\"}` — do NOT use `budget_tokens` ... (deprecated on both opus 4.6 and sonnet 4.6, minimum 1024)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "deprecated on both opus 4.6 and sonnet 4.6",
+        "minimum 1024"
+      ],
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "antipattern:128k_output_tokens_opus_4_6_supports_up_to_12",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**128K output tokens:** Opus 4.6 supports up to 128K `max_tokens`, but the SDKs require streaming fo...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "antipattern:tool_call_json_parsing_opus_4_6_opus_4_6_ma",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Tool call JSON parsing (Opus 4.6):** Opus 4.6 may produce different JSON string escaping in tool c... (opus 4.6, e.g., unicode or forward-slash escaping)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "opus 4.6",
+        "e.g.",
+        "unicode or forward-slash escaping"
+      ],
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "antipattern:don_t_reimplement_sdk_functionality_the_sdk_p",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't reimplement SDK functionality:** The SDK provides high-level helpers — use them instead of b... (`anthropic.ratelimiterror`, etc., `anthropic.messageparam`, `anthropic.tool`, `anthropic.message`, stream.finalmessage(), .on(), new promise(), anthropic.ratelimiterror, anthropic.messageparam, anthropic.tool, anthropic.message)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:blacklist": [
+        "`anthropic.ratelimiterror`",
+        "etc.",
+        "`anthropic.messageparam`",
+        "`anthropic.tool`",
+        "`anthropic.message`",
+        "stream.finalmessage()",
+        ".on()",
+        "new promise()",
+        "anthropic.ratelimiterror",
+        "anthropic.messageparam",
+        "anthropic.tool",
+        "anthropic.message"
+      ],
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "antipattern:don_t_define_custom_types_for_sdk_data_structure",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't define custom types for SDK data structures:** The SDK exports types for all API objects. Us... (anthropic.messageparam, anthropic.tool, anthropic.tooluseblock, anthropic.toolresultblockparam, anthropic.message, interface chatmessage { role: string; content: unknown })",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:blacklist": [
+        "anthropic.messageparam",
+        "anthropic.tool",
+        "anthropic.tooluseblock",
+        "anthropic.toolresultblockparam",
+        "anthropic.message",
+        "interface chatmessage { role: string; content: unknown }"
+      ],
+      "aether:section": "Common Pitfalls"
+    }
+  ]
+}

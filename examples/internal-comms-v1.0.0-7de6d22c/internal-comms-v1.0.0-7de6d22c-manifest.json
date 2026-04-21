@@ -1,0 +1,12 @@
+{
+  "id": "internal-comms-v1.0.0-7de6d22c",
+  "name": "internal-comms",
+  "version": "1.0.0",
+  "created": "2026-04-21T13:11:53.454368",
+  "source": {
+    "document": "SKILL.md",
+    "format": "md",
+    "assertions_extracted": 13
+  },
+  "stamper_version": "1.0.0"
+}

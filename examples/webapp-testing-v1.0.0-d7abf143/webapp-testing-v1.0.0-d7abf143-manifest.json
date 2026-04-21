@@ -1,0 +1,12 @@
+{
+  "id": "webapp-testing-v1.0.0-d7abf143",
+  "name": "webapp-testing",
+  "version": "1.0.0",
+  "created": "2026-04-21T13:11:54.045488",
+  "source": {
+    "document": "SKILL.md",
+    "format": "md",
+    "assertions_extracted": 17
+  },
+  "stamper_version": "1.0.0"
+}

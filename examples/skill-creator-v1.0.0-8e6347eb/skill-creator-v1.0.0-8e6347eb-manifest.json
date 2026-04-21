@@ -1,0 +1,12 @@
+{
+  "id": "skill-creator-v1.0.0-8e6347eb",
+  "name": "skill-creator",
+  "version": "1.0.0",
+  "created": "2026-04-21T13:11:53.790538",
+  "source": {
+    "document": "SKILL.md",
+    "format": "md",
+    "assertions_extracted": 217
+  },
+  "stamper_version": "1.0.0"
+}

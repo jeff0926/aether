@@ -1,0 +1,486 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rule:consider_this_approach_the_philosophy_must_emphas",
+      "@type": "skill:Rule",
+      "rdfs:label": "Consider this approach: The philosophy must emphasize: Algorithmic expression",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "THE CRITICAL UNDERSTANDING"
+    },
+    {
+      "@id": "rule:name_the_movement_1_2_words_organic_turbul",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Name the movement** (1-2 words): \"Organic Turbulence\" / \"Quantum Harmonics\" / \"Emergent Stillness\"...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "HOW TO GENERATE AN ALGORITHMIC PHILOSOPHY"
+    },
+    {
+      "@id": "rule:emphasize_craftsmanship_repeatedly_the_philos",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Emphasize craftsmanship REPEATEDLY**: The philosophy MUST stress multiple times that the final alg...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "HOW TO GENERATE AN ALGORITHMIC PHILOSOPHY"
+    },
+    {
+      "@id": "rule:process_over_product_always_emphasize_that_be",
+      "@type": "skill:Rule",
+      "rdfs:label": "**PROCESS OVER PRODUCT**: Always emphasize that beauty emerges from the algorithm's execution - each...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "rule:expert_craftsmanship_repeatedly_emphasize_the",
+      "@type": "skill:Rule",
+      "rdfs:label": "**EXPERT CRAFTSMANSHIP**: Repeatedly emphasize the final algorithm must feel meticulously crafted, r...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "rule:critical_step_before_implementing_the_algorit",
+      "@type": "skill:Rule",
+      "rdfs:label": "**CRITICAL STEP**: Before implementing the algorithm, identify the subtle conceptual thread from the...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "DEDUCING THE CONCEPTUAL SEED"
+    },
+    {
+      "@id": "rule:this_is_very_important_the_reference_must_be",
+      "@type": "skill:Rule",
+      "rdfs:label": "This is **VERY IMPORTANT**: The reference must be so refined that it enhances the work's depth witho...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "DEDUCING THE CONCEPTUAL SEED"
+    },
+    {
+      "@id": "rule:reproducibility_same_seed_always_produces_ide",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Reproducibility**: Same seed ALWAYS produces identical output",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "CRAFTSMANSHIP REQUIREMENTS"
+    },
+    {
+      "@id": "rule:ensure_this_artifact_works_immediately_in_claude_a",
+      "@type": "skill:Rule",
+      "rdfs:label": "Ensure this artifact works immediately in claude.ai or any browser - no setup required",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "INTERACTIVE ARTIFACT CREATION"
+    },
+    {
+      "@id": "rule:it_contains_the_exact_structure_and_styling_needed",
+      "@type": "skill:Rule",
+      "rdfs:label": "It contains the exact structure and styling needed. **FIXED (always include exactly as shown):** - S...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "CRITICAL: WHAT'S FIXED VS VARIABLE"
+    },
+    {
+      "@id": "rule:seed_fixed_always_include_exactly_as_shown",
+      "@type": "skill:Rule",
+      "rdfs:label": "Seed (FIXED)** - Always include exactly as shown: **2",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:actions_fixed_always_include_exactly_as_show",
+      "@type": "skill:Rule",
+      "rdfs:label": "Actions (FIXED)** - Always include exactly as shown: **Requirements**:",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:seed_controls_must_work_prev_next_random_jump_dis",
+      "@type": "skill:Rule",
+      "rdfs:label": "Seed controls must work (prev/next/random/jump/display)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:all_parameters_must_have_ui_controls",
+      "@type": "skill:Rule",
+      "rdfs:label": "All parameters must have UI controls",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:regenerate_reset_download_buttons_must_work",
+      "@type": "skill:Rule",
+      "rdfs:label": "Regenerate, Reset, Download buttons must work",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:seed_navigation_always_present",
+      "@type": "skill:Rule",
+      "rdfs:label": "Seed navigation (always present)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "THE CREATIVE PROCESS"
+    },
+    {
+      "@id": "rule:templates_viewer_html_required_starting_point",
+      "@type": "skill:Rule",
+      "rdfs:label": "**templates/viewer.html**: REQUIRED STARTING POINT for all HTML artifacts.",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "RESOURCES"
+    },
+    {
+      "@id": "antipattern:what_is_received_some_subtle_input_or_instruction",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "What is received: Some subtle input or instructions by the user to take into account, but use as a f...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "THE CRITICAL UNDERSTANDING"
+    },
+    {
+      "@id": "antipattern:avoid_redundancy_each_algorithmic_aspect_shou",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Avoid redundancy**: Each algorithmic aspect should be mentioned once. Avoid repeating concepts abo...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "HOW TO GENERATE AN ALGORITHMIC PHILOSOPHY"
+    },
+    {
+      "@id": "antipattern:avoid_repeating_the_same_points",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Avoid repeating the same points",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "antipattern:critical_before_writing_any_html_avoid",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**CRITICAL: BEFORE writing any HTML:** **Avoid:** **Follow these practices:** The template is the fo...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "⚠️ STEP 0: READ THE TEMPLATE FIRST ⚠️"
+    },
+    {
+      "@id": "antipattern:build_on_it_don_t_rebuild_it_to_create_galle",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Build on it, don't rebuild it. --- To create gallery-quality computational art that lives and breath...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "⚠️ STEP 0: READ THE TEMPLATE FIRST ⚠️"
+    },
+    {
+      "@id": "antipattern:to_express_the_philosophy_through_code_avoid_thin",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "To express the philosophy through code, avoid thinking \"which pattern should I use?\" and instead thi...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "TECHNICAL REQUIREMENTS"
+    },
+    {
+      "@id": "antipattern:this_skill_includes_helpful_templates_and_document",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "This skill includes helpful templates and documentation: - This is the foundation - contains the exa... (don't create separate .js files)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:blacklist": [
+        "don't create separate .js files"
+      ],
+      "aether:section": "RESOURCES"
+    },
+    {
+      "@id": "antipattern:don_t_copy_the_flow_field_example_build_what_the",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Don't copy the flow field example - build what the philosophy demands",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "RESOURCES"
+    },
+    {
+      "@id": "rule:when_particles_are_near_their_phases_interfere",
+      "@type": "skill:Rule",
+      "rdfs:label": "When particles are near, their phases interfere - constructive interference creates bright nodes, de...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "rule:particles_born_at_edges_flowing_along_field_lines",
+      "@type": "skill:Rule",
+      "rdfs:label": "Particles born at edges, flowing along field lines, dying when they reach equilibrium or boundaries",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "rule:performance_smooth_execution_optimized_for_r",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Performance**: Smooth execution, optimized for real-time if animated",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "CRAFTSMANSHIP REQUIREMENTS"
+    },
+    {
+      "@id": "rule:real_time_updates_when_parameters_change",
+      "@type": "skill:Rule",
+      "rdfs:label": "Real-time updates when parameters change",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:generate_100_variations_when_requested_seeds_1_10",
+      "@type": "skill:Rule",
+      "rdfs:label": "Generate 100 variations when requested (seeds 1-100)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:skip_this_section_if_the_art_uses_fixed_colors",
+      "@type": "skill:Rule",
+      "rdfs:label": "Skip this section if the art uses fixed colors",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:skip_if_the_art_is_monochrome",
+      "@type": "skill:Rule",
+      "rdfs:label": "Skip if the art is monochrome",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:if_the_user_wants_specific_variations_highlighted",
+      "@type": "skill:Rule",
+      "rdfs:label": "If the user wants specific variations highlighted: This is like creating a series of prints from the...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "VARIATIONS & EXPLORATION"
+    },
+    {
+      "@id": "rule:multiple_fields_can_attract_repel_or_rotate_part",
+      "@type": "skill:Rule",
+      "rdfs:label": "Multiple fields can attract, repel, or rotate particles",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "rule:the_actual_algorithmic_philosophy_should_be_4_6_su",
+      "@type": "skill:Rule",
+      "rdfs:label": "The actual algorithmic philosophy should be 4-6 substantial paragraphs.*",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "rule:the_algorithmic_philosophy_should_be_4_6_paragra",
+      "@type": "skill:Rule",
+      "rdfs:label": "**The algorithmic philosophy should be 4-6 paragraphs long.** Fill it with poetic computational phil...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "rule:someone_familiar_with_the_subject_should_feel_it_i",
+      "@type": "skill:Rule",
+      "rdfs:label": "Someone familiar with the subject should feel it intuitively, while others simply experience a maste...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "DEDUCING THE CONCEPTUAL SEED"
+    },
+    {
+      "@id": "rule:seeded_randomness_art_blocks_pattern_para",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Seeded Randomness (Art Blocks Pattern)**: **Parameter Structure - FOLLOW THE PHILOSOPHY**: To esta...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "TECHNICAL REQUIREMENTS"
+    },
+    {
+      "@id": "rule:reminder_templates_viewer_html_should_have_al",
+      "@type": "skill:Rule",
+      "rdfs:label": "**REMINDER: `templates/viewer.html` should have already been read (see STEP 0)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "INTERACTIVE ARTIFACT CREATION"
+    },
+    {
+      "@id": "rule:colors_section_optional",
+      "@type": "skill:Rule",
+      "rdfs:label": "Colors section (optional):",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "CRITICAL: WHAT'S FIXED VS VARIABLE"
+    },
+    {
+      "@id": "rule:colors_optional_variable_include_if_the_art",
+      "@type": "skill:Rule",
+      "rdfs:label": "Colors (OPTIONAL/VARIABLE)** - Include if the art needs adjustable colors: **4",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:add_color_pickers_if_users_should_control_palette",
+      "@type": "skill:Rule",
+      "rdfs:label": "Add color pickers if users should control palette",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "REQUIRED FEATURES"
+    },
+    {
+      "@id": "rule:design_appropriate_parameters_what_should_be",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Design appropriate parameters** - What should be tunable?",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "THE CREATIVE PROCESS"
+    }
+  ]
+}

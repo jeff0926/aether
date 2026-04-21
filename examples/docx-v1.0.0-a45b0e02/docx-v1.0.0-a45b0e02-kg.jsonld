@@ -1,0 +1,310 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "antipattern:do_not_use_for_pdfs",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Do NOT use for PDFs",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "frontmatter_pattern",
+      "aether:section": "frontmatter routing constraint"
+    },
+    {
+      "@id": "antipattern:without_both_tables_render_incorrectly_on_some_pl",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Without both, tables render incorrectly on some platforms. **Table width calculation:** Always use `...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Tables"
+    },
+    {
+      "@id": "antipattern:always_use_widthtype_dxa_never_widthtype",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Always use `WidthType.DXA`** — never `WidthType.PERCENTAGE` (incompatible with Google Docs) (incompatible with google docs)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "incompatible with google docs"
+      ],
+      "aether:section": "Tables"
+    },
+    {
+      "@id": "antipattern:force_a_column_break_with_a_new_section_using_typ",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Force a column break with a new section using `type: SectionType.NEXT_COLUMN` (type: sectiontype.next_column)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.92,
+      "aether:extraction_method": "classifier_structural_analysis",
+      "aether:blacklist": [
+        "type: sectiontype.next_column"
+      ],
+      "aether:section": "Multi-Column Layouts"
+    },
+    {
+      "@id": "antipattern:never_use_n_use_separate_paragraph_elemen",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Never use `\\n`** - use separate Paragraph elements",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "antipattern:never_use_unicode_bullets_use_levelformat_b",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Never use unicode bullets** - use `LevelFormat.BULLET` with numbering config",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "antipattern:always_set_table_width_with_dxa_never_use",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Always set table `width` with DXA** - never use `WidthType.PERCENTAGE` (breaks in Google Docs) (breaks in google docs)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "breaks in google docs"
+      ],
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "antipattern:use_shadingtype_clear_never_solid_for_tabl",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Use `ShadingType.CLEAR`** - never SOLID for table shading",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "antipattern:never_use_tables_as_dividers_rules_cells_hav",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Never use tables as dividers/rules** - cells have minimum height and render as empty boxes (includ... (including in headers/footers, see tab stops section)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "including in headers/footers",
+        "see tab stops section"
+      ],
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "antipattern:do_not_write_python_scripts_scripts_introduce_u",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Do not write Python scripts.** Scripts introduce unnecessary complexity",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Step 2: Edit XML"
+    },
+    {
+      "@id": "antipattern:add_w_del_inside_w_ppr_w_rpr_without_th",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Add `<w:del/>` inside `<w:pPr><w:rPr>`: Without the `<w:del/>` in `<w:pPr><w:rPr>`, accepting change... (don't modify their deletion, <w:del/>, <w:ppr><w:rpr>)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:blacklist": [
+        "don't modify their deletion",
+        "<w:del/>",
+        "<w:ppr><w:rpr>"
+      ],
+      "aether:section": "Tracked Changes"
+    },
+    {
+      "@id": "antipattern:for_replies_use_parent_flag_and_nest_markers",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "For replies, use `--parent` flag and nest markers inside the parent's. **CRITICAL: `<w:commentRangeS...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Comments"
+    },
+    {
+      "@id": "rule:legacy_doc_files_must_be_converted_before_editi",
+      "@type": "skill:Rule",
+      "rdfs:label": "Legacy `.doc` files must be converted before editing:",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Converting .doc to .docx"
+    },
+    {
+      "@id": "rule:table_width_must_equal_the_sum_of_columnwidths",
+      "@type": "skill:Rule",
+      "rdfs:label": "Table width must equal the sum of `columnWidths`",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Tables"
+    },
+    {
+      "@id": "rule:cell_width_must_match_corresponding_columnwidth",
+      "@type": "skill:Rule",
+      "rdfs:label": "Cell `width` must match corresponding `columnWidth`",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Tables"
+    },
+    {
+      "@id": "rule:pagebreak_must_be_in_paragraph_standalone_cr",
+      "@type": "skill:Rule",
+      "rdfs:label": "**PageBreak must be in Paragraph** - standalone creates invalid XML",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "rule:imagerun_requires_type_always_specify_png",
+      "@type": "skill:Rule",
+      "rdfs:label": "**ImageRun requires `type`** - always specify png/jpg/etc",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "rule:tables_need_dual_widths_columnwidths_array",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Tables need dual widths** - `columnWidths` array AND cell `width`, both must match",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "rule:always_add_cell_margins_use_margins_top",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Always add cell margins** - use `margins: { top: 80, bottom: 80, left: 120, right: 120 }` for read...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "rule:include_outlinelevel_required_for_toc_0_f",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Include `outlineLevel`** - required for TOC (0 for H1, 1 for H2, etc.)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Critical Rules for docx-js"
+    },
+    {
+      "@id": "rule:the_edit_tool_shows_exactly_what_is_being_replaced",
+      "@type": "skill:Rule",
+      "rdfs:label": "The Edit tool shows exactly what is being replaced. **CRITICAL: Use smart quotes for new content.** ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Step 2: Edit XML"
+    },
+    {
+      "@id": "rule:rsids_must_be_8_digit_hex_e_g_00ab1234",
+      "@type": "skill:Rule",
+      "rdfs:label": "**RSIDs**: Must be 8-digit hex (e.g., `00AB1234`)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Schema Compliance"
+    },
+    {
+      "@id": "rule:if_validation_fails_unpack_fix_the_xml_and_repa",
+      "@type": "skill:Rule",
+      "rdfs:label": "If validation fails, unpack, fix the XML, and repack",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Validation"
+    },
+    {
+      "@id": "rule:see_xml_reference_below_for_patterns_use_claud",
+      "@type": "skill:Rule",
+      "rdfs:label": "See XML Reference below for patterns. **Use \"Claude\" as the author** for tracked changes and comment...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Step 2: Edit XML"
+    },
+    {
+      "@id": "rule:replace_entire_w_r_elements_when_adding_t",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Replace entire `<w:r>` elements**: When adding tracked changes, replace the whole `<w:r>...</w:r>`...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Common Pitfalls"
+    },
+    {
+      "@id": "rule:insertion_deletion_inside_w_del",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Insertion:** **Deletion:** **Inside `<w:del>`**: Use `<w:delText>` instead of `<w:t>`, and `<w:del...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Tracked Changes"
+    }
+  ]
+}

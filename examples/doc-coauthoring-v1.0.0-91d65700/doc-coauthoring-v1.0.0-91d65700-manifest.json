@@ -1,0 +1,12 @@
+{
+  "id": "doc-coauthoring-v1.0.0-91d65700",
+  "name": "doc-coauthoring",
+  "version": "1.0.0",
+  "created": "2026-04-21T13:11:53.298484",
+  "source": {
+    "document": "SKILL.md",
+    "format": "md",
+    "assertions_extracted": 171
+  },
+  "stamper_version": "1.0.0"
+}
