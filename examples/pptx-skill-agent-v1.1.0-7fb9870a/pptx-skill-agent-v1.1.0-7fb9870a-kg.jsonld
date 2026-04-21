@@ -1,0 +1,250 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rule:read_pptxgenjs_md_pptxgenjs_md_for_full_detai",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Read [pptxgenjs.md](pptxgenjs.md) for full details.** Use when no template or reference presentati...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Creating from Scratch"
+    },
+    {
+      "@id": "rule:don_t_forget_text_box_padding_when_aligning",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Don't forget text box padding** — when aligning lines or shapes with text edges, set `margin: 0` o...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "rule:if_you_found_zero_issues_on_first_inspection_you",
+      "@type": "skill:Rule",
+      "rdfs:label": "If you found zero issues on first inspection, you weren't looking hard enough",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "QA (Required)"
+    },
+    {
+      "@id": "rule:check_for_missing_content_typos_wrong_order_w",
+      "@type": "skill:Rule",
+      "rdfs:label": "Check for missing content, typos, wrong order. **When using templates, check for leftover placeholde...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Content QA"
+    },
+    {
+      "@id": "rule:list_issues_found_if_none_found_look_again_m",
+      "@type": "skill:Rule",
+      "rdfs:label": "**List issues found** (if none found, look again more critically)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Verification Loop"
+    },
+    {
+      "@id": "antipattern:don_t_create_boring_slides_plain_bullets_on_a",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't create boring slides.** Plain bullets on a white background won't impress anyone",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Design Ideas"
+    },
+    {
+      "@id": "antipattern:dominance_over_equality_one_color_should_domi",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Dominance over equality**: One color should dominate (60-70% visual weight), with 1-2 supporting t... (60-70% visual weight)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "60-70% visual weight"
+      ],
+      "aether:section": "Before Starting"
+    },
+    {
+      "@id": "antipattern:choose_colors_that_match_your_topic_don_t_defaul",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Choose colors that match your topic — don't default to generic blue",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Color Palettes"
+    },
+    {
+      "@id": "antipattern:choose_an_interesting_font_pairing_don_t_def",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Choose an interesting font pairing** — don't default to Arial",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Typography"
+    },
+    {
+      "@id": "antipattern:leave_breathing_room_don_t_fill_every_inch",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Leave breathing room—don't fill every inch",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Spacing"
+    },
+    {
+      "@id": "antipattern:don_t_repeat_the_same_layout_vary_columns_c",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't repeat the same layout** — vary columns, cards, and callouts across slides",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_center_body_text_left_align_paragraphs",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't center body text** — left-align paragraphs and lists; center only titles",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_skimp_on_size_contrast_titles_need_36p",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't skimp on size contrast** — titles need 36pt+ to stand out from 14-16pt body",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_default_to_blue_pick_colors_that_refle",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't default to blue** — pick colors that reflect the specific topic",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_mix_spacing_randomly_choose_0_3_or_0",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't mix spacing randomly** — choose 0.3\" or 0.5\" gaps and use consistently (or 0.5)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:blacklist": [
+        "or 0.5"
+      ],
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_style_one_slide_and_leave_the_rest_plain",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't style one slide and leave the rest plain** — commit fully or keep it simple throughout",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_create_text_only_slides_add_images_ic",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't create text-only slides** — add images, icons, charts, or visual elements; avoid plain title...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:don_t_use_low_contrast_elements_icons_and_te",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Don't use low-contrast elements** — icons AND text need strong contrast against the background; av...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:never_use_accent_lines_under_titles_these_ar",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**NEVER use accent lines under titles** — these are a hallmark of AI-generated slides; use whitespac...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Avoid (Common Mistakes)"
+    },
+    {
+      "@id": "antipattern:your_job_is_to_find_them_your_first_render_is_a",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Your job is to find them.** Your first render is almost never correct",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "QA (Required)"
+    },
+    {
+      "@id": "antipattern:do_not_declare_success_until_you_ve_completed_at",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Do not declare success until you've completed at least one fix-and-verify cycle.** ---",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Verification Loop"
+    },
+    {
+      "@id": "rule:pick_a_bold_content_informed_color_palette_t",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Pick a bold, content-informed color palette**: The palette should feel designed for THIS topic. If...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "Before Starting"
+    }
+  ]
+}

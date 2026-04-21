@@ -1,0 +1,350 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rule:consider_this_approach_the_philosophy_must_emphas",
+      "@type": "skill:Rule",
+      "rdfs:label": "Consider this approach: The philosophy must emphasize: Visual expression",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "THE CRITICAL UNDERSTANDING"
+    },
+    {
+      "@id": "rule:name_the_movement_1_2_words_brutalist_joy",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Name the movement** (1-2 words): \"Brutalist Joy\" / \"Chromatic Silence\" / \"Metabolist Dreams\" **Art...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "HOW TO GENERATE A VISUAL PHILOSOPHY"
+    },
+    {
+      "@id": "rule:emphasize_craftsmanship_repeatedly_the_philos",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Emphasize craftsmanship REPEATEDLY**: The philosophy MUST stress multiple times that the final wor...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "HOW TO GENERATE A VISUAL PHILOSOPHY"
+    },
+    {
+      "@id": "rule:expert_craftsmanship_repeatedly_emphasize_the",
+      "@type": "skill:Rule",
+      "rdfs:label": "**EXPERT CRAFTSMANSHIP**: Repeatedly emphasize the final work must look meticulously crafted, labore...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "rule:critical_step_before_creating_the_canvas_ide",
+      "@type": "skill:Rule",
+      "rdfs:label": "**CRITICAL STEP**: Before creating the canvas, identify the subtle conceptual thread from the origin...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "DEDUCING THE SUBTLE REFERENCE"
+    },
+    {
+      "@id": "rule:this_is_very_important_the_reference_must_be",
+      "@type": "skill:Rule",
+      "rdfs:label": "This is **VERY IMPORTANT**: The reference must be refined so it enhances the work's depth without an...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "DEDUCING THE SUBTLE REFERENCE"
+    },
+    {
+      "@id": "rule:this_is_true_art_text_as_a_contextual_element",
+      "@type": "skill:Rule",
+      "rdfs:label": "This is true art. **Text as a contextual element**: Text is always minimal and visual-first, but let...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:all_use_of_fonts_must_be_design_forward_and_priori",
+      "@type": "skill:Rule",
+      "rdfs:label": "All use of fonts must be design-forward and prioritize visual communication",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:every_element_must_be_contained_within_the_canvas",
+      "@type": "skill:Rule",
+      "rdfs:label": "Every element must be contained within the canvas boundaries with proper margins",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "antipattern:what_is_received_some_subtle_input_or_instruction",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "What is received: Some subtle input or instructions by the user that should be taken into account, b...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "THE CRITICAL UNDERSTANDING"
+    },
+    {
+      "@id": "antipattern:avoid_redundancy_each_design_aspect_should_be",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**Avoid redundancy**: Each design aspect should be mentioned once. Avoid repeating points about colo...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "HOW TO GENERATE A VISUAL PHILOSOPHY"
+    },
+    {
+      "@id": "antipattern:text_as_rare_powerful_gesture_never_paragraphs",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Text as rare, powerful gesture - never paragraphs, only essential words integrated into the visual a...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "antipattern:text_appears_sparingly_short_phrases_never_expl",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Text appears sparingly - short phrases, never explanatory blocks",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "antipattern:avoid_repeating_the_same_points",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Avoid repeating the same points",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "antipattern:minimal_text_always_emphasize_that_text_is_sp",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**MINIMAL TEXT**: Always emphasize that text is sparse, essential-only, integrated as visual element...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "antipattern:never_lose_sight_of_the_idea_that_this_should_be_a",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Never lose sight of the idea that this should be art, not something that's cartoony or amateur",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "antipattern:it_must_be_pristine_a_masterpiece_if_craftsmanshi",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "It must be pristine, a masterpiece if craftsmanship, as if it were about to be displayed in a museum...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "FINAL STEP"
+    },
+    {
+      "@id": "rule:text_only_for_key_labels_floating_in_space",
+      "@type": "skill:Rule",
+      "rdfs:label": "Text only for key labels floating in space",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.88,
+      "aether:extraction_method": "classifier_pattern_bank",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "rule:create_one_single_page_highly_visual_design_forw",
+      "@type": "skill:Rule",
+      "rdfs:label": "Create one single page, highly visual, design-forward PDF or PNG output (unless asked for more pages...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:treat_the_abstract_philosophical_design_as_if_it_w",
+      "@type": "skill:Rule",
+      "rdfs:label": "Treat the abstract philosophical design as if it were a scientific bible, borrowing the visual langu...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:this_is_non_negotiable_for_professional_execution",
+      "@type": "skill:Rule",
+      "rdfs:label": "This is non-negotiable for professional execution. **IMPORTANT: Use different fonts if writing text",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "antipattern:get_creative_by_making_the_typography_actually_par",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Get creative by making the typography actually part of the art itself -- if the art is abstract, bri...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:to_create_additional_pages_when_requested_create",
+      "@type": "skill:Rule",
+      "rdfs:label": "To create additional pages when requested, create more creative pages along the same lines as the de...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "MULTI-PAGE OPTION"
+    },
+    {
+      "@id": "rule:the_actual_design_philosophy_should_be_4_6_substan",
+      "@type": "skill:Rule",
+      "rdfs:label": "The actual design philosophy should be 4-6 substantial paragraphs.*",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "PHILOSOPHY EXAMPLES"
+    },
+    {
+      "@id": "rule:the_design_philosophy_should_be_4_6_paragraphs_l",
+      "@type": "skill:Rule",
+      "rdfs:label": "**The design philosophy should be 4-6 paragraphs long.** Fill it with poetic design philosophy that ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "rule:keep_the_design_philosophy_generic_without_mention",
+      "@type": "skill:Rule",
+      "rdfs:label": "Keep the design philosophy generic without mentioning the intention of the art, as if it can be used...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "ESSENTIAL PRINCIPLES"
+    },
+    {
+      "@id": "rule:someone_familiar_with_the_subject_should_feel_it_i",
+      "@type": "skill:Rule",
+      "rdfs:label": "Someone familiar with the subject should feel it intuitively, while others simply experience a maste...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "DEDUCING THE SUBTLE REFERENCE"
+    },
+    {
+      "@id": "rule:use_the_design_philosophy_created_and_the_instruct",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use the design philosophy created and the instructions below to craft a masterpiece, embodying all a...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:embrace_the_paradox_of_using_analytical_visual_lan",
+      "@type": "skill:Rule",
+      "rdfs:label": "Embrace the paradox of using analytical visual language to express ideas about human experience: the...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:most_of_the_time_font_should_be_thin",
+      "@type": "skill:Rule",
+      "rdfs:label": "Most of the time, font should be thin",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "CANVAS CREATION"
+    },
+    {
+      "@id": "rule:if_the_instinct_is_to_call_a_new_function_or_draw",
+      "@type": "skill:Rule",
+      "rdfs:label": "If the instinct is to call a new function or draw a new shape, STOP and instead ask: \"How can I make...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "FINAL STEP"
+    }
+  ]
+}

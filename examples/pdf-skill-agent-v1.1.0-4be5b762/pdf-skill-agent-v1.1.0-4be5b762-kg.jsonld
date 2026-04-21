@@ -1,0 +1,68 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rule:if_you_need_to_fill_out_a_pdf_form_read_forms_md",
+      "@type": "skill:Rule",
+      "rdfs:label": "If you need to fill out a PDF form, read FORMS.md and follow its instructions",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Overview"
+    },
+    {
+      "@id": "rule:if_you_need_to_fill_out_a_pdf_form_follow_the_ins",
+      "@type": "skill:Rule",
+      "rdfs:label": "If you need to fill out a PDF form, follow the instructions in FORMS.md",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Next Steps"
+    },
+    {
+      "@id": "antipattern:important_never_use_unicode_subscript_supersc",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "**IMPORTANT**: Never use Unicode subscript/superscript characters (₀₁₂₃₄₅₆₇₈₉, ⁰¹²³⁴⁵⁶⁷⁸⁹) in Report... (₀₁₂₃₄₅₆₇₈₉, ⁰¹²³⁴⁵⁶⁷⁸⁹, unicode)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "₀₁₂₃₄₅₆₇₈₉",
+        "⁰¹²³⁴⁵⁶⁷⁸⁹",
+        "unicode"
+      ],
+      "aether:section": "Subscripts and Superscripts"
+    },
+    {
+      "@id": "antipattern:the_built_in_fonts_do_not_include_these_glyphs_ca",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "The built-in fonts do not include these glyphs, causing them to render as solid black boxes (solid)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "solid"
+      ],
+      "aether:section": "Subscripts and Superscripts"
+    }
+  ]
+}

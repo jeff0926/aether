@@ -1,0 +1,117 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "antipattern:do_not_use_for_simple_single_file_html_jsx_artifac",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "Do NOT use for simple single-file HTML/JSX artifacts",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 0.95,
+      "aether:extraction_method": "frontmatter_pattern",
+      "aether:section": "frontmatter routing constraint"
+    },
+    {
+      "@id": "antipattern:very_important_to_avoid_what_is_often_referred_to",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "VERY IMPORTANT: To avoid what is often referred to as \"AI slop\", avoid using excessive centered layo... (ai slop)",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:blacklist": [
+        "ai slop"
+      ],
+      "aether:section": "Design & Style Guidelines"
+    },
+    {
+      "@id": "antipattern:in_general_avoid_testing_the_artifact_upfront_as",
+      "@type": "skill:AntiPattern",
+      "rdfs:label": "In general, avoid testing the artifact upfront as it adds latency between the request and when the f...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:section": "Step 5: Testing/Visualizing the Artifact (Optional)"
+    },
+    {
+      "@id": "rule:optional_test_the_artifact",
+      "@type": "skill:Rule",
+      "rdfs:label": "(Optional) Test the artifact",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Web Artifacts Builder"
+    },
+    {
+      "@id": "rule:finally_share_the_bundled_html_file_in_conversati",
+      "@type": "skill:Rule",
+      "rdfs:label": "Finally, share the bundled HTML file in conversation with the user so they can view it as an artifac...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Step 4: Share Artifact with User"
+    },
+    {
+      "@id": "rule:note_this_is_a_completely_optional_step",
+      "@type": "skill:Rule",
+      "rdfs:label": "Note: This is a completely optional step",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "Step 5: Testing/Visualizing the Artifact (Optional)"
+    },
+    {
+      "@id": "rule:this_file_can_be_directly_shared_in_claude_convers",
+      "@type": "skill:Rule",
+      "rdfs:label": "This file can be directly shared in Claude conversations as an artifact. **Requirements**: Your proj...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "Step 3: Bundle to Single HTML File"
+    },
+    {
+      "@id": "rule:only_perform_if_necessary_or_requested",
+      "@type": "skill:Rule",
+      "rdfs:label": "Only perform if necessary or requested",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Step 5: Testing/Visualizing the Artifact (Optional)"
+    },
+    {
+      "@id": "rule:test_later_after_presenting_the_artifact_if_requ",
+      "@type": "skill:Rule",
+      "rdfs:label": "Test later, after presenting the artifact, if requested or if issues arise",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "Step 5: Testing/Visualizing the Artifact (Optional)"
+    }
+  ]
+}

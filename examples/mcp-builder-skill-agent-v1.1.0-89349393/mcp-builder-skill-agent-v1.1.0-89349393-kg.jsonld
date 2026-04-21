@@ -1,0 +1,106 @@
+{
+  "@context": {
+    "@vocab": "https://aether.dev/kg#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "aether": "https://aether.dev/kg#",
+    "skill": "https://aether.dev/skill#",
+    "requires": {
+      "@id": "aether:requires",
+      "@type": "@id"
+    },
+    "teaches": {
+      "@id": "aether:teaches",
+      "@type": "@id"
+    }
+  },
+  "@graph": [
+    {
+      "@id": "rule:workflow_tools_can_be_more_convenient_for_specific",
+      "@type": "skill:Rule",
+      "rdfs:label": "Workflow tools can be more convenient for specific tasks, while comprehensive coverage gives agents ...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "1.1 Understand Modern MCP Design"
+    },
+    {
+      "@id": "rule:some_clients_support_code_execution_which_can_help",
+      "@type": "skill:Rule",
+      "rdfs:label": "Some clients support code execution which can help agents filter and process data efficiently. **Act...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "1.1 Understand Modern MCP Design"
+    },
+    {
+      "@id": "rule:recommended_stack_load_framework_documentat",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Recommended stack:** **Load framework documentation:** **For TypeScript (recommended):** **For Pyt...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "SHOULD",
+      "aether:section": "1.3 Study Framework Documentation"
+    },
+    {
+      "@id": "rule:use_evaluations_to_test_whether_llms_can_effective",
+      "@type": "skill:Rule",
+      "rdfs:label": "Use evaluations to test whether LLMs can effectively use your MCP server to answer realistic, comple...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "4.1 Understand Evaluation Purpose"
+    },
+    {
+      "@id": "rule:verifiable_single_clear_answer_that_can_be_v",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Verifiable**: Single, clear answer that can be verified by string comparison",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MAY",
+      "aether:section": "4.3 Evaluation Requirements"
+    },
+    {
+      "@id": "rule:when_uncertain_prioritize_comprehensive_api_cover",
+      "@type": "skill:Rule",
+      "rdfs:label": "When uncertain, prioritize comprehensive API coverage. **Tool Naming and Discoverability:** Clear, d...",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "1.1 Understand Modern MCP Design"
+    },
+    {
+      "@id": "rule:return_both_text_content_and_structured_data_when",
+      "@type": "skill:Rule",
+      "rdfs:label": "Return both text content and structured data when using modern SDKs",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "UNKNOWN",
+      "aether:section": "2.3 Implement Tools"
+    },
+    {
+      "@id": "rule:read_only_only_non_destructive_operations_req",
+      "@type": "skill:Rule",
+      "rdfs:label": "**Read-only**: Only non-destructive operations required",
+      "aether:origin": "core",
+      "aether:source": "SKILL.md",
+      "aether:confidence": 1.0,
+      "aether:extraction_method": "deterministic_dsl",
+      "aether:strength": "MUST",
+      "aether:section": "4.3 Evaluation Requirements"
+    }
+  ]
+}

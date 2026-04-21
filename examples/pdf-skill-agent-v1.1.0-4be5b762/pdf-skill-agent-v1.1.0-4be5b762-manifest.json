@@ -1,0 +1,12 @@
+{
+  "id": "pdf-skill-agent-v1.1.0-4be5b762",
+  "name": "pdf-skill-agent",
+  "version": "1.1.0",
+  "created": "2026-04-21T13:50:07.429738",
+  "source": {
+    "document": "SKILL.md",
+    "format": "md",
+    "assertions_extracted": 11
+  },
+  "stamper_version": "1.0.0"
+}

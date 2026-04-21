@@ -1,0 +1,12 @@
+{
+  "id": "claude-api-skill-agent-v1.1.0-9623a332",
+  "name": "claude-api-skill-agent",
+  "version": "1.1.0",
+  "created": "2026-04-21T13:50:08.315117",
+  "source": {
+    "document": "SKILL.md",
+    "format": "md",
+    "assertions_extracted": 137
+  },
+  "stamper_version": "1.0.0"
+}
