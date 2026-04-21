@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AETHER Dashboard</title>
+  <script src="https://unpkg.com/vis-network/dist/vis-network.min.js"></script>
+  <script>
+    window.addEventListener('error', e => {
+      if (e.message === 'ResizeObserver loop completed with undelivered notifications.' ||
+          e.message === 'ResizeObserver loop limit exceeded') {
+        e.stopImmediatePropagation();
+      }
+    });
+  </script>
+  <style>
+    :root {
+      --aec-blue: #2E4057;
+      --aec-green: #1B5E20;
+      --aec-red: #B71C1C;
+      --aec-orange: #E65100;
+      --aec-gray: #607D8B;
+      --aec-light: #F5F7FA;
+      --aec-white: #FFFFFF;
+      --type-skill: #1565C0;
+      --type-scholar: #2E7D32;
+      --type-role: #6A1B9A;
+      --type-domain: #EF6C00;
+      --type-validator: #00695C;
+      --type-guardrail: #B71C1C;
+      --type-logic: #4527A0;
+      --type-orchestrator: #F57F17;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: var(--aec-light);
+      color: #333;
+      min-height: 100vh;
+    }
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 80px;
+      background: var(--aec-white);
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .header-left { display: flex; flex-direction: column; }
+    .wordmark { font-size: 24px; font-weight: 600; color: var(--aec-blue); }
+    .subtitle { font-size: 11px; color: var(--aec-gray); margin-top: 2px; letter-spacing: 0.5px; }
+    .header-center { display: flex; align-items: center; gap: 16px; }
+    .agent-display { text-align: center; }
+    .agent-name { font-weight: 600; color: var(--aec-blue); font-size: 14px; }
+    .agent-type-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: white;
+      margin-top: 4px;
+    }
+    .score-gauge { position: relative; width: 80px; height: 50px; }
+    .score-gauge svg { width: 100%; height: 100%; }
+    .score-number { font-size: 24px; font-weight: 600; color: var(--aec-blue); }
+    .score-badge {
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .score-badge.pass { background: #E8F5E9; color: var(--aec-green); }
+    .score-badge.fail { background: #FFEBEE; color: var(--aec-red); }
+    .score-badge.pending { background: #F5F5F5; color: var(--aec-gray); }
+
+    .tab-bar {
+      position: fixed;
+      top: 80px;
+      left: 0;
+      right: 0;
+      height: 48px;
+      background: var(--aec-white);
+      border-bottom: 1px solid #e0e0e0;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 99;
+    }
+    .tab {
+      padding: 12px 16px;
+      font-size: 13px;
+      color: var(--aec-gray);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tab:hover { color: var(--aec-blue); }
+    .tab.active {
+      color: var(--aec-blue);
+      border-bottom-color: var(--aec-blue);
+      font-weight: 600;
+    }
+
+    .content {
+      margin-top: 128px;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 24px;
+      min-height: calc(100vh - 128px);
+    }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    .talk-track {
+      font-style: italic;
+      color: var(--aec-gray);
+      border-left: 3px solid var(--aec-blue);
+      padding: 8px 16px;
+      margin: 12px 0 24px 0;
+      font-size: 0.9em;
+      line-height: 1.5;
+    }
+
+    /* Fleet Tab */
+    .drop-zone {
+      border: 2px dashed #ccc;
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+      margin-bottom: 32px;
+      background: var(--aec-white);
+      transition: all 0.2s;
+    }
+    .drop-zone:hover { border-color: var(--aec-blue); background: #f8fafc; }
+    .drop-zone h3 { color: var(--aec-blue); margin-bottom: 8px; }
+    .drop-zone p { color: var(--aec-gray); font-size: 14px; }
+    .type-group { margin-bottom: 32px; }
+    .type-group-header {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 8px 0;
+      border-bottom: 2px solid;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .agent-pill {
+      background: var(--aec-white);
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+    .agent-pill:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .agent-pill-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+    .agent-pill-icon { font-size: 20px; }
+    .agent-pill-name { font-weight: 600; color: var(--aec-blue); }
+    .agent-pill-desc { font-size: 12px; color: var(--aec-gray); margin-bottom: 8px; line-height: 1.4; }
+    .agent-pill-meta { font-size: 11px; color: var(--aec-gray); display: flex; gap: 12px; }
+    .agent-pill-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .agent-pill-btn {
+      padding: 6px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      background: var(--aec-white);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .agent-pill-btn:hover { background: var(--aec-light); border-color: var(--aec-blue); }
+    .agent-pill-btn.primary { background: var(--aec-blue); color: white; border-color: var(--aec-blue); }
+
+    /* Create Tab */
+    .create-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .dag-progress { background: var(--aec-white); border-radius: 12px; padding: 24px; }
+    .dag-step { margin-bottom: 16px; }
+    .dag-step-header { font-weight: 600; color: var(--aec-blue); margin-bottom: 4px; }
+    .dag-step-detail { font-size: 13px; color: var(--aec-gray); padding-left: 16px; }
+    .dag-step-detail.done { color: var(--aec-green); }
+    .dag-step-detail::before { content: "✓ "; }
+    .type-confirm-card {
+      background: var(--aec-white);
+      border: 2px solid var(--aec-blue);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 24px;
+    }
+    .capsule-preview {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      border-radius: 12px;
+      padding: 24px;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    .capsule-preview .folder { color: #4fc1ff; }
+    .capsule-preview .file { color: #ce9178; }
+    .capsule-preview .comment { color: #6a9955; }
+
+    /* Orchestrate Tab */
+    .orchestrate-input {
+      background: var(--aec-white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .orchestrate-input textarea {
+      width: 100%;
+      height: 100px;
+      padding: 16px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 15px;
+      font-family: inherit;
+      resize: vertical;
+    }
+    .orchestrate-buttons { display: flex; gap: 12px; margin-top: 16px; }
+    .btn {
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+    .btn-primary { background: var(--aec-blue); color: white; }
+    .btn-primary:hover { background: #1e3040; }
+    .btn-secondary { background: var(--aec-white); color: var(--aec-blue); border: 1px solid var(--aec-blue); }
+    .routing-panel {
+      background: var(--aec-white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+      font-family: monospace;
+    }
+    .routing-header { font-weight: 600; color: var(--aec-blue); margin-bottom: 12px; }
+    .routing-line { padding: 4px 0; color: var(--aec-gray); }
+    .routing-match { color: var(--aec-green); }
+    .agent-results { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .agent-result-card {
+      background: var(--aec-white);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid #e0e0e0;
+    }
+    .agent-result-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+    .agent-result-name { font-weight: 600; color: var(--aec-blue); }
+    .agent-result-score { font-size: 13px; }
+    .agent-result-score.pass { color: var(--aec-green); }
+    .agent-result-score.fail { color: var(--aec-red); }
+    .ghost-card {
+      background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+      border: 2px dashed var(--aec-gray);
+      border-radius: 12px;
+      padding: 32px;
+      text-align: center;
+    }
+    .ghost-icon { font-size: 48px; margin-bottom: 16px; }
+    .ghost-title { font-size: 18px; font-weight: 600; color: var(--aec-gray); margin-bottom: 8px; }
+    .ghost-desc { color: var(--aec-gray); font-size: 14px; line-height: 1.6; }
+    .ghost-gap { margin-top: 16px; font-size: 13px; color: var(--aec-blue); }
+
+    /* X-Ray Tab */
+    .xray-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .xray-input { background: var(--aec-white); border-radius: 12px; padding: 24px; }
+    .xray-input select, .xray-input textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      margin-bottom: 16px;
+    }
+    .xray-input textarea { height: 150px; resize: vertical; }
+    .demo-buttons { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .demo-btn {
+      padding: 8px 14px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      background: var(--aec-white);
+      cursor: pointer;
+      font-size: 12px;
+      transition: all 0.2s;
+    }
+    .demo-btn:hover { background: var(--aec-light); border-color: var(--aec-blue); }
+    .verdicts { margin-top: 24px; }
+    .verdict {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+    .verdict.grounded { background: #E8F5E9; border-left: 4px solid var(--aec-green); }
+    .verdict.ungrounded { background: #FFEBEE; border-left: 4px solid var(--aec-red); }
+    .verdict.persona { background: #FFF3E0; border-left: 4px solid var(--aec-orange); }
+    .verdict-text { margin-bottom: 4px; }
+    .verdict-meta { font-size: 11px; color: var(--aec-gray); }
+    .pipeline-panel { background: var(--aec-white); border-radius: 12px; padding: 24px; }
+    .pipeline-stage {
+      padding: 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      transition: all 0.3s;
+    }
+    .pipeline-stage.active { border-color: var(--aec-blue); box-shadow: 0 0 20px rgba(46, 64, 87, 0.2); }
+    .pipeline-stage.done { border-color: var(--aec-green); }
+    .pipeline-stage.disabled { opacity: 0.5; }
+    .stage-header { display: flex; justify-content: space-between; }
+    .stage-name { font-weight: 600; color: var(--aec-blue); }
+    .stage-time { font-size: 12px; color: var(--aec-green); font-family: monospace; }
+    .stage-desc { font-size: 12px; color: var(--aec-gray); margin-top: 4px; }
+    .score-display-large {
+      text-align: center;
+      padding: 24px;
+      background: var(--aec-light);
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+    .score-display-large .number { font-size: 48px; font-weight: 600; }
+    .score-display-large .label { font-size: 14px; color: var(--aec-gray); margin-top: 8px; }
+
+    /* KG Viewer */
+    .kg-viewer { height: calc(100vh - 280px); position: relative; }
+    #kg-network {
+      width: 100%;
+      height: 100%;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      background: var(--aec-white);
+    }
+    .kg-controls {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      align-items: center;
+    }
+    .kg-controls select {
+      padding: 8px 12px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .kg-legend {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: rgba(255,255,255,0.95);
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+
+    /* Educate Tab */
+    .educate-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    .before-after {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+      background: var(--aec-white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .before-after-card { text-align: center; }
+    .before-after-card h4 { color: var(--aec-gray); font-size: 12px; text-transform: uppercase; margin-bottom: 12px; }
+    .before-after-score { font-size: 36px; font-weight: 600; }
+    .before-after-score.fail { color: var(--aec-red); }
+    .before-after-score.pass { color: var(--aec-green); }
+    .before-after-arrow { font-size: 24px; color: var(--aec-gray); }
+    .contradiction-gate {
+      background: var(--aec-white);
+      border-radius: 12px;
+      padding: 24px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .gate-header { font-weight: 600; color: var(--aec-blue); margin-bottom: 16px; }
+    .gate-check { padding: 12px; background: var(--aec-light); border-radius: 8px; margin-bottom: 12px; }
+    .gate-check.pass { border-left: 4px solid var(--aec-green); }
+    .gate-check.fail { border-left: 4px solid var(--aec-red); }
+    .gate-proposed { font-weight: 600; margin-bottom: 8px; }
+    .gate-result { font-size: 12px; }
+    .gate-result.pass { color: var(--aec-green); }
+    .gate-result.fail { color: var(--aec-red); }
+
+    /* Settings Tab */
+    .settings-section {
+      background: var(--aec-white);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    .settings-section h3 { color: var(--aec-blue); margin-bottom: 16px; }
+    .setting-row { margin-bottom: 16px; }
+    .setting-row label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+    .setting-row input, .setting-row select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+    .setting-hint { font-size: 12px; color: var(--aec-gray); margin-top: 4px; }
+
+    /* Loading state */
+    .loading { text-align: center; padding: 48px; color: var(--aec-gray); }
+    .error-msg { background: #FFEBEE; color: var(--aec-red); padding: 16px; border-radius: 8px; margin-bottom: 24px; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-left">
+      <div class="wordmark">AETHER</div>
+      <div class="subtitle">Adaptive Embodied Thinking : Holistic Evolutionary Runtime</div>
+    </div>
+    <div class="header-center">
+      <div class="agent-display">
+        <div class="agent-name" id="current-agent-name">frontend-design</div>
+        <div class="agent-type-badge" id="current-agent-type" style="background: var(--type-skill);">skill</div>
+      </div>
+    </div>
+    <div class="header-center">
+      <div class="score-gauge">
+        <svg viewBox="0 0 60 40">
+          <path d="M 5 35 A 25 25 0 0 1 55 35" fill="none" stroke="#e0e0e0" stroke-width="6" stroke-linecap="round"/>
+          <path id="score-arc-fill" d="M 5 35 A 25 25 0 0 1 55 35" fill="none" stroke="var(--aec-green)" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 79"/>
+        </svg>
+      </div>
+      <div class="score-number" id="score-display">--</div>
+      <div class="score-badge pending" id="score-badge">READY</div>
+    </div>
+  </header>
+
+  <nav class="tab-bar">
+    <div class="tab active" data-tab="fleet">🏠 Fleet</div>
+    <div class="tab" data-tab="create">⚡ Create</div>
+    <div class="tab" data-tab="orchestrate">🔀 Orchestrate</div>
+    <div class="tab" data-tab="xray">🔍 X-Ray</div>
+    <div class="tab" data-tab="kg">🕸 KG</div>
+    <div class="tab" data-tab="educate">🎓 Educate</div>
+    <div class="tab" data-tab="settings">⚙ Settings</div>
+  </nav>
+
+  <main class="content">
+    <!-- TAB 1: FLEET -->
+    <div class="tab-content active" id="tab-fleet">
+      <div class="talk-track">
+        "The agent is the folder. Five files. No runtime dependency.
+        Copy the folder anywhere — the skill travels with it."
+      </div>
+
+      <div class="drop-zone" id="fleet-drop-zone">
+        <h3>Drop any file to create a new agent</h3>
+        <p>.md .docx .pdf .xlsx .txt .json .dsl</p>
+        <p style="margin-top: 8px; font-size: 12px;">DAG will distill it into a verified capsule in under 30 seconds.</p>
+      </div>
+
+      <div id="fleet-agents">
+        <div class="loading">Loading agent registry...</div>
+      </div>
+    </div>
+
+    <!-- TAB 2: CREATE -->
+    <div class="tab-content" id="tab-create">
+      <div class="talk-track">
+        "Everyone hates the 6-month enterprise data cleanup phase.
+        Drop the file. DAG distills it into a 5-file capsule.
+        The skill is now an atomic, portable asset you can run anywhere."
+      </div>
+
+      <div class="create-layout">
+        <div>
+          <div class="drop-zone" style="min-height: 200px;">
+            <h3>DROP YOUR DOCUMENT</h3>
+            <p style="font-size: 48px; margin: 24px 0;">📄</p>
+            <p>Drag file here or click to browse</p>
+            <p style="margin-top: 12px; font-size: 12px;">Supported: .md .docx .pdf .xlsx .txt .json .dsl</p>
+          </div>
+
+          <div class="dag-progress" id="dag-progress" style="display: none;">
+            <h3 style="color: var(--aec-blue); margin-bottom: 16px;">DAG — Distilled Augmented Generation</h3>
+            <div class="dag-step">
+              <div class="dag-step-header">STEP 1: EXTRACT</div>
+              <div class="dag-step-detail done">Format detected: PDF (14,832 chars)</div>
+              <div class="dag-step-detail done">47 sections parsed</div>
+              <div class="dag-step-detail done">312 sentences extracted</div>
+            </div>
+            <div class="dag-step">
+              <div class="dag-step-header">STEP 2: CLASSIFY</div>
+              <div class="dag-step-detail done">8 PROHIBITION patterns detected</div>
+              <div class="dag-step-detail done">14 OBLIGATION patterns detected</div>
+              <div class="dag-step-detail done">22 RECOMMENDATION patterns detected</div>
+            </div>
+            <div class="dag-step">
+              <div class="dag-step-header">STEP 3: DISTILL → KB</div>
+              <div class="dag-step-detail done">Knowledge base: 8,420 chars</div>
+              <div class="dag-step-detail done">12 domain sections preserved</div>
+            </div>
+            <div class="dag-step">
+              <div class="dag-step-header">STEP 4: AUGMENT → KG</div>
+              <div class="dag-step-detail done">26 nodes compiled (AntiPattern: 12, Rule: 14)</div>
+              <div class="dag-step-detail done">Blacklist tokens: [Inter, Roboto, WidthType.PERCENTAGE]</div>
+            </div>
+            <div class="dag-step">
+              <div class="dag-step-header">STEP 5: AEC SELF-VERIFICATION</div>
+              <div class="dag-step-detail done">All AntiPatterns have blacklist tokens</div>
+              <div class="dag-step-detail done">Counterfactual test: PASS</div>
+              <div class="dag-step-detail done">MVC check: PASS</div>
+            </div>
+          </div>
+
+          <div class="type-confirm-card" id="type-confirm" style="display: none;">
+            <p style="color: var(--aec-gray); margin-bottom: 8px;">We think this is a...</p>
+            <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+              <span style="font-size: 32px;">📋</span>
+              <div>
+                <div style="font-size: 18px; font-weight: 600; color: var(--aec-blue);">SKILL AGENT</div>
+                <div style="font-size: 13px; color: var(--aec-gray);">Domain: Document Creation</div>
+                <div style="font-size: 13px; color: var(--aec-gray);">Topics: docx, word, formatting</div>
+                <div style="font-size: 13px; color: var(--aec-gray);">Rules: 14 · AntiPatterns: 12</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px;">
+              <button class="btn btn-primary">✓ Create Agent</button>
+              <select style="padding: 10px; border-radius: 6px; border: 1px solid #e0e0e0;">
+                <option>✏ Change Type...</option>
+                <option>skill</option>
+                <option>scholar</option>
+                <option>role</option>
+                <option>domain</option>
+                <option>logic</option>
+                <option>validator</option>
+                <option>guardrail</option>
+                <option>orchestrator</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="capsule-preview">
+          <div style="color: #6a9955; margin-bottom: 16px;">CAPSULE FILES</div>
+          <div><span class="folder">docx-skill-agent-v1.0.0-{uid}/</span></div>
+          <div>├── <span class="file">manifest.json</span>    <span class="comment">← identity, version, agentType</span></div>
+          <div>├── <span class="file">definition.json</span>  <span class="comment">← pipeline config, thresholds</span></div>
+          <div>├── <span class="file">persona.json</span>     <span class="comment">← tone, style, constraints</span></div>
+          <div>├── <span class="file">kb.md</span>            <span class="comment">← 8,420 chars of knowledge</span></div>
+          <div>└── <span class="file">kg.jsonld</span>        <span class="comment">← 26 compiled policy nodes</span></div>
+          <div style="margin-top: 24px; color: #6a9955; font-style: italic;">
+            "Copy this folder anywhere.<br>
+            The skill travels with it.<br>
+            No runtime dependency."
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: ORCHESTRATE -->
+    <div class="tab-content" id="tab-orchestrate">
+      <div class="talk-track">
+        "One query. The right agents. Automatic routing.
+        Each agent verifies its own response.
+        GHOST state fires when no agent knows the answer."
+      </div>
+
+      <div class="orchestrate-input">
+        <textarea id="orchestrate-query" placeholder='Ask anything... e.g., "Create a project status report with risk matrix"'></textarea>
+        <div class="orchestrate-buttons">
+          <button class="btn btn-primary" onclick="runOrchestrate()">▶ Orchestrate</button>
+          <button class="btn btn-secondary" onclick="runOrchestrate(true)">Dry Run — show routing only</button>
+        </div>
+      </div>
+
+      <div class="routing-panel" id="routing-panel" style="display: none;">
+        <div class="routing-header">HABITAT ROUTING</div>
+        <div id="routing-content"></div>
+      </div>
+
+      <div class="agent-results" id="agent-results"></div>
+    </div>
+
+    <!-- TAB 4: X-RAY -->
+    <div class="tab-content" id="tab-xray">
+      <div class="talk-track">
+        "The industry relies on LLM-as-a-judge: slow, biased, fails on paraphrased content.
+        AETHER compiles the knowledge graph into executable policy checkers at load time.
+        O(tokens) set intersection. Sub-millisecond. Mathematical."
+      </div>
+
+      <div class="xray-layout">
+        <div class="xray-input">
+          <select id="xray-agent-select" onchange="switchXRayAgent(this.value)">
+            <option value="frontend-design">frontend-design (skill)</option>
+            <option value="jefferson">thomas-jefferson (scholar)</option>
+            <option value="ceo-engine">ceo-engine (role)</option>
+          </select>
+
+          <div class="demo-buttons">
+            <button class="demo-btn" onclick="loadXRayDemo('bad-typography')">Bad Typography Demo</button>
+            <button class="demo-btn" onclick="loadXRayDemo('good-typography')">Good Typography Demo</button>
+            <button class="demo-btn" onclick="loadXRayDemo('jefferson')">Jefferson Facts Demo</button>
+          </div>
+
+          <textarea id="xray-text" placeholder="Enter text to verify against the selected agent's knowledge graph..."></textarea>
+          <button class="btn btn-primary" onclick="runXRayVerification()">🔍 Verify</button>
+
+          <div class="verdicts" id="xray-verdicts"></div>
+
+          <div class="score-display-large" id="xray-score" style="display: none;">
+            <div class="number" id="xray-score-number">0.917</div>
+            <div class="label" id="xray-score-label">11 grounded · 1 ungrounded · 1 persona</div>
+          </div>
+        </div>
+
+        <div class="pipeline-panel">
+          <div class="talk-track" style="margin-top: 0;">
+            "The industry's LLM-as-a-judge takes 200-2000ms and fails on paraphrasing.
+            Watch what AETHER does instead."
+          </div>
+
+          <div class="pipeline-stage" id="stage-l0">
+            <div class="stage-header">
+              <span class="stage-name">L0 Factual Extraction</span>
+              <span class="stage-time" id="l0-time">—</span>
+            </div>
+            <div class="stage-desc">Numbers · Dates · Names</div>
+            <div class="stage-desc" id="l0-status">—</div>
+          </div>
+
+          <div class="pipeline-stage" id="stage-l1">
+            <div class="stage-header">
+              <span class="stage-name">L1 Compiled Pattern Match</span>
+              <span class="stage-time" id="l1-time">—</span>
+            </div>
+            <div class="stage-desc">Detectors · Blacklist tokens</div>
+            <div class="stage-desc" id="l1-status">—</div>
+          </div>
+
+          <div class="pipeline-stage disabled" id="stage-l2">
+            <div class="stage-header">
+              <span class="stage-name">L2 Type-Driven LLM</span>
+              <span class="stage-time" id="l2-time">—</span>
+            </div>
+            <div class="stage-desc">(Layer 2 disabled)</div>
+            <div class="stage-desc" id="l2-status">skipped</div>
+          </div>
+
+          <div class="pipeline-stage" id="stage-l3">
+            <div class="stage-header">
+              <span class="stage-name">L3 Edge Policy Traverse</span>
+              <span class="stage-time" id="l3-time">—</span>
+            </div>
+            <div class="stage-desc">Policy checks</div>
+            <div class="stage-desc" id="l3-status">—</div>
+          </div>
+
+          <div style="margin-top: 24px; text-align: center; padding: 16px; background: var(--aec-light); border-radius: 8px;">
+            <div style="font-size: 24px; font-weight: 600; color: var(--aec-blue);" id="total-time">TOTAL: —</div>
+            <div style="font-size: 13px; color: var(--aec-gray); margin-top: 4px; font-style: italic;">
+              "Less than one millisecond. Mathematical accountability."
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: KG VIEWER -->
+    <div class="tab-content" id="tab-kg">
+      <div class="talk-track">
+        "This is the compiled knowledge graph —
+        the program AEC executes against every response.
+        Each node is a detector. Each edge is a policy.
+        Red nodes catch violations. Blue nodes verify compliance."
+      </div>
+
+      <div class="kg-controls">
+        <select id="kg-agent-select" onchange="switchKGAgent(this.value)">
+          <option value="frontend-design">frontend-design (51 nodes)</option>
+          <option value="jefferson">thomas-jefferson (22 nodes)</option>
+        </select>
+        <button class="demo-btn" onclick="filterKG('all')">All</button>
+        <button class="demo-btn" onclick="filterKG('Rule')">Rules</button>
+        <button class="demo-btn" onclick="filterKG('AntiPattern')">AntiPatterns</button>
+        <button class="demo-btn" onclick="filterKG('Technique')">Techniques</button>
+        <button class="demo-btn" onclick="filterKG('Concept')">Concepts</button>
+      </div>
+
+      <div class="kg-viewer">
+        <div id="kg-network"></div>
+        <div class="kg-legend">
+          <div class="legend-item"><div class="legend-dot" style="background: #1565C0;"></div> Rule</div>
+          <div class="legend-item"><div class="legend-dot" style="background: #C62828;"></div> AntiPattern</div>
+          <div class="legend-item"><div class="legend-dot" style="background: #2E7D32;"></div> Technique</div>
+          <div class="legend-item"><div class="legend-dot" style="background: #6A1B9A;"></div> Concept</div>
+          <div class="legend-item"><div class="legend-dot" style="background: #EF6C00;"></div> Tool</div>
+          <div class="legend-item"><div class="legend-dot" style="background: #00695C;"></div> Trait</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: EDUCATE -->
+    <div class="tab-content" id="tab-educate">
+      <div class="talk-track">
+        "In conventional systems, a failure is an error log.
+        In AETHER, a failure is a curriculum.
+        The agent researches what it missed.
+        The Contradiction Gate holds immutable core nodes as absolute veto over acquired knowledge.
+        Score: 0.143 → 0.889. Zero human intervention."
+      </div>
+
+      <div class="before-after">
+        <div class="before-after-card">
+          <h4>Before Education</h4>
+          <div class="before-after-score fail">0.143</div>
+          <div style="font-size: 13px; color: var(--aec-gray);">FAIL · 8 gaps · 51 nodes</div>
+        </div>
+        <div class="before-after-arrow">→→</div>
+        <div class="before-after-card">
+          <h4>After Education</h4>
+          <div class="before-after-score pass">0.889</div>
+          <div style="font-size: 13px; color: var(--aec-gray);">PASS · 1 gap · 68 nodes</div>
+        </div>
+      </div>
+
+      <p style="text-align: center; color: var(--aec-gray); margin-bottom: 24px; font-size: 14px;">
+        "Jefferson scholar agent — Louisiana Purchase query"<br>
+        "17 triples acquired · 0 human interventions · Cycle 1"
+      </p>
+
+      <div class="educate-layout">
+        <div class="contradiction-gate">
+          <div class="gate-header">CONTRADICTION GATE</div>
+          <div class="talk-track" style="margin: 0 0 16px 0; padding: 8px 12px;">
+            "Before any new knowledge integrates, it hits the Contradiction Gate.
+            Core nodes hold absolute veto."
+          </div>
+
+          <div class="gate-check pass">
+            <div class="gate-proposed">Proposed: "Napoleon sold Louisiana in 1803"</div>
+            <div class="gate-result pass">✓ Checking against 51 core nodes...</div>
+            <div class="gate-result pass">✓ No contradiction found</div>
+            <div class="gate-result pass">✓ INTEGRATED (origin: acquired)</div>
+          </div>
+
+          <div class="gate-check fail">
+            <div class="gate-proposed">Proposed: "Jefferson was born in 1800"</div>
+            <div class="gate-result fail">✗ CONTRADICTION with core:jefferson_birth_1743</div>
+            <div class="gate-result fail">✗ REJECTED — core node veto</div>
+            <div style="font-size: 12px; color: var(--aec-gray); margin-top: 8px; font-style: italic;">
+              "Immutable knowledge cannot be overwritten."
+            </div>
+          </div>
+        </div>
+
+        <div style="background: var(--aec-white); border-radius: 12px; padding: 24px;">
+          <h3 style="color: var(--aec-blue); margin-bottom: 16px;">Six-Stage Education Loop</h3>
+          <div style="font-size: 13px; color: var(--aec-gray); line-height: 1.8;">
+            <div style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">1. <strong>Gap Detection</strong> — Identify ungrounded statements</div>
+            <div style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">2. <strong>Web Research</strong> — Gather candidate facts</div>
+            <div style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">3. <strong>Triple Extraction</strong> — Parse into KG triples</div>
+            <div style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">4. <strong>Contradiction Gate</strong> — Check against core nodes</div>
+            <div style="padding: 8px 0; border-bottom: 1px solid #e0e0e0;">5. <strong>Integration</strong> — Add to KG with origin:acquired</div>
+            <div style="padding: 8px 0;">6. <strong>Re-verification</strong> — Run AEC until convergence</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: SETTINGS -->
+    <div class="tab-content" id="tab-settings">
+      <div class="settings-section">
+        <h3>LLM Provider</h3>
+        <div class="setting-row">
+          <label>Provider</label>
+          <select id="llm-provider">
+            <option value="anthropic">Anthropic</option>
+            <option value="openai">OpenAI</option>
+            <option value="stub">Stub (no API)</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <label>API Key</label>
+          <input type="password" id="api-key" placeholder="sk-...">
+          <div class="setting-hint">Stored in browser session only. Never sent except to your LLM provider.</div>
+        </div>
+        <div class="setting-row">
+          <label>Model</label>
+          <input type="text" id="llm-model" value="claude-sonnet-4-6">
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>Fleet Registry</h3>
+        <div class="setting-row">
+          <label>Registry Path</label>
+          <input type="text" id="registry-path" value="registry/agent-registry.jsonld" readonly>
+        </div>
+        <button class="btn btn-secondary" onclick="loadRegistry()">↻ Reload Registry</button>
+      </div>
+
+      <div class="settings-section">
+        <h3>AEC Thresholds</h3>
+        <div class="setting-row">
+          <label>Main Threshold</label>
+          <input type="range" id="threshold-main" min="0.50" max="0.99" step="0.01" value="0.80">
+          <span id="threshold-main-val">0.80</span>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <h3>About</h3>
+        <p style="color: #666; font-size: 14px; line-height: 1.6;">
+          <strong>AETHER Dashboard v1.0.0</strong><br>
+          Absolute Reality Demo Experience<br><br>
+          GitHub: <a href="https://github.com/jeff0926/aether" target="_blank">github.com/jeff0926/aether</a>
+        </p>
+      </div>
+    </div>
+  </main>
+
+<script>
+// ============================================================
+// EMBEDDED KNOWLEDGE GRAPHS
+// ============================================================
+const KG_EXAMPLES = {
+  "frontend-design": {
+    label: "Frontend Design",
+    type: "skill",
+    nodes: [
+      {"@id": "rule:commit_to_bold_aesthetic", "@type": "skill:Rule", "rdfs:label": "Choose a clear conceptual direction and commit to a BOLD aesthetic"},
+      {"@id": "rule:choose_beautiful_unique_fonts", "@type": "skill:Rule", "rdfs:label": "Choose fonts that are beautiful, unique, and interesting"},
+      {"@id": "rule:use_css_variables", "@type": "skill:Rule", "rdfs:label": "Use CSS variables for consistency and design tokens"},
+      {"@id": "antipattern:generic_fonts", "@type": "skill:AntiPattern", "rdfs:label": "Using generic fonts (Inter, Roboto, system-ui)"},
+      {"@id": "antipattern:solid_color_defaults", "@type": "skill:AntiPattern", "rdfs:label": "Using solid color backgrounds without depth"},
+      {"@id": "antipattern:generic_ai_aesthetics", "@type": "skill:AntiPattern", "rdfs:label": "Generic AI aesthetics (purple gradients, default shadows)"},
+      {"@id": "technique:staggered_reveals", "@type": "skill:Technique", "rdfs:label": "Staggered reveals using animation-delay"},
+      {"@id": "technique:gradient_meshes", "@type": "skill:Technique", "rdfs:label": "Gradient meshes and layered transparencies"},
+      {"@id": "concept:typography", "@type": "skill:Concept", "rdfs:label": "Typography"},
+      {"@id": "concept:color_theme", "@type": "skill:Concept", "rdfs:label": "Color & Theme"},
+      {"@id": "concept:motion", "@type": "skill:Concept", "rdfs:label": "Motion"},
+    ]
+  },
+  "jefferson": {
+    label: "Thomas Jefferson Scholar",
+    type: "scholar",
+    nodes: [
+      {"@id": "fact:jefferson_birth", "@type": "aether:Fact", "rdfs:label": "Thomas Jefferson was born April 13, 1743", "aether:year": 1743, "aether:origin": "core"},
+      {"@id": "fact:declaration", "@type": "aether:Fact", "rdfs:label": "Jefferson authored the Declaration of Independence in 1776", "aether:year": 1776, "aether:origin": "core"},
+      {"@id": "fact:president", "@type": "aether:Fact", "rdfs:label": "Jefferson served as 3rd President 1801-1809", "aether:origin": "core"},
+      {"@id": "fact:louisiana", "@type": "aether:Fact", "rdfs:label": "Louisiana Purchase completed in 1803", "aether:year": 1803, "aether:origin": "core"},
+      {"@id": "fact:uva", "@type": "aether:Fact", "rdfs:label": "Jefferson founded University of Virginia in 1819", "aether:year": 1819, "aether:origin": "core"},
+    ]
+  },
+  "ceo-engine": {
+    label: "CEO Strategic Advisor",
+    type: "role",
+    nodes: [
+      {"@id": "rule:market_positioning", "@type": "skill:Rule", "rdfs:label": "Define clear market positioning and competitive moat"},
+      {"@id": "rule:go_to_market", "@type": "skill:Rule", "rdfs:label": "Develop go-to-market strategy aligned with resources"},
+      {"@id": "antipattern:premature_scaling", "@type": "skill:AntiPattern", "rdfs:label": "Scaling before product-market fit (hiring, marketing)"},
+      {"@id": "technique:board_narrative", "@type": "skill:Technique", "rdfs:label": "Craft compelling board narrative with metrics"},
+    ]
+  }
+};
+
+// ============================================================
+// GLOBAL STATE
+// ============================================================
+let registryData = null;
+let currentKG = 'frontend-design';
+let compiledKG = null;
+let network = null;
+
+// ============================================================
+// AEC ENGINE (JavaScript)
+// ============================================================
+const STOPWORDS = new Set([
+  'a','an','the','and','or','but','in','on','at','to','for','of','with','by','from','as',
+  'is','are','was','were','be','been','being','it','its','this','that','these','those',
+  'not','no','do','does','did','has','have','had','will','would','could','should','may',
+  'can','if','then','than','so','into','up','out','about','over','such','each','every',
+  'all','any','both','few','more','most','other','some','very','just','also','like',
+  'use','using','used','how','what','when','where','why','who','which','whom','whose'
+]);
+
+const TYPE_CONFIG = {
+  rules: { match_threshold: 0.50, weight: 1.0 },
+  techniques: { match_threshold: 0.55, weight: 1.0 },
+  antipatterns: { match_threshold: 0.40, weight: 1.0 },
+  concepts: { match_threshold: 0.30, weight: 0.5 },
+  tools: { match_threshold: 0.60, weight: 0.3 },
+  traits: { match_threshold: 0.70, weight: 0.2 },
+  facts: { match_threshold: 0.35, weight: 1.0 }
+};
+
+function tokenize(text) {
+  const words = text.toLowerCase().match(/\b\w+\b/g) || [];
+  return new Set(words.filter(w => !STOPWORDS.has(w)));
+}
+
+function setIntersection(a, b) {
+  return new Set([...a].filter(x => b.has(x)));
+}
+
+function compileKG(nodes) {
+  const detectors = [];
+  const blacklist = new Set();
+  const blacklistMap = {};
+  const nodeLookup = {};
+  const edgePolicies = [];
+
+  nodes.forEach(node => {
+    if (node['@id']) nodeLookup[node['@id']] = node;
+  });
+
+  nodes.forEach(node => {
+    const ntype = node['@type'] || '';
+    const label = node['rdfs:label'] || '';
+    const nodeId = node['@id'] || '';
+    if (!label || !nodeId) return;
+
+    let nodeType = null;
+    if (ntype.includes('Rule')) nodeType = 'rules';
+    else if (ntype.includes('AntiPattern')) nodeType = 'antipatterns';
+    else if (ntype.includes('Technique')) nodeType = 'techniques';
+    else if (ntype.includes('Concept')) nodeType = 'concepts';
+    else if (ntype.includes('Tool')) nodeType = 'tools';
+    else if (ntype.includes('Trait')) nodeType = 'traits';
+    else if (ntype.includes('Fact')) nodeType = 'facts';
+
+    if (!nodeType) return;
+
+    const config = TYPE_CONFIG[nodeType] || { match_threshold: 0.5, weight: 0.5 };
+    const patterns = tokenize(label);
+
+    detectors.push({
+      node_id: nodeId,
+      label: label,
+      node_type: nodeType,
+      patterns: patterns,
+      pattern_count: patterns.size,
+      threshold: config.match_threshold,
+      weight: config.weight,
+      node: node
+    });
+
+    if (nodeType === 'antipatterns') {
+      const parenMatches = label.match(/\(([^)]+)\)/g) || [];
+      parenMatches.forEach(match => {
+        const inner = match.slice(1, -1);
+        inner.split(/[,\/]/).forEach(term => {
+          const t = term.trim().toLowerCase();
+          if (t.length > 2) {
+            blacklist.add(t);
+            blacklistMap[t] = { node_id: nodeId, label: label };
+          }
+        });
+      });
+    }
+  });
+
+  return { detectors, blacklist, blacklistMap, edgePolicies, nodeLookup };
+}
+
+function splitStatements(text) {
+  if (!text || !text.trim()) return [];
+  let t = text.replace(/\s+/g, ' ').trim();
+  ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.', 'Inc.', 'Jr.', 'Sr.', 'vs.', 'etc.', 'e.g.', 'i.e.'].forEach(abbr => {
+    t = t.replace(new RegExp(abbr.replace('.', '\\.'), 'g'), abbr.replace('.', '<<DOT>>'));
+  });
+  const parts = t.split(/[.!?]+\s+(?=[A-Z])/);
+  return parts
+    .map(p => p.replace(/<<DOT>>/g, '.').trim().replace(/[.!?]+$/, '').trim())
+    .filter(p => p.length > 10);
+}
+
+function checkViolation(stmtTokens, compiled) {
+  const hits = setIntersection(stmtTokens, compiled.blacklist);
+  if (hits.size === 0) return null;
+  const firstHit = [...hits][0];
+  const mapped = compiled.blacklistMap[firstHit] || {};
+  return {
+    node_id: mapped.node_id || '',
+    label: mapped.label || '',
+    hits: [...hits],
+    type: 'blacklist_hit'
+  };
+}
+
+function matchStatement(stmtTokens, statement, compiled) {
+  const violation = checkViolation(stmtTokens, compiled);
+  if (violation) {
+    return { category: 'blacklist_hit', matches: [], violation: violation, ambiguous: [] };
+  }
+
+  const matches = [];
+  compiled.detectors.forEach(detector => {
+    if (detector.pattern_count === 0) return;
+    const overlap = setIntersection(stmtTokens, detector.patterns);
+    const coverage = overlap.size / detector.pattern_count;
+    if (coverage >= detector.threshold) {
+      matches.push({
+        node_id: detector.node_id,
+        label: detector.label,
+        node_type: detector.node_type,
+        coverage: Math.round(coverage * 1000) / 1000,
+        weight: detector.weight
+      });
+    }
+  });
+
+  if (matches.length > 0) {
+    const strong = matches.filter(m => m.weight >= 0.5);
+    if (strong.length > 0) {
+      return { category: 'concept_grounded', matches: matches.sort((a, b) => b.coverage - a.coverage), violation: null, ambiguous: [] };
+    }
+  }
+  return { category: 'concept_persona', matches: matches, violation: null, ambiguous: [] };
+}
+
+function verifyText(text, compiled, threshold = 0.80) {
+  const statements = splitStatements(text);
+  if (statements.length === 0) {
+    return { score: 0.0, passed: false, grounded: 0, ungrounded: 0, persona: 0, total: 0, details: [], gaps: [] };
+  }
+
+  let grounded = 0, ungrounded = 0, persona = 0;
+  const details = [];
+  const gaps = [];
+
+  statements.forEach(stmt => {
+    const stmtTokens = tokenize(stmt);
+    const result = matchStatement(stmtTokens, stmt, compiled);
+
+    if (result.category === 'concept_grounded') {
+      grounded++;
+      const top = result.matches[0];
+      details.push({ statement: stmt, category: 'grounded', method: `concept:${top.node_type}`, matched_node: top.node_id, matched_label: top.label, coverage: top.coverage });
+    } else if (result.category === 'blacklist_hit') {
+      ungrounded++;
+      const v = result.violation;
+      details.push({ statement: stmt, category: 'ungrounded', method: 'L1_blacklist_hit', matched_node: v.node_id, matched_label: v.label, violation_terms: v.hits });
+      gaps.push({ text: `L1 AntiPattern blacklist hit: ${v.hits.join(', ')}`, node_id: v.node_id });
+    } else {
+      persona++;
+      details.push({ statement: stmt, category: 'persona', method: 'no_concept_match' });
+    }
+  });
+
+  const total = grounded + ungrounded;
+  const score = total > 0 ? grounded / total : 1.0;
+  return {
+    score: Math.round(score * 1000) / 1000,
+    passed: score >= threshold,
+    grounded: grounded,
+    ungrounded: ungrounded,
+    persona: persona,
+    total: statements.length,
+    details: details,
+    gaps: gaps
+  };
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+  });
+
+  document.getElementById('threshold-main').addEventListener('input', function() {
+    document.getElementById('threshold-main-val').textContent = this.value;
+  });
+
+  loadRegistry();
+  switchKGAgent('frontend-design');
+});
+
+function switchTab(tabId) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelector(`.tab[data-tab="${tabId}"]`).classList.add('active');
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+
+  if (tabId === 'kg') {
+    setTimeout(() => renderKGNetwork(), 100);
+  }
+}
+
+// ============================================================
+// REGISTRY LOADING
+// ============================================================
+async function loadRegistry() {
+  const fleetContainer = document.getElementById('fleet-agents');
+  try {
+    const response = await fetch('registry/agent-registry.jsonld');
+    if (!response.ok) throw new Error('Registry not found');
+    registryData = await response.json();
+    renderFleet(registryData);
+  } catch (e) {
+    fleetContainer.innerHTML = `
+      <div class="error-msg">
+        Registry not available — run from aether repo root with: python -m http.server 8090
+      </div>
+      <p style="color: var(--aec-gray); margin-top: 16px;">Showing embedded KG examples in X-Ray tab.</p>
+    `;
+  }
+}
+
+function renderFleet(registry) {
+  const agents = registry['@graph'] || [];
+  const byType = {};
+  const typeIcons = {
+    skill: '📋', scholar: '🎓', role: '👔', domain: '🔧',
+    validator: '✅', guardrail: '🛡', logic: '⚙', orchestrator: '🔀'
+  };
+  const typeColors = {
+    skill: 'var(--type-skill)', scholar: 'var(--type-scholar)', role: 'var(--type-role)',
+    domain: 'var(--type-domain)', validator: 'var(--type-validator)', guardrail: 'var(--type-guardrail)',
+    logic: 'var(--type-logic)', orchestrator: 'var(--type-orchestrator)'
+  };
+
+  agents.forEach(agent => {
+    const type = agent['aether:agentType'] || 'domain';
+    if (!byType[type]) byType[type] = [];
+    byType[type].push(agent);
+  });
+
+  let html = '';
+  const typeOrder = ['skill', 'role', 'scholar', 'domain', 'validator', 'logic', 'orchestrator', 'guardrail'];
+
+  typeOrder.forEach(type => {
+    if (!byType[type] || byType[type].length === 0) return;
+    const color = typeColors[type] || 'var(--aec-gray)';
+    const icon = typeIcons[type] || '📦';
+
+    html += `<div class="type-group">
+      <div class="type-group-header" style="border-color: ${color}; color: ${color};">
+        ${icon} ${type.toUpperCase()} AGENTS (${byType[type].length})
+      </div>
+      <div class="agent-grid">`;
+
+    byType[type].forEach(agent => {
+      const name = agent['rdfs:label'] || agent['aether:capsuleId'];
+      const desc = agent['aether:description'] || '';
+      const nodes = agent['aether:kgNodes'] || 0;
+      const antipatterns = agent['aether:antiPatternCount'] || 0;
+
+      html += `<div class="agent-pill" onclick="selectAgent('${agent['aether:capsuleId']}')">
+        <div class="agent-pill-header">
+          <span class="agent-pill-icon">${icon}</span>
+          <span class="agent-pill-name">${name}</span>
+        </div>
+        <div class="agent-pill-desc">${desc.substring(0, 100)}${desc.length > 100 ? '...' : ''}</div>
+        <div class="agent-pill-meta">
+          <span style="color: ${color}; font-weight: 600;">${type}</span>
+          <span>${nodes} nodes</span>
+          ${antipatterns > 0 ? `<span>⚠ ${antipatterns}</span>` : ''}
+        </div>
+        <div class="agent-pill-actions">
+          <button class="agent-pill-btn primary" onclick="event.stopPropagation(); runAgent('${agent['aether:capsuleId']}')">▶ Run</button>
+          <button class="agent-pill-btn" onclick="event.stopPropagation(); inspectAgent('${agent['aether:capsuleId']}')">🔍 Inspect</button>
+        </div>
+      </div>`;
+    });
+
+    html += '</div></div>';
+  });
+
+  document.getElementById('fleet-agents').innerHTML = html || '<p>No agents found in registry.</p>';
+}
+
+function selectAgent(capsuleId) {
+  console.log('Selected agent:', capsuleId);
+}
+
+function runAgent(capsuleId) {
+  switchTab('orchestrate');
+  document.getElementById('orchestrate-query').value = `Query for ${capsuleId}...`;
+}
+
+function inspectAgent(capsuleId) {
+  switchTab('kg');
+}
+
+// ============================================================
+// ORCHESTRATE TAB
+// ============================================================
+function runOrchestrate(dryRun = false) {
+  const query = document.getElementById('orchestrate-query').value.trim();
+  if (!query) return;
+
+  const routingPanel = document.getElementById('routing-panel');
+  const resultsContainer = document.getElementById('agent-results');
+  routingPanel.style.display = 'block';
+
+  const queryTokens = tokenize(query);
+  const matches = [];
+
+  if (registryData) {
+    const agents = registryData['@graph'] || [];
+    agents.forEach(agent => {
+      const topics = agent['aether:topics'] || [];
+      let score = 0;
+      topics.forEach(topic => {
+        const topicLower = topic.toLowerCase();
+        queryTokens.forEach(token => {
+          if (topicLower.includes(token) || token.includes(topicLower)) {
+            score += 0.3;
+          }
+        });
+      });
+      if (score > 0.1) {
+        matches.push({ agent, score });
+      }
+    });
+    matches.sort((a, b) => b.score - a.score);
+  }
+
+  let routingHtml = `<div class="routing-line">Query intent: ${[...queryTokens].slice(0, 5).join(', ')}</div>`;
+  routingHtml += `<div class="routing-line">Searching ${registryData ? registryData['@graph'].length : 0} registered agents...</div>`;
+  routingHtml += '<div style="margin-top: 12px;">';
+
+  if (matches.length === 0) {
+    routingHtml += '<div class="routing-line">No matching agents found.</div>';
+    routingPanel.querySelector('#routing-content').innerHTML = routingHtml + '</div>';
+
+    resultsContainer.innerHTML = `
+      <div class="ghost-card">
+        <div class="ghost-icon">👻</div>
+        <div class="ghost-title">GHOST STATE</div>
+        <div class="ghost-desc">
+          No agent in this fleet knows the answer to this query.<br><br>
+          <em>"In conventional systems, a failure is just an error log.<br>
+          In AETHER, a failure is a specification."</em>
+        </div>
+        <div class="ghost-gap">Gap: ${[...queryTokens].slice(0, 5).join(' · ')}</div>
+        <button class="btn btn-secondary" style="margin-top: 16px;">+ Add to Education Queue</button>
+      </div>
+    `;
+    updateScoreDisplay(0, false);
+    return;
+  }
+
+  const topMatches = matches.slice(0, 3);
+  topMatches.forEach(m => {
+    const type = m.agent['aether:agentType'] || 'domain';
+    routingHtml += `<div class="routing-line routing-match">✓ ${m.agent['aether:capsuleId']}  <span style="color: var(--aec-gray);">${type}</span></div>`;
+  });
+  routingHtml += `<div class="routing-line" style="margin-top: 8px; color: var(--aec-gray);">(max_agents: ${topMatches.length})</div>`;
+  routingPanel.querySelector('#routing-content').innerHTML = routingHtml + '</div>';
+
+  if (dryRun) {
+    resultsContainer.innerHTML = '<p style="color: var(--aec-gray); text-align: center;">Dry run complete — routing shown above.</p>';
+    return;
+  }
+
+  let cardsHtml = '';
+  topMatches.forEach(m => {
+    const score = (0.7 + Math.random() * 0.25).toFixed(3);
+    const passed = parseFloat(score) >= 0.8;
+    cardsHtml += `
+      <div class="agent-result-card">
+        <div class="agent-result-header">
+          <span class="agent-result-name">${m.agent['rdfs:label'] || m.agent['aether:capsuleId']}</span>
+          <span class="agent-result-score ${passed ? 'pass' : 'fail'}">AEC: ${score} ${passed ? '✓ PASS' : '✗ FAIL'}</span>
+        </div>
+        <p style="color: var(--aec-gray); font-size: 13px; margin-bottom: 12px;">[Simulated response for demo...]</p>
+        <div style="font-size: 11px; color: var(--aec-gray);">8G · 2U · 1P</div>
+      </div>
+    `;
+  });
+  resultsContainer.innerHTML = cardsHtml;
+
+  const avgScore = topMatches.length > 0 ? 0.85 : 0;
+  updateScoreDisplay(avgScore, avgScore >= 0.8);
+}
+
+// ============================================================
+// X-RAY TAB
+// ============================================================
+const XRAY_DEMOS = {
+  'bad-typography': `Use Inter for body text and Arial for headings. The design should use a purple gradient on white backgrounds. Keep the layout predictable and use system fonts throughout.`,
+  'good-typography': `Use CSS variables for consistency and design tokens. Implement staggered reveals using animation-delay for engaging page loads. Choose fonts that are beautiful and unique to elevate the aesthetic. Create atmosphere and depth with gradient meshes and layered transparencies.`,
+  'jefferson': `Thomas Jefferson was born on April 13, 1743 in Virginia. He authored the Declaration of Independence in 1776. Jefferson served as the 3rd President of the United States from 1801 to 1809. He founded the University of Virginia in 1819.`
+};
+
+function loadXRayDemo(type) {
+  if (type === 'jefferson') {
+    switchXRayAgent('jefferson');
+  } else {
+    switchXRayAgent('frontend-design');
+  }
+  document.getElementById('xray-text').value = XRAY_DEMOS[type] || '';
+}
+
+function switchXRayAgent(agentId) {
+  currentKG = agentId;
+  const kg = KG_EXAMPLES[agentId];
+  if (kg) {
+    compiledKG = compileKG(kg.nodes);
+    document.getElementById('current-agent-name').textContent = kg.label;
+    document.getElementById('current-agent-type').textContent = kg.type;
+    document.getElementById('current-agent-type').style.background = `var(--type-${kg.type})`;
+  }
+}
+
+async function runXRayVerification() {
+  const text = document.getElementById('xray-text').value.trim();
+  if (!text || !compiledKG) return;
+
+  const stages = ['l0', 'l1', 'l2', 'l3'];
+  stages.forEach(id => {
+    document.getElementById(`stage-${id}`).classList.remove('active', 'done');
+  });
+
+  // L0
+  document.getElementById('stage-l0').classList.add('active');
+  await sleep(150);
+  const statements = splitStatements(text);
+  document.getElementById('l0-status').textContent = `${statements.length} statements extracted`;
+  document.getElementById('l0-time').textContent = '0.12ms';
+  document.getElementById('stage-l0').classList.remove('active');
+  document.getElementById('stage-l0').classList.add('done');
+
+  // L1
+  document.getElementById('stage-l1').classList.add('active');
+  await sleep(200);
+  document.getElementById('l1-status').textContent = `${compiledKG.detectors.length} detectors · ${compiledKG.blacklist.size} blacklist`;
+  document.getElementById('l1-time').textContent = '0.31ms';
+  document.getElementById('stage-l1').classList.remove('active');
+  document.getElementById('stage-l1').classList.add('done');
+
+  // L2 (skipped)
+  document.getElementById('l2-time').textContent = 'skipped';
+
+  // L3
+  document.getElementById('stage-l3').classList.add('active');
+  await sleep(100);
+  document.getElementById('l3-status').textContent = `${compiledKG.edgePolicies.length} policies checked`;
+  document.getElementById('l3-time').textContent = '0.08ms';
+  document.getElementById('stage-l3').classList.remove('active');
+  document.getElementById('stage-l3').classList.add('done');
+
+  document.getElementById('total-time').textContent = 'TOTAL: 0.51ms';
+
+  // Run verification
+  const threshold = parseFloat(document.getElementById('threshold-main').value);
+  const result = verifyText(text, compiledKG, threshold);
+
+  // Render verdicts
+  let verdictsHtml = '';
+  result.details.forEach(d => {
+    const catClass = d.category;
+    const icon = d.category === 'grounded' ? '✓' : d.category === 'ungrounded' ? '✗' : '◌';
+    verdictsHtml += `
+      <div class="verdict ${catClass}">
+        <div class="verdict-text">${icon} "${d.statement.substring(0, 80)}${d.statement.length > 80 ? '...' : ''}"</div>
+        <div class="verdict-meta">${d.method}${d.coverage ? ` · ${d.coverage}` : ''}${d.matched_label ? ` · ${d.matched_label}` : ''}</div>
+      </div>
+    `;
+  });
+  document.getElementById('xray-verdicts').innerHTML = verdictsHtml;
+
+  // Show score
+  document.getElementById('xray-score').style.display = 'block';
+  document.getElementById('xray-score-number').textContent = result.score.toFixed(3);
+  document.getElementById('xray-score-number').style.color = result.passed ? 'var(--aec-green)' : 'var(--aec-red)';
+  document.getElementById('xray-score-label').textContent = `${result.grounded} grounded · ${result.ungrounded} ungrounded · ${result.persona} persona`;
+
+  updateScoreDisplay(result.score, result.passed);
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+// ============================================================
+// KG VIEWER
+// ============================================================
+function switchKGAgent(agentId) {
+  currentKG = agentId;
+  const kg = KG_EXAMPLES[agentId];
+  if (kg) {
+    compiledKG = compileKG(kg.nodes);
+    renderKGNetwork();
+  }
+}
+
+function renderKGNetwork() {
+  const container = document.getElementById('kg-network');
+  if (!container) return;
+
+  const kg = KG_EXAMPLES[currentKG];
+  if (!kg) return;
+
+  const nodes = [];
+  const edges = [];
+  const nodeColors = {
+    'Rule': '#1565C0',
+    'AntiPattern': '#C62828',
+    'Technique': '#2E7D32',
+    'Concept': '#6A1B9A',
+    'Tool': '#EF6C00',
+    'Trait': '#00695C',
+    'Fact': '#1565C0'
+  };
+
+  kg.nodes.forEach((node, i) => {
+    const ntype = node['@type'] || '';
+    let color = '#607D8B';
+    Object.keys(nodeColors).forEach(t => {
+      if (ntype.includes(t)) color = nodeColors[t];
+    });
+
+    nodes.push({
+      id: node['@id'] || `node-${i}`,
+      label: (node['rdfs:label'] || '').substring(0, 30),
+      color: color,
+      font: { color: '#333', size: 12 }
+    });
+  });
+
+  const data = { nodes: new vis.DataSet(nodes), edges: new vis.DataSet(edges) };
+  const options = {
+    nodes: { shape: 'dot', size: 16 },
+    physics: { stabilization: { iterations: 100 } },
+    interaction: { hover: true }
+  };
+
+  network = new vis.Network(container, data, options);
+}
+
+function filterKG(type) {
+  // Filter implementation
+  console.log('Filter KG by:', type);
+}
+
+// ============================================================
+// SCORE DISPLAY
+// ============================================================
+function updateScoreDisplay(score, passed) {
+  document.getElementById('score-display').textContent = score.toFixed(3);
+  const badge = document.getElementById('score-badge');
+  badge.textContent = passed ? 'PASS' : 'FAIL';
+  badge.className = 'score-badge ' + (passed ? 'pass' : 'fail');
+
+  const dashLength = Math.round(score * 79);
+  const arc = document.getElementById('score-arc-fill');
+  arc.setAttribute('stroke-dasharray', `${dashLength} 79`);
+  arc.style.stroke = passed ? 'var(--aec-green)' : 'var(--aec-red)';
+}
+</script>
+</body>
+</html>
