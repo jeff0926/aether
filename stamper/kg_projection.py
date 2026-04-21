@@ -190,6 +190,110 @@ def verify_antipatterns(kg: dict) -> dict:
     }
 
 
+def check_mvc(kg: dict) -> dict:
+    """
+    Minimum Viable Capsule (MVC) validation with tiered severity.
+
+    HARD FAIL (errors) - capsule is invalid:
+      - 0 Rule nodes
+      - Any node missing rdfs:label
+      - Any node missing aether:source (provenance)
+
+    WARN ONLY (warnings) - capsule is valid but has issues:
+      - 0 AntiPattern nodes
+      - Any AntiPattern missing blacklist token
+
+    Returns:
+        {
+            "valid": bool,          # True if no hard fails
+            "errors": [...],        # Hard fail issues
+            "warnings": [...],      # Warning issues
+            "stats": {...}          # Node counts
+        }
+    """
+    nodes = kg.get("@graph", [])
+    errors = []
+    warnings = []
+
+    # Count by type
+    rule_count = 0
+    antipattern_count = 0
+    nodes_missing_label = []
+    nodes_missing_source = []
+    antipatterns_missing_blacklist = []
+
+    for node in nodes:
+        node_id = node.get("@id", "unknown")
+        node_type = str(node.get("@type", ""))
+        label = node.get("rdfs:label", "")
+        source = node.get("aether:source", "")
+
+        # Count by type
+        if "Rule" in node_type:
+            rule_count += 1
+        if "AntiPattern" in node_type:
+            antipattern_count += 1
+
+            # Check blacklist for AntiPatterns
+            blacklist = node.get("aether:blacklist", [])
+            if not blacklist and "(" not in label:
+                antipatterns_missing_blacklist.append(node_id)
+
+        # Check required fields
+        if not label:
+            nodes_missing_label.append(node_id)
+        if not source:
+            nodes_missing_source.append(node_id)
+
+    # HARD FAILS (errors)
+    if rule_count == 0:
+        errors.append({
+            "code": "NO_RULES",
+            "message": "Capsule has 0 Rule nodes - must have at least 1 rule"
+        })
+
+    if nodes_missing_label:
+        errors.append({
+            "code": "MISSING_LABEL",
+            "message": f"{len(nodes_missing_label)} nodes missing rdfs:label",
+            "nodes": nodes_missing_label[:5]  # Show first 5
+        })
+
+    if nodes_missing_source:
+        errors.append({
+            "code": "MISSING_SOURCE",
+            "message": f"{len(nodes_missing_source)} nodes missing aether:source",
+            "nodes": nodes_missing_source[:5]
+        })
+
+    # WARNINGS (not failures)
+    if antipattern_count == 0:
+        warnings.append({
+            "code": "NO_ANTIPATTERNS",
+            "message": "Capsule has 0 AntiPattern nodes - consider adding prohibitions"
+        })
+
+    if antipatterns_missing_blacklist:
+        warnings.append({
+            "code": "MISSING_BLACKLIST",
+            "message": f"{len(antipatterns_missing_blacklist)} AntiPatterns missing blacklist tokens",
+            "nodes": antipatterns_missing_blacklist[:5]
+        })
+
+    return {
+        "valid": len(errors) == 0,
+        "errors": errors,
+        "warnings": warnings,
+        "stats": {
+            "total_nodes": len(nodes),
+            "rule_count": rule_count,
+            "antipattern_count": antipattern_count,
+            "error_count": len(errors),
+            "warning_count": len(warnings)
+        }
+    }
+
+
 # ─────────────────────────────────────────────────────────────────────
 # KG STATISTICS
 # ─────────────────────────────────────────────────────────────────────

@@ -16,7 +16,7 @@ from datetime import datetime
 from typing import Optional, Callable
 
 from .pipeline import UniversalExtractor
-from .kg_projection import nas_to_kg, verify_antipatterns, kg_stats
+from .kg_projection import nas_to_kg, verify_antipatterns, check_mvc, kg_stats
 
 
 # ─────────────────────────────────────────────────────────────────────
@@ -130,10 +130,19 @@ class AgentStamper:
         # Project to KG
         kg = nas_to_kg(nas_doc)
 
-        # Verify antipatterns have proper blacklist terms
-        ap_verification = verify_antipatterns(kg)
-        if not ap_verification["valid"]:
-            print(f"Warning: {len(ap_verification['issues'])} AntiPattern issues found")
+        # Run MVC validation (tiered: errors vs warnings)
+        mvc_result = check_mvc(kg)
+
+        # Hard fails block capsule creation
+        if not mvc_result["valid"]:
+            error_msgs = [e["message"] for e in mvc_result["errors"]]
+            raise ValueError(f"MVC validation failed: {'; '.join(error_msgs)}")
+
+        # Warnings are printed but don't block
+        if mvc_result["warnings"]:
+            print(f"MVC warnings: {len(mvc_result['warnings'])} issues")
+            for w in mvc_result["warnings"]:
+                print(f"  [{w['code']}] {w['message']}")
 
         # Create capsule
         capsule_path = self._create_capsule(
