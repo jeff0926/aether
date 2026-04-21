@@ -10,6 +10,8 @@ import re
 from typing import Optional
 from datetime import datetime
 
+from .classifier import extract_blacklist_candidates
+
 
 # ─────────────────────────────────────────────────────────────────────
 # KEYWORD PATTERNS
@@ -77,22 +79,6 @@ def is_dsl_sentence(text: str) -> bool:
         OBLIGATION_HARD, OBLIGATION_SOFT,
         OPTIONAL, CONDITIONAL
     ])
-
-
-# ─────────────────────────────────────────────────────────────────────
-# BLACKLIST EXTRACTION
-# ─────────────────────────────────────────────────────────────────────
-
-def extract_blacklist_candidates(text: str) -> list[str]:
-    """
-    Extract parenthetical terms as blacklist candidates.
-    "Use Inter for body text (Inter, Roboto, Arial)" -> ["inter", "roboto", "arial"]
-    """
-    candidates = []
-    for match in PARENTHETICAL.finditer(text):
-        terms = [t.strip().lower() for t in match.group(1).split(',')]
-        candidates.extend(terms)
-    return candidates
 
 
 # ─────────────────────────────────────────────────────────────────────

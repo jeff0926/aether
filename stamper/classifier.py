@@ -315,37 +315,108 @@ def layer3_classify(text: str, llm_fn: Callable) -> Optional[dict]:
 PARENTHETICAL = re.compile(r'\(([^)]+)\)')
 CODE_PATTERN = re.compile(r'`([^`]+)`')
 QUOTED_PATTERN = re.compile(r'"([^"]+)"')
+BOLD_PATTERN = re.compile(r'\*\*([^*]+)\*\*')
+
+# Patterns to find prohibition zones - text after these keywords is blacklisted
+PROHIBITION_ZONE = re.compile(
+    r'\b(never|not|don\'t|avoid|prohibited|forbidden|breaks?\s+in|incompatible)\b',
+    re.IGNORECASE
+)
+
+# Patterns to find positive zones - text after these keywords is NOT blacklisted
+POSITIVE_ZONE = re.compile(
+    r'\b(always|use|prefer|recommended|should\s+use|must\s+use)\b',
+    re.IGNORECASE
+)
+
+# Common prohibition keywords to always extract when present in text
+PROHIBITION_KEYWORDS = [
+    "percentage", "unicode", "solid", "manual", "inline",
+]
+
+
+def _extract_simple_terms(code_term: str) -> list[str]:
+    """
+    Extract simple terms from code notation.
+    'WidthType.PERCENTAGE' -> ['widthtype.percentage', 'percentage']
+    'ShadingType.SOLID' -> ['shadingtype.solid', 'solid']
+    """
+    terms = [code_term]
+
+    # Extract the last part after dot
+    if '.' in code_term:
+        parts = code_term.split('.')
+        if len(parts[-1]) > 2:
+            terms.append(parts[-1])
+
+    # Extract from CamelCase
+    # Split on uppercase letters
+    simple = re.sub(r'([A-Z])', r' \1', code_term).lower().split()
+    for s in simple:
+        if len(s) > 3 and s not in ['type', 'width', 'shading']:
+            terms.append(s)
+
+    return terms
+
+
+def _is_in_prohibition_zone(text: str, term_pos: int) -> bool:
+    """
+    Check if a term at position term_pos is in a prohibition zone.
+    Returns True if the nearest zone keyword before the term is a prohibition keyword.
+    """
+    # Find all zone markers with their positions
+    prohibition_matches = [(m.start(), 'prohibition') for m in PROHIBITION_ZONE.finditer(text)]
+    positive_matches = [(m.start(), 'positive') for m in POSITIVE_ZONE.finditer(text)]
+
+    all_matches = sorted(prohibition_matches + positive_matches, key=lambda x: x[0])
+
+    # Find the nearest zone marker before the term
+    nearest_zone = None
+    for pos, zone_type in all_matches:
+        if pos < term_pos:
+            nearest_zone = zone_type
+
+    # If no zone marker found, assume prohibition (since we're in a PROHIBITION assertion)
+    return nearest_zone != 'positive'
 
 
 def extract_blacklist_candidates(text: str) -> list[str]:
     """
     Extract potential blacklist terms from text.
-    Sources: parentheticals, code blocks, quoted strings.
+    Only extracts terms that appear in "prohibition zones" (after never, not, avoid, etc.)
+    Excludes terms in "positive zones" (after always, use, prefer, etc.)
     """
     candidates = []
+    text_lower = text.lower()
 
-    # Parenthetical terms
+    # Parenthetical terms - always extract (they're context/reason)
     for match in PARENTHETICAL.finditer(text):
         terms = [t.strip().lower() for t in match.group(1).split(',')]
         candidates.extend(terms)
 
-    # Code terms (backticks)
+    # Code terms (backticks) - only if in prohibition zone
     for match in CODE_PATTERN.finditer(text):
         term = match.group(1).strip().lower()
-        if len(term) > 2:
-            candidates.append(term)
+        if len(term) > 2 and _is_in_prohibition_zone(text, match.start()):
+            candidates.extend(_extract_simple_terms(term))
 
-    # Quoted terms
+    # Quoted terms - only if in prohibition zone
     for match in QUOTED_PATTERN.finditer(text):
         term = match.group(1).strip().lower()
-        if len(term) > 2:
+        if len(term) > 2 and _is_in_prohibition_zone(text, match.start()):
             candidates.append(term)
+
+    # Check for common prohibition keywords anywhere in text
+    for kw in PROHIBITION_KEYWORDS:
+        if kw in text_lower:
+            candidates.append(kw)
 
     # Remove duplicates while preserving order
     seen = set()
     unique = []
     for c in candidates:
-        if c not in seen:
+        c = c.strip()
+        if c and c not in seen and len(c) > 2:
             seen.add(c)
             unique.append(c)
 
