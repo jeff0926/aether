@@ -733,8 +733,8 @@ def main():
         help="Use hardcoded response (no API key needed)")
     parser.add_argument("--no-docx", action="store_true",
         help="Skip .docx file generation")
-    parser.add_argument("--capsule", default="docx",
-        help="Capsule path or short name (default: docx)")
+    parser.add_argument("--capsule", default="docx-v1.0.0-a7c21b93",
+        help="Capsule path or short name (default: docx-v1.0.0-a7c21b93)")
 
     args = parser.parse_args()
 
