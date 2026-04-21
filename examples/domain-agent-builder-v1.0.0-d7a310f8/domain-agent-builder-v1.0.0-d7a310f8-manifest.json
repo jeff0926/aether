@@ -8,5 +8,6 @@
   "agent_type": "Domain Expert",
   "previous_version": "1.0.0",
   "previous_id": "domain-agent-builder-v1.0.0",
-  "restamped": "2026-04-21T10:24:28.590638"
+  "restamped": "2026-04-21T10:24:28.590638",
+  "agentType": "logic"
 }

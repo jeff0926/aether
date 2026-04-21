@@ -20,6 +20,133 @@ DEFAULT_KG = {
     "@graph": [],
 }
 
+# ─────────────────────────────────────────────────────────────────────────────
+# AGENT TYPE TAXONOMY (8 official types)
+# ─────────────────────────────────────────────────────────────────────────────
+AGENT_TYPES = [
+    "skill",        # Knows how to DO something, produces an artifact
+    "scholar",      # Knows a subject deeply, answers questions about it
+    "role",         # Operates as a specific business role
+    "domain",       # Expert in a technical/platform domain
+    "logic",        # Enforces business rules and decision trees
+    "validator",    # Verifies outputs against rules, scores and reports
+    "guardrail",    # Catches violations, blocks bad outputs, enforces policy
+    "orchestrator", # Routes queries, composes agents, manages fleet
+]
+
+
+def detect_agent_type(name: str, kb_content: str = "", kg_nodes: list = None) -> str:
+    """
+    Detect agent type from capsule name, KB content, and KG nodes.
+    Returns one of the 8 official AETHER agent types.
+
+    Detection order (first match wins):
+    1. orchestrator - routes, coordinates agents
+    2. validator - verifies, validates outputs
+    3. guardrail - guards, shields, blocks
+    4. scholar - historical/biographical scholars
+    5. role - business roles (C-suite, directors, etc.)
+    6. logic - rules, compliance, DSL
+    7. skill - creates artifacts or specific skills
+    8. domain - default for technical domains
+    """
+    name_lower = name.lower()
+    kg_nodes = kg_nodes or []
+
+    # 1. ORCHESTRATOR
+    if any(kw in name_lower for kw in ["orchestrator", "router", "coordinator"]):
+        return "orchestrator"
+
+    # 2. VALIDATOR
+    if any(kw in name_lower for kw in ["validator", "verify", "validation", "aether-validator"]):
+        return "validator"
+
+    # 3. GUARDRAIL
+    if any(kw in name_lower for kw in ["guardrail", "guard", "shield", "safety", "filter", "block"]):
+        return "guardrail"
+
+    # 4. SCHOLAR (historical/biographical experts)
+    scholar_keywords = [
+        "jefferson", "buffett", "scholar", "einstein", "lincoln",
+        "darwin", "newton", "aristotle", "plato", "socrates",
+        "washington", "franklin", "hamilton", "madison"
+    ]
+    if any(kw in name_lower for kw in scholar_keywords):
+        return "scholar"
+
+    # Also check KB for heavy biographical content
+    if kb_content:
+        kb_lower = kb_content.lower()
+        bio_markers = ["born in", "died in", "biography", "historical figure", "founding father"]
+        if sum(1 for m in bio_markers if m in kb_lower) >= 2:
+            return "scholar"
+
+    # 5. ROLE (business roles)
+    role_keywords = [
+        "ceo", "cfo", "cto", "ciso", "cpo", "clo", "coo", "cmo",
+        "lead-dev", "agent-owner", "executive", "advisor",
+        "manager", "director", "president", "vp", "chief",
+        "-engine"  # ceo-engine, cfo-engine patterns
+    ]
+    if any(kw in name_lower for kw in role_keywords):
+        return "role"
+
+    # 6. SKILL (artifact creators and specific skills)
+    # Check BEFORE logic to ensure skill keywords take precedence
+    skill_keywords = [
+        "docx", "pptx", "pdf", "xlsx", "frontend-design", "canvas-design",
+        "web-artifacts", "doc-coauthoring", "internal-comms", "slack-gif",
+        "skill-creator", "algorithmic-art", "brand-guidelines", "theme-factory",
+        "claude-api", "mcp-builder", "webapp-testing", "skill"
+    ]
+    if any(kw in name_lower for kw in skill_keywords):
+        return "skill"
+
+    # 7. LOGIC (rules-based, DSL)
+    if any(kw in name_lower for kw in ["logic", "rules", "compliance", "policy", "dsl"]):
+        return "logic"
+    # Also check KG for >50% Rule nodes (only if no skill keywords matched)
+    if kg_nodes:
+        rule_count = sum(1 for n in kg_nodes if "Rule" in n.get("@type", ""))
+        if len(kg_nodes) > 0 and (rule_count / len(kg_nodes)) > 0.5:
+            return "logic"
+
+    # 8. DOMAIN (technical/platform experts - default fallback)
+    domain_keywords = [
+        "sap", "cap", "btp", "aws", "azure", "gcp", "kubernetes",
+        "domain", "platform", "api", "sdk"
+    ]
+    if any(kw in name_lower for kw in domain_keywords):
+        return "domain"
+
+    # Default: domain (for anything not matched above)
+    return "domain"
+
+
+def set_agent_type(capsule_path: str | Path, agent_type: str) -> None:
+    """
+    Set the agentType field in a capsule's manifest.
+
+    Args:
+        capsule_path: Path to the capsule directory
+        agent_type: One of the 8 official AETHER agent types
+    """
+    capsule_path = Path(capsule_path)
+    if agent_type not in AGENT_TYPES:
+        raise ValueError(f"Invalid agent type: {agent_type}. Must be one of: {AGENT_TYPES}")
+
+    # Find manifest file
+    manifest_files = list(capsule_path.glob("*-manifest.json"))
+    if not manifest_files:
+        raise FileNotFoundError(f"No manifest found in {capsule_path}")
+
+    manifest_file = manifest_files[0]
+    manifest = json.loads(manifest_file.read_text(encoding="utf-8"))
+    manifest["agentType"] = agent_type
+
+    with open(manifest_file, "w", encoding="utf-8") as f:
+        json.dump(manifest, f, indent=2, ensure_ascii=False)
+
 # PSI projection graph default structure (optional 6th file)
 DEFAULT_PSI = {
     "@context": {
@@ -172,7 +299,11 @@ def stamp_empty(name: str, path: str | Path, version: str = "1.0.0", psi: bool =
     # Files are prefixed with folder name: {folder-name}-{type}.{ext}
     prefix = capsule_id
     _write_json(capsule_path / f"{prefix}-manifest.json", {
-        "id": capsule_id, "name": name, "version": version, "created": datetime.now().isoformat()
+        "id": capsule_id,
+        "name": name,
+        "version": version,
+        "agentType": "domain",  # Default type - override after stamp with set_agent_type()
+        "created": datetime.now().isoformat()
     })
     _write_json(capsule_path / f"{prefix}-definition.json", DEFAULT_DEFINITION)
     _write_json(capsule_path / f"{prefix}-persona.json", DEFAULT_PERSONA)

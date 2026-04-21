@@ -7,7 +7,7 @@
   "@id": "aether:agent-registry",
   "rdfs:label": "AETHER Agent Registry",
   "aether:version": "1.0.0",
-  "aether:generated": "2026-04-21T15:56:44.340699",
+  "aether:generated": "2026-04-21T16:47:16.360017",
   "aether:capsuleCount": 67,
   "@graph": [
     {
@@ -39,17 +39,17 @@
       "aether:capsuleId": "Aether_Alpha-v1.0.0-alpha01",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Aether_Alpha — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Aether_Alpha — technical expert in General. Use for domain-specific questions.",
       "aether:topics": [
         "aether",
         "alpha",
         "general"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "domain",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "review",
+        "generate"
       ],
       "aether:kgNodes": 10
     },
@@ -60,17 +60,17 @@
       "aether:capsuleId": "agent-owner-engine-v1.0.0-ao2026-x1",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Agent Product Manager Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Agent Product Manager Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "general",
         "manager",
         "product"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 12,
       "aether:antiPatternCount": 1,
@@ -233,11 +233,11 @@
         "portfolio",
         "warren-buffett"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "scholar",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "explain",
+        "research",
+        "answer"
       ],
       "aether:kgNodes": 48
     },
@@ -320,7 +320,7 @@
       "aether:capsuleId": "ceo-engine-v1.0.0-f3a2b9d1",
       "aether:version": "1.0.0",
       "aether:domain": "executive-strategy",
-      "aether:description": "Strategic Architect Ceo Agent — strategic advisor for Executive Strategy. Use for business decisions.",
+      "aether:description": "Strategic Architect Ceo Agent — operates as a business role for Executive Strategy. Use for strategic decisions.",
       "aether:topics": [
         "architect",
         "business",
@@ -330,7 +330,7 @@
         "strategic",
         "strategy"
       ],
-      "aether:agentType": "executive",
+      "aether:agentType": "role",
       "aether:capability": [
         "advise",
         "strategize",
@@ -347,7 +347,7 @@
       "aether:capsuleId": "cfo-capital-engine-v1.0.0-f9a8b7c6",
       "aether:version": "1.0.0",
       "aether:domain": "sap-development",
-      "aether:description": "Capital Architect Cfo Agent — creates and formats Sap Development artifacts. Use for sap development tasks.",
+      "aether:description": "Capital Architect Cfo Agent — operates as a business role for Sap Development. Use for strategic decisions.",
       "aether:topics": [
         "architect",
         "btp",
@@ -359,11 +359,11 @@
         "sap",
         "sap.development"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 10,
       "aether:antiPatternCount": 1,
@@ -376,17 +376,17 @@
       "aether:capsuleId": "ciso-resilience-v1.0.0-s5e6c7u8",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Ai Resilience Ciso Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Ai Resilience Ciso Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "ciso",
         "general",
         "resilience"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 11,
       "aether:antiPatternCount": 1,
@@ -477,18 +477,18 @@
       "aether:capsuleId": "clo-governance-v1.0.0-r4e5g6a7",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Regulatory Architect Clo Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Regulatory Architect Clo Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "architect",
         "clo",
         "general",
         "regulatory"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 13,
       "aether:antiPatternCount": 1,
@@ -501,18 +501,18 @@
       "aether:capsuleId": "cpo-product-engine-v1.0.0-p4d5e6f7",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Product Architect Cpo Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Product Architect Cpo Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "architect",
         "cpo",
         "general",
         "product"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 10,
       "aether:antiPatternCount": 1,
@@ -525,18 +525,18 @@
       "aether:capsuleId": "cto-engine-v1.0.0-a7b8c9d2",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Technical Architect Cto Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Technical Architect Cto Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "architect",
         "cto",
         "general",
         "technical"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 23,
       "aether:antiPatternCount": 3,
@@ -711,16 +711,16 @@
       "aether:capsuleId": "domain-agent-builder-v1.0.0-d7a310f8",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Domain Agent Builder — technical expert in General. Use for domain-specific questions.",
+      "aether:description": "Domain Agent Builder — enforces rules and decisions for General. Use for rule-based evaluations.",
       "aether:topics": [
         "domain",
         "general"
       ],
-      "aether:agentType": "domain",
+      "aether:agentType": "logic",
       "aether:capability": [
-        "advise",
-        "review",
-        "generate"
+        "evaluate",
+        "enforce",
+        "decide"
       ],
       "aether:kgNodes": 22,
       "aether:ruleCount": 12
@@ -917,17 +917,17 @@
       "aether:capsuleId": "lead-dev-engine-v1.0.0-d4e5f6g7",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Ai Native Architect Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Ai Native Architect Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "architect",
         "general",
         "native"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 11,
       "aether:antiPatternCount": 1,
@@ -1330,16 +1330,16 @@
       "aether:capsuleId": "test-agent-v1.0.0-24f8476e",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Test Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Test Agent — technical expert in General. Use for domain-specific questions.",
       "aether:topics": [
         "general",
         "test"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "domain",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "review",
+        "generate"
       ],
       "aether:kgNodes": 4
     },
@@ -1350,17 +1350,17 @@
       "aether:capsuleId": "theme-factory-skill-agent-v1.1.0-2b3bbd37",
       "aether:version": "1.1.0",
       "aether:domain": "general",
-      "aether:description": "Theme Factory Skill Agent — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Theme Factory Skill Agent — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "factory",
         "general",
         "theme"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 4,
       "aether:antiPatternCount": 1,
@@ -1373,17 +1373,17 @@
       "aether:capsuleId": "theme-factory-v1.0.0-8fa7a561",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Theme Factory — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Theme Factory — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "factory",
         "general",
         "theme"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 53,
       "aether:ruleCount": 11
@@ -1395,17 +1395,17 @@
       "aether:capsuleId": "theme-factory-v1.0.0-c8d0c64e",
       "aether:version": "1.0.0",
       "aether:domain": "general",
-      "aether:description": "Theme Factory — creates and formats General artifacts. Use for general tasks.",
+      "aether:description": "Theme Factory — operates as a business role for General. Use for strategic decisions.",
       "aether:topics": [
         "factory",
         "general",
         "theme"
       ],
-      "aether:agentType": "skill",
+      "aether:agentType": "role",
       "aether:capability": [
-        "create",
-        "generate",
-        "format"
+        "advise",
+        "strategize",
+        "evaluate"
       ],
       "aether:kgNodes": 4,
       "aether:antiPatternCount": 1,

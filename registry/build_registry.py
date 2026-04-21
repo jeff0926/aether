@@ -208,10 +208,13 @@ def detect_capabilities(agent_type: str, domain: str) -> list:
     base = {
         "skill": ["create", "generate", "format"],
         "scholar": ["explain", "research", "answer"],
-        "executive": ["advise", "strategize", "evaluate"],
+        "role": ["advise", "strategize", "evaluate"],       # Business roles
         "domain": ["advise", "review", "generate"],
+        "logic": ["evaluate", "enforce", "decide"],         # Rules/DSL
         "validator": ["validate", "verify", "report"],
+        "guardrail": ["block", "filter", "enforce"],        # Safety/policy
         "orchestrator": ["route", "coordinate", "delegate"],
+        "executive": ["advise", "strategize", "evaluate"],  # Legacy alias for role
     }
 
     caps = base.get(agent_type, ["assist"])
@@ -240,12 +243,18 @@ def generate_description(name: str, domain: str, agent_type: str, kg_labels: lis
         return f"{clean_name} — creates and formats {domain_desc} artifacts. Use for {domain_desc.lower()} tasks."
     elif agent_type == "scholar":
         return f"{clean_name} — expert knowledge on {domain_desc}. Use for research and factual questions."
-    elif agent_type == "executive":
+    elif agent_type == "role":
+        return f"{clean_name} — operates as a business role for {domain_desc}. Use for strategic decisions."
+    elif agent_type == "executive":  # Legacy alias
         return f"{clean_name} — strategic advisor for {domain_desc}. Use for business decisions."
     elif agent_type == "domain":
         return f"{clean_name} — technical expert in {domain_desc}. Use for domain-specific questions."
+    elif agent_type == "logic":
+        return f"{clean_name} — enforces rules and decisions for {domain_desc}. Use for rule-based evaluations."
     elif agent_type == "validator":
         return f"{clean_name} — validates and verifies {domain_desc}. Use for quality checks."
+    elif agent_type == "guardrail":
+        return f"{clean_name} — enforces policy and catches violations for {domain_desc}. Use for safety checks."
     elif agent_type == "orchestrator":
         return f"{clean_name} — routes queries to appropriate agents. Meta-level coordination."
 
@@ -293,6 +302,7 @@ def load_capsule_data(capsule_path: Path) -> dict | None:
         "id": manifest.get("id", folder_name),
         "name": manifest.get("name", folder_name),
         "version": manifest.get("version", "1.0.0"),
+        "agentType": manifest.get("agentType"),  # Source of truth from manifest
         "folder_name": folder_name,
         "kg_node_count": len(kg_nodes),
         "kg_labels": kg_labels,
@@ -305,7 +315,12 @@ def build_capsule_agent_node(data: dict) -> dict:
     """Build a CapsuleAgent node from capsule data."""
     name = data["name"]
     domain = detect_domain(name, data["kg_labels"])
-    agent_type = detect_agent_type(name, domain)
+
+    # Use agentType from manifest (source of truth), fallback to detection
+    agent_type = data.get("agentType")
+    if not agent_type:
+        agent_type = detect_agent_type(name, domain)
+
     topics = detect_topics(name, domain, data["kg_labels"])
     capabilities = detect_capabilities(agent_type, domain)
     description = generate_description(name, domain, agent_type, data["kg_labels"])

@@ -8,5 +8,6 @@
     "format": "md",
     "assertions_extracted": 13
   },
-  "stamper_version": "1.0.0"
+  "stamper_version": "1.0.0",
+  "agentType": "skill"
 }

@@ -8,5 +8,6 @@
     "format": "md",
     "assertions_extracted": 38
   },
-  "stamper_version": "1.0.0"
+  "stamper_version": "1.0.0",
+  "agentType": "role"
 }

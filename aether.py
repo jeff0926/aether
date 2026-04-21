@@ -147,6 +147,11 @@ class Capsule:
     def version(self) -> str:
         return self.files["manifest"]["version"]
 
+    @property
+    def agent_type(self) -> str:
+        """Return the agent type from manifest. Defaults to 'domain' if not set."""
+        return self.files["manifest"].get("agentType", "domain")
+
     # -------------------------------------------------------------------------
     # Pipeline
     # -------------------------------------------------------------------------

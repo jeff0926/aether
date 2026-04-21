@@ -3,5 +3,6 @@
   "name": "AETHER Orchestrator",
   "version": "1.0.0",
   "created": "2026-04-21T15:40:15.096260",
-  "stamper_version": "1.0.0"
+  "stamper_version": "1.0.0",
+  "agentType": "orchestrator"
 }
