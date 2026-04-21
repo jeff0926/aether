@@ -554,8 +554,9 @@
     {
       "@id": "antipattern:percentage_widths",
       "@type": "skill:AntiPattern",
-      "rdfs:label": "Percentages break in Google Docs",
-      "aether:origin": "core"
+      "rdfs:label": "Percentage table widths break in Google Docs (WidthType.PERCENTAGE, percentage-based)",
+      "aether:origin": "core",
+      "aether:source": "Anthropic SKILL.md - Tables section"
     },
     {
       "@id": "antipattern:solid_shading_backgrounds",
