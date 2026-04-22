@@ -148,5 +148,80 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-03-27T09-50-44-53d45c39",
+    "timestamp": "2026-03-27T09:50:44.041397",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-03-31T22-30-24-bcdee104",
+    "timestamp": "2026-03-31T22:30:24.332535",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-03-32-a7cfe3f8",
+    "timestamp": "2026-04-21T15:03:32.482341",
+    "query": "Validate this text",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-06-49-58198949",
+    "timestamp": "2026-04-21T15:06:49.119362",
+    "query": "Create a professional document",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-29-32-107a6b77",
+    "timestamp": "2026-04-21T15:29:32.341044",
+    "query": "What is your expertise?",
+    "response": "",
+    "aec_score": 0.0,
+    "threshold": 1.0,
+    "gaps": [
+      {
+        "text": "",
+        "reason": "no_statements"
+      }
+    ],
+    "status": "pending"
   }
 ]

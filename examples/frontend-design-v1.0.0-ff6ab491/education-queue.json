@@ -325,5 +325,50 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-01-00-d81fd0c8",
+    "timestamp": "2026-04-21T16:01:00.319544",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 1007 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1007 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-12-2a45e8b8",
+    "timestamp": "2026-04-21T16:48:12.029196",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 1007 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1007 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-49-bed9ef4d",
+    "timestamp": "2026-04-21T16:48:49.370229",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 1007 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1007 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]

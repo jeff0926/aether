@@ -1,0 +1,77 @@
+[
+  {
+    "id": "2026-04-21T16-01-00-d03ea326",
+    "timestamp": "2026-04-21T16:01:00.315539",
+    "query": "What is our go-to-market strategy?",
+    "response": "[Stub response for 606 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.7,
+    "gaps": [
+      {
+        "text": "[Stub response for 606 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-11-eb2511bf",
+    "timestamp": "2026-04-21T16:48:11.989389",
+    "query": "What is our go-to-market strategy?",
+    "response": "[Stub response for 606 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.7,
+    "gaps": [
+      {
+        "text": "[Stub response for 606 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-49-bfe4632d",
+    "timestamp": "2026-04-21T16:48:49.335290",
+    "query": "What is our go-to-market strategy?",
+    "response": "[Stub response for 606 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.7,
+    "gaps": [
+      {
+        "text": "[Stub response for 606 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T17-49-52-715497c6",
+    "timestamp": "2026-04-21T17:49:52.411180",
+    "query": "What is our go-to-market strategy?",
+    "response": "[Stub response for 606 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.7,
+    "gaps": [
+      {
+        "text": "[Stub response for 606 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-03-06-2a629b09",
+    "timestamp": "2026-04-21T20:03:06.652304",
+    "query": "What is our go-to-market strategy?",
+    "response": "[Stub response for 606 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.7,
+    "gaps": [
+      {
+        "text": "[Stub response for 606 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

@@ -1,0 +1,77 @@
+[
+  {
+    "id": "2026-04-21T15-57-55-2db36a6e",
+    "timestamp": "2026-04-21T15:57:55.375508",
+    "query": "Make a PowerPoint presentation with 5 slides",
+    "response": "[Stub response for 1134 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1134 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-59-20-e0647fe2",
+    "timestamp": "2026-04-21T15:59:20.105351",
+    "query": "Make a PowerPoint presentation with 5 slides",
+    "response": "[Stub response for 1134 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1134 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-01-00-c59c5e1c",
+    "timestamp": "2026-04-21T16:01:00.223889",
+    "query": "Make a PowerPoint presentation with 5 slides",
+    "response": "[Stub response for 1134 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1134 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-11-71d64476",
+    "timestamp": "2026-04-21T16:48:11.887353",
+    "query": "Make a PowerPoint presentation with 5 slides",
+    "response": "[Stub response for 1134 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1134 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-49-f5b9f70b",
+    "timestamp": "2026-04-21T16:48:49.236147",
+    "query": "Make a PowerPoint presentation with 5 slides",
+    "response": "[Stub response for 1134 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1134 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

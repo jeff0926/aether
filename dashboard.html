@@ -459,6 +459,9 @@
       </div>
       <div class="score-number" id="score-display">--</div>
       <div class="score-badge pending" id="score-badge">READY</div>
+      <div class="server-status" id="server-status" style="margin-left: 16px; padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600;">
+        <span id="server-indicator">○</span> <span id="server-label">Checking...</span>
+      </div>
     </div>
   </header>
 
@@ -799,6 +802,19 @@
     <!-- TAB 7: SETTINGS -->
     <div class="tab-content" id="tab-settings">
       <div class="settings-section">
+        <h3>Server Connection</h3>
+        <div class="setting-row">
+          <label>Server URL</label>
+          <input type="text" id="server-url" value="http://localhost:8000">
+        </div>
+        <div class="setting-row">
+          <button class="btn btn-primary" onclick="testServerConnection()">Test Connection</button>
+          <span id="server-test-result" style="margin-left: 12px; font-size: 13px;"></span>
+        </div>
+        <div class="setting-hint">When server is running, dashboard uses real Python pipeline. Otherwise uses demo mode.</div>
+      </div>
+
+      <div class="settings-section">
         <h3>LLM Provider</h3>
         <div class="setting-row">
           <label>Provider</label>
@@ -900,6 +916,11 @@ let registryData = null;
 let currentKG = 'frontend-design';
 let compiledKG = null;
 let network = null;
+
+// Server connection state
+let SERVER_URL = 'http://localhost:8000';
+let liveMode = false;
+let serverInfo = null;
 
 // ============================================================
 // AEC ENGINE (JavaScript)
@@ -1094,7 +1115,7 @@ function verifyText(text, compiled, threshold = 0.80) {
 // ============================================================
 // INITIALIZATION
 // ============================================================
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   document.querySelectorAll('.tab').forEach(tab => {
     tab.addEventListener('click', () => switchTab(tab.dataset.tab));
   });
@@ -1103,9 +1124,69 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('threshold-main-val').textContent = this.value;
   });
 
+  // Check server connection first
+  await checkServerConnection();
+
   loadRegistry();
   switchKGAgent('frontend-design');
 });
+
+async function checkServerConnection() {
+  const statusEl = document.getElementById('server-status');
+  const indicatorEl = document.getElementById('server-indicator');
+  const labelEl = document.getElementById('server-label');
+
+  try {
+    const response = await fetch(`${SERVER_URL}/health`, { signal: AbortSignal.timeout(2000) });
+    if (response.ok) {
+      serverInfo = await response.json();
+      liveMode = true;
+      indicatorEl.textContent = '●';
+      indicatorEl.style.color = 'var(--aec-green)';
+      labelEl.textContent = 'Live Mode';
+      labelEl.style.color = 'var(--aec-green)';
+      statusEl.style.background = '#E8F5E9';
+      console.log('Connected to AETHER server:', serverInfo);
+    } else {
+      throw new Error('Server not healthy');
+    }
+  } catch (e) {
+    liveMode = false;
+    indicatorEl.textContent = '○';
+    indicatorEl.style.color = 'var(--aec-orange)';
+    labelEl.textContent = 'Demo Mode';
+    labelEl.style.color = 'var(--aec-orange)';
+    statusEl.style.background = '#FFF3E0';
+    console.log('Server not available, using demo mode');
+  }
+}
+
+async function testServerConnection() {
+  const urlInput = document.getElementById('server-url');
+  const resultEl = document.getElementById('server-test-result');
+  SERVER_URL = urlInput.value.replace(/\/$/, '');
+
+  resultEl.textContent = 'Testing...';
+  resultEl.style.color = 'var(--aec-gray)';
+
+  try {
+    const response = await fetch(`${SERVER_URL}/health`, { signal: AbortSignal.timeout(3000) });
+    if (response.ok) {
+      const data = await response.json();
+      resultEl.textContent = `✓ Connected (${data.capsules_loaded} capsules)`;
+      resultEl.style.color = 'var(--aec-green)';
+      await checkServerConnection();
+      loadRegistry();
+    } else {
+      throw new Error('Not healthy');
+    }
+  } catch (e) {
+    resultEl.textContent = '✗ Connection failed';
+    resultEl.style.color = 'var(--aec-red)';
+    liveMode = false;
+    await checkServerConnection();
+  }
+}
 
 function switchTab(tabId) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -1123,6 +1204,22 @@ function switchTab(tabId) {
 // ============================================================
 async function loadRegistry() {
   const fleetContainer = document.getElementById('fleet-agents');
+
+  // Try server first if in live mode
+  if (liveMode) {
+    try {
+      const response = await fetch(`${SERVER_URL}/registry`);
+      if (response.ok) {
+        registryData = await response.json();
+        renderFleet(registryData);
+        return;
+      }
+    } catch (e) {
+      console.log('Server registry failed, falling back to local file');
+    }
+  }
+
+  // Fallback to local file
   try {
     const response = await fetch('registry/agent-registry.jsonld');
     if (!response.ok) throw new Error('Registry not found');
@@ -1217,7 +1314,7 @@ function inspectAgent(capsuleId) {
 // ============================================================
 // ORCHESTRATE TAB
 // ============================================================
-function runOrchestrate(dryRun = false) {
+async function runOrchestrate(dryRun = false) {
   const query = document.getElementById('orchestrate-query').value.trim();
   if (!query) return;
 
@@ -1225,6 +1322,13 @@ function runOrchestrate(dryRun = false) {
   const resultsContainer = document.getElementById('agent-results');
   routingPanel.style.display = 'block';
 
+  // Use server if in live mode
+  if (liveMode && !dryRun) {
+    await runOrchestrateServer(query);
+    return;
+  }
+
+  // Demo mode - local routing simulation
   const queryTokens = tokenize(query);
   const matches = [];
 
@@ -1305,6 +1409,92 @@ function runOrchestrate(dryRun = false) {
 
   const avgScore = topMatches.length > 0 ? 0.85 : 0;
   updateScoreDisplay(avgScore, avgScore >= 0.8);
+}
+
+async function runOrchestrateServer(query) {
+  const routingPanel = document.getElementById('routing-panel');
+  const resultsContainer = document.getElementById('agent-results');
+
+  const provider = document.getElementById('llm-provider')?.value || 'stub';
+  const model = document.getElementById('llm-model')?.value || null;
+
+  resultsContainer.innerHTML = '<p style="color: var(--aec-gray); text-align: center;">Calling server...</p>';
+
+  try {
+    const response = await fetch(`${SERVER_URL}/orchestrate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query, provider, model, max_agents: 3 })
+    });
+
+    if (!response.ok) throw new Error('Server error');
+    const data = await response.json();
+
+    // Update routing panel
+    let routingHtml = `<div class="routing-line">Query: ${query}</div>`;
+    routingHtml += `<div class="routing-line">Searching ${serverInfo?.capsules_loaded || '?'} registered agents...</div>`;
+    routingHtml += '<div style="margin-top: 12px;">';
+
+    if (data.routed_to && data.routed_to.length > 0) {
+      data.routed_to.forEach(name => {
+        routingHtml += `<div class="routing-line routing-match">✓ ${name}</div>`;
+      });
+      routingHtml += `<div class="routing-line" style="margin-top: 8px; color: var(--aec-gray);">Time: ${data.total_time_ms}ms</div>`;
+    } else {
+      routingHtml += '<div class="routing-line">No matching agents found.</div>';
+    }
+    routingPanel.querySelector('#routing-content').innerHTML = routingHtml + '</div>';
+
+    // Show GHOST state or results
+    if (data.ghost && (!data.routed_to || data.routed_to.length === 0)) {
+      resultsContainer.innerHTML = `
+        <div class="ghost-card">
+          <div class="ghost-icon">👻</div>
+          <div class="ghost-title">GHOST STATE</div>
+          <div class="ghost-desc">
+            ${data.ghost_message || 'No agent in this fleet knows the answer to this query.'}<br><br>
+            <em>"In conventional systems, a failure is just an error log.<br>
+            In AETHER, a failure is a specification."</em>
+          </div>
+          <div class="ghost-gap">Gap: ${(data.gap_tokens || []).join(' · ')}</div>
+          <button class="btn btn-secondary" style="margin-top: 16px;">+ Add to Education Queue</button>
+        </div>
+      `;
+      updateScoreDisplay(0, false);
+    } else {
+      // Show agent results
+      let cardsHtml = '';
+      const results = data.results || [];
+      results.forEach(r => {
+        const score = r.aec_score?.toFixed(3) || '0.000';
+        const passed = r.aec_passed;
+        const isGhost = r.ghost;
+        cardsHtml += `
+          <div class="agent-result-card${isGhost ? ' ghost' : ''}">
+            <div class="agent-result-header">
+              <span class="agent-result-name">${r.capsule_name || r.capsule_id}</span>
+              <span class="agent-result-score ${passed ? 'pass' : 'fail'}">AEC: ${score} ${passed ? '✓ PASS' : isGhost ? '👻 GHOST' : '✗ FAIL'}</span>
+            </div>
+            <p style="color: ${isGhost ? 'var(--aec-orange)' : '#333'}; font-size: 13px; margin-bottom: 12px;">
+              ${r.response ? r.response.substring(0, 300) : '[No response]'}${r.response?.length > 300 ? '...' : ''}
+            </p>
+            <div style="font-size: 11px; color: var(--aec-gray);">${r.grounded || 0}G · ${r.ungrounded || 0}U · ${r.persona || 0}P</div>
+          </div>
+        `;
+      });
+      resultsContainer.innerHTML = cardsHtml || '<p>No results returned.</p>';
+
+      // Calculate average score
+      const scores = results.map(r => r.aec_score || 0);
+      const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b) / scores.length : 0;
+      const allPassed = results.every(r => r.aec_passed);
+      updateScoreDisplay(avgScore, allPassed && !data.ghost);
+    }
+
+  } catch (e) {
+    resultsContainer.innerHTML = `<p style="color: var(--aec-red);">Server error: ${e.message}</p>`;
+    console.error('Orchestrate error:', e);
+  }
 }
 
 // ============================================================

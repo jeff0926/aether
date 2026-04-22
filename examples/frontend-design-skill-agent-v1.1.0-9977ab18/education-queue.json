@@ -1,0 +1,47 @@
+[
+  {
+    "id": "2026-04-21T16-01-00-c6b11e75",
+    "timestamp": "2026-04-21T16:01:00.354068",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 1556 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1556 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-12-d2f570bc",
+    "timestamp": "2026-04-21T16:48:12.056431",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 1556 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1556 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-49-6980fb39",
+    "timestamp": "2026-04-21T16:48:49.396030",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 1556 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1556 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

@@ -1,0 +1,182 @@
+[
+  {
+    "id": "2026-04-21T15-05-33-04f5e0c5",
+    "timestamp": "2026-04-21T15:05:33.071381",
+    "query": "When was Thomas Jefferson born?",
+    "response": "[Stub response for 1524 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1524 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-06-05-e6231e79",
+    "timestamp": "2026-04-21T15:06:05.616512",
+    "query": "Tell me about the Louisiana Purchase",
+    "response": "[Stub response for 1360 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1360 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-44-14-512f7ccf",
+    "timestamp": "2026-04-21T15:44:14.696763",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-45-32-128a271c",
+    "timestamp": "2026-04-21T15:45:32.902710",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-48-01-409b30fc",
+    "timestamp": "2026-04-21T15:48:01.574760",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-57-55-8a06bbe4",
+    "timestamp": "2026-04-21T15:57:55.384920",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-59-20-49427376",
+    "timestamp": "2026-04-21T15:59:20.188919",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-01-00-2ab957ff",
+    "timestamp": "2026-04-21T16:01:00.297347",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-11-ee92bf9e",
+    "timestamp": "2026-04-21T16:48:11.963338",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-49-a47c4903",
+    "timestamp": "2026-04-21T16:48:49.308396",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T17-49-52-945b3c3c",
+    "timestamp": "2026-04-21T17:49:52.373393",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-03-06-770a28d5",
+    "timestamp": "2026-04-21T20:03:06.451261",
+    "query": "Tell me about Thomas Jefferson",
+    "response": "[Stub response for 1523 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1523 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

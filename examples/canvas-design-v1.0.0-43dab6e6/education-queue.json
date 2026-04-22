@@ -1,0 +1,17 @@
+[
+  {
+    "id": "2026-04-21T15-44-14-313c1a84",
+    "timestamp": "2026-04-21T15:44:14.691794",
+    "query": "Create a professional project status report",
+    "response": "[Stub response for 1047 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1047 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

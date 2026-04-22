@@ -1,0 +1,272 @@
+[
+  {
+    "id": "2026-04-21T15-57-39-02f99375",
+    "timestamp": "2026-04-21T15:57:39.662150",
+    "query": "Create a professional project status report in Word",
+    "response": "[Stub response for 967 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 967 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-57-55-e17d0f15",
+    "timestamp": "2026-04-21T15:57:55.289138",
+    "query": "Create a professional project status report in Word",
+    "response": "[Stub response for 967 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 967 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-57-55-e2b65781",
+    "timestamp": "2026-04-21T15:57:55.418209",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 976 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 976 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-58-33-c42a2470",
+    "timestamp": "2026-04-21T15:58:33.573597",
+    "query": "Create a report in Word",
+    "response": "[Stub response for 939 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 939 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-58-56-59d61f9b",
+    "timestamp": "2026-04-21T15:58:56.208341",
+    "query": "Create a report in Word",
+    "response": "[Stub response for 939 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 939 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-59-20-90c5e16c",
+    "timestamp": "2026-04-21T15:59:20.016977",
+    "query": "Create a professional project status report in Word",
+    "response": "[Stub response for 967 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 967 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T15-59-20-f89e506d",
+    "timestamp": "2026-04-21T15:59:20.214980",
+    "query": "How do I style a button with CSS?",
+    "response": "[Stub response for 976 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 976 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-01-00-40999d2a",
+    "timestamp": "2026-04-21T16:01:00.132127",
+    "query": "Create a professional project status report in Word",
+    "response": "[Stub response for 967 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 967 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-47-51-b0861653",
+    "timestamp": "2026-04-21T16:47:51.600054",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-11-06f47352",
+    "timestamp": "2026-04-21T16:48:11.785205",
+    "query": "Create a professional project status report in Word",
+    "response": "[Stub response for 967 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 967 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-28-2da6f815",
+    "timestamp": "2026-04-21T16:48:28.143464",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T16-48-49-d13d7510",
+    "timestamp": "2026-04-21T16:48:49.130411",
+    "query": "Create a professional project status report in Word",
+    "response": "[Stub response for 967 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 967 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T17-49-52-605fbab2",
+    "timestamp": "2026-04-21T17:49:52.306313",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-02-47-db227ac9",
+    "timestamp": "2026-04-21T20:02:47.328074",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-03-06-680a78ae",
+    "timestamp": "2026-04-21T20:03:06.224709",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-09-00-4a165c6f",
+    "timestamp": "2026-04-21T20:09:00.827507",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-09-17-19d00b9f",
+    "timestamp": "2026-04-21T20:09:17.816727",
+    "query": "How do I create a table of contents?",
+    "response": "[Stub response for 974 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 974 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-23-03-b67d31d0",
+    "timestamp": "2026-04-21T20:23:03.872398",
+    "query": "Create a Word document",
+    "response": "[Stub response for 1021 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 1021 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]

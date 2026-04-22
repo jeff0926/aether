@@ -1,0 +1,77 @@
+[
+  {
+    "id": "2026-04-21T17-49-52-9aa00c9d",
+    "timestamp": "2026-04-21T17:49:52.363101",
+    "query": "Create a Word document",
+    "response": "[Stub response for 938 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 938 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-02-47-376fd00f",
+    "timestamp": "2026-04-21T20:02:47.386532",
+    "query": "Create a Word document",
+    "response": "[Stub response for 938 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 938 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-03-06-ce23a89a",
+    "timestamp": "2026-04-21T20:03:06.295275",
+    "query": "Create a Word document",
+    "response": "[Stub response for 938 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 938 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-09-00-b0a39eba",
+    "timestamp": "2026-04-21T20:09:00.896314",
+    "query": "Create a Word document",
+    "response": "[Stub response for 938 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 938 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-23-03-b65f4375",
+    "timestamp": "2026-04-21T20:23:03.934158",
+    "query": "Create a Word document",
+    "response": "[Stub response for 938 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 938 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
+  }
+]
