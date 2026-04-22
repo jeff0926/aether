@@ -73,5 +73,20 @@
       }
     ],
     "status": "pending"
+  },
+  {
+    "id": "2026-04-21T20-54-05-39e73020",
+    "timestamp": "2026-04-21T20:54:05.897162",
+    "query": "Create a Word document",
+    "response": "[Stub response for 938 char prompt]",
+    "aec_score": 0.0,
+    "threshold": 0.8,
+    "gaps": [
+      {
+        "text": "[Stub response for 938 char prompt]",
+        "reason": "values_not_in_kg"
+      }
+    ],
+    "status": "pending"
   }
 ]
