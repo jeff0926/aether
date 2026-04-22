@@ -114,8 +114,8 @@ class OrchestratorCapsule(Capsule):
                 }
             }
 
-        # Run the selected agent — FULL DAGR including AEC
-        agent_result = capsule.run(query)
+        # Run the selected agent — FULL DAGR including AEC (skip distill, already done)
+        agent_result = capsule.run_from_ctx(ctx)
 
         # Step 4: Return agent result directly with routing metadata
         routing_ms = round((time.time() - start) * 1000, 1)

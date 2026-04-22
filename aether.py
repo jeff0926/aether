@@ -282,6 +282,58 @@ class Capsule:
 
         return ctx
 
+    def run_from_ctx(self, ctx: dict) -> dict:
+        """
+        Run pipeline starting from augment.
+        Called by orchestrator — distill already done.
+        ctx must have ctx["input"] and ctx["distilled"] set.
+        """
+        start_time = time.time()
+        cfg = self.files["definition"].get("pipeline", {})
+
+        # Ensure telemetry exists
+        if "telemetry" not in ctx:
+            ctx["telemetry"] = {"stages": {}}
+        if "stages" not in ctx["telemetry"]:
+            ctx["telemetry"]["stages"] = {}
+
+        # Ensure augmented dict exists
+        if "augmented" not in ctx:
+            ctx["augmented"] = {}
+
+        if cfg.get("augment", {}).get("enabled", True):
+            t0 = time.time()
+            ctx = self.augment(ctx)
+            ctx["telemetry"]["stages"]["augment"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+                "kb_matches": len(ctx["augmented"].get("kb", [])),
+                "kg_matches": len(ctx["augmented"].get("kg", [])),
+            }
+
+        if cfg.get("generate", {}).get("enabled", True):
+            t0 = time.time()
+            ctx = self.generate(ctx)
+            ctx["telemetry"]["stages"]["generate"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+                "prompt_chars": ctx.get("_prompt_len", 0),
+                "tokens_in": ctx.get("_tokens_in", 0),
+                "tokens_out": ctx.get("_tokens_out", 0),
+            }
+
+        if cfg.get("review", {}).get("enabled", True):
+            t0 = time.time()
+            ctx = self.review(ctx)
+            ctx["telemetry"]["stages"]["review"] = {
+                "time_ms": round((time.time() - t0) * 1000, 2),
+            }
+
+        ctx["telemetry"]["total_ms"] = round(
+            (time.time() - start_time) * 1000, 2
+        )
+        ctx["meta"]["capsule_id"] = self.id
+        ctx["meta"]["version"] = self.version
+        return ctx
+
     def distill(self, ctx: dict) -> dict:
         """Stage 1: Extract intent, entities, constraints from input."""
         text = ctx["input"]
