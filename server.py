@@ -117,7 +117,7 @@ def orchestrate():
     query = data.get("query", "")
     provider = data.get("provider", DEFAULT_PROVIDER)
     model = data.get("model", DEFAULT_MODEL)
-    max_agents = data.get("max_agents", 3)
+    max_agents = data.get("max_agents", 1)
 
     if not query:
         return jsonify({"error": "Missing query"}), 400

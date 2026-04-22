@@ -84,97 +84,122 @@ class OrchestratorCapsule(Capsule):
 
     def _find_agents(self, intent: str, entities: list, query: str) -> list:
         """
-        Search registry KG for capsules matching intent and entities.
-        Returns list of CapsuleAgent nodes sorted by relevance.
+        Score all registry agents against intent + entities.
+        Return single best match. Multi-agent only if tied scores
+        AND query spans multiple domains.
         """
         import re
         nodes = self.registry.get("@graph", [])
-        matches = []
-        query_lower = query.lower()
+        scored = []
 
-        # Tokenize query: extract words, strip punctuation, handle hyphens
-        raw_words = re.findall(r'[a-z0-9]+(?:-[a-z0-9]+)*', query_lower)
-        query_words = set()
-        for word in raw_words:
-            query_words.add(word)
-            # Also add hyphenated parts separately
-            if '-' in word:
-                query_words.update(word.split('-'))
+        # Normalize query terms from entities (skip short terms like "I")
+        query_terms = set(e.lower() for e in entities if len(e) >= 3)
+        # Also add intent as a term
+        query_terms.add(intent.lower())
+
+        # Also extract key words from query (fallback when entities empty)
+        # Skip common stopwords
+        stopwords = {'a', 'an', 'the', 'and', 'or', 'but', 'in', 'on', 'at', 'to', 'for',
+                     'of', 'with', 'by', 'from', 'as', 'is', 'are', 'was', 'were', 'be',
+                     'been', 'being', 'have', 'has', 'had', 'do', 'does', 'did', 'will',
+                     'would', 'could', 'should', 'may', 'might', 'must', 'shall', 'can',
+                     'i', 'me', 'my', 'we', 'our', 'you', 'your', 'it', 'its', 'how',
+                     'what', 'when', 'where', 'why', 'who', 'which', 'that', 'this',
+                     'create', 'make', 'build', 'get', 'tell', 'give', 'use', 'want'}
+        query_words = re.findall(r'[a-z]+', query.lower())
+        for word in query_words:
+            if len(word) > 2 and word not in stopwords:
+                query_terms.add(word)
 
         for node in nodes:
             if node.get("@type") != "aether:CapsuleAgent":
                 continue
 
-            # Skip self (orchestrator)
-            if "orchestrator" in node.get("aether:capsuleId", "").lower():
+            capsule_id = node.get("aether:capsuleId", "")
+            topics = [t.lower() for t in node.get("aether:topics", [])]
+            description = node.get("aether:description", "").lower()
+            domain = node.get("aether:domain", "").lower()
+            agent_type = node.get("aether:agentType", "domain")
+            capabilities = [c.lower() for c in node.get("aether:capability", [])]
+
+            # Skip orchestrator routing to itself
+            if agent_type == "orchestrator":
                 continue
 
-            topics = node.get("aether:topics", [])
-            domain = node.get("aether:domain", "")
-            description = node.get("aether:description", "").lower()
-            capabilities = node.get("aether:capability", [])
-            label = node.get("rdfs:label", "").lower()
-            capsule_id = node.get("aether:capsuleId", "").lower()
+            # SCORE: count how many query terms match this agent
+            # Track content relevance separately from capability match
+            content_score = 0  # topic/domain/description matches
+            capability_score = 0
 
-            score = 0.0
+            # Topic exact match — highest weight (3 points each)
+            # Only do substring matching for terms >= 3 chars
+            for term in query_terms:
+                if len(term) < 3:
+                    continue
+                for topic in topics:
+                    if term == topic or term in topic or topic in term:
+                        content_score += 3
 
-            # 1. Exact topic match (highest weight)
-            topics_lower = [t.lower() for t in topics]
-            for word in query_words:
-                if word in topics_lower:
-                    score += 0.4  # Exact word in topics
+            # Domain match — high weight (2 points)
+            for term in query_terms:
+                if len(term) >= 3 and term in domain:
+                    content_score += 2
 
-            # 2. Topic word overlap
-            topic_text = " ".join(topics).lower()
-            for word in query_words:
-                if len(word) > 3 and word in topic_text:
-                    score += 0.15
+            # Description match — medium weight (1 point)
+            for term in query_terms:
+                if len(term) >= 3 and term in description:
+                    content_score += 1
 
-            # 3. Entity match against topics
-            for entity in entities:
-                entity_lower = entity.lower()
-                for topic in topics_lower:
-                    if entity_lower in topic or topic in entity_lower:
-                        score += 0.3
-                        break
+            # Intent → capability match (2 points)
+            INTENT_CAPABILITY_MAP = {
+                "creation": ["create", "generate", "build", "format"],
+                "query":    ["explain", "answer", "research", "advise"],
+                "instruction": ["create", "format", "build", "advise"],
+                "comparison": ["analyze", "evaluate", "compare"],
+                "general":  ["advise", "answer", "explain"]
+            }
+            expected_capabilities = INTENT_CAPABILITY_MAP.get(intent.lower(), [])
+            for cap in capabilities:
+                if cap in expected_capabilities:
+                    capability_score += 2
 
-            # 4. Intent/capability match
-            capabilities_lower = [c.lower() for c in capabilities]
-            if intent.lower() in capabilities_lower:
-                score += 0.25
-            # Also check query words against capabilities
-            for word in query_words:
-                if word in capabilities_lower:
-                    score += 0.2
-
-            # 5. Capsule name/ID match
-            for word in query_words:
-                if len(word) > 3 and word in capsule_id:
-                    score += 0.3
-
-            # 6. Label match
-            for word in query_words:
-                if len(word) > 3 and word in label:
-                    score += 0.15
-
-            # 7. Description keyword match (lower weight)
-            for word in query_words:
-                if len(word) > 4 and word in description:
-                    score += 0.05
-
-            if score > 0.1:
-                matches.append({
-                    **node,
-                    "_match_score": round(score, 3)
+            # Require at least SOME content relevance (topic/domain/description)
+            # Capability match alone is not enough - prevents generic matching
+            score = content_score + capability_score
+            if content_score > 0 and score > 0:
+                scored.append({
+                    "node": node,
+                    "score": score,
+                    "capsule_id": capsule_id,
+                    "agent_type": agent_type
                 })
 
-        # Sort by match score descending, then by KG nodes as tiebreaker
-        matches.sort(key=lambda x: (
-            x.get("_match_score", 0),
-            x.get("aether:kgNodes", 0)
-        ), reverse=True)
+        if not scored:
+            return []
 
-        return matches
+        # Sort by score descending
+        scored.sort(key=lambda x: x["score"], reverse=True)
+
+        # Return SINGLE best match unless:
+        # - Top 2 scores are within 1 point of each other AND
+        # - They are from DIFFERENT domains (genuine multi-domain query)
+        best_score = scored[0]["score"]
+        best_domain = scored[0]["node"].get("aether:domain", "")
+
+        results = [scored[0]["node"]]
+
+        if len(scored) > 1:
+            second = scored[1]
+            second_domain = second["node"].get("aether:domain", "")
+            score_gap = best_score - second["score"]
+
+            # Only add second agent if:
+            # 1. Score gap is <= 1 (genuinely tied)
+            # 2. Different domain (not just another docx variant)
+            if score_gap <= 1 and second_domain != best_domain:
+                results.append(second["node"])
+
+        return results
 
     def generate(self, ctx: dict) -> dict:
         """Override generate to execute matched agents via Habitat."""

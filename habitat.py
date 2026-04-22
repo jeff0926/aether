@@ -106,7 +106,7 @@ class Habitat:
         topic: str,
         query: str,
         capsules: dict,
-        max_agents: int = 3,
+        max_agents: int = 1,
         capsule_ids: list = None
     ) -> list[dict]:
         """
