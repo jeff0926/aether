@@ -4,13 +4,13 @@
       "enabled": true
     },
     "augment": {
-      "enabled": true
+      "enabled": false
     },
     "generate": {
-      "enabled": true
+      "enabled": false
     },
     "review": {
-      "enabled": true
+      "enabled": false
     }
   },
   "review": {
@@ -19,7 +19,7 @@
   },
   "orchestrator": {
     "registry": "registry/agent-registry.jsonld",
-    "max_agents": 3,
+    "max_agents": 1,
     "require_aec_pass": false
   }
 }

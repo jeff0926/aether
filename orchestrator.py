@@ -1,13 +1,14 @@
 """
-orchestrator.py - OrchestratorCapsule for multi-agent routing and execution
+orchestrator.py - OrchestratorCapsule for query routing
 
-Extends Capsule with registry-aware routing:
-- Augment stage reads registry KG to find matching agents
-- Generate stage calls Habitat.execute_all() on matches
-- Composes multi-agent results into single response
+Pure router — no AEC on routing decision:
+1. Distill query → intent + entities
+2. Score registry → single best agent
+3. Execute that agent (full DAGR + AEC)
+4. Return agent result directly
 """
 
-import json
+import time
 from pathlib import Path
 from typing import Callable
 
@@ -17,9 +18,8 @@ from kg import load_kg
 
 class OrchestratorCapsule(Capsule):
     """
-    Extends Capsule with registry-aware routing.
-    Augment stage reads registry KG to find matching agents.
-    Generate stage calls Habitat.execute_all() on matches.
+    Pure router. Extends Capsule only to use distill().
+    Does NOT run augment/generate/review on routing.
     """
 
     def __init__(
@@ -27,60 +27,117 @@ class OrchestratorCapsule(Capsule):
         path: str | Path,
         habitat,
         registry_path: str | Path,
-        capsule_loader: Callable = None,
-        llm_fn: Callable = None
+        llm_fn: Callable = None,
+        loaded_capsules: dict = None
     ):
         """
         Initialize orchestrator.
 
         Args:
             path: Path to orchestrator capsule folder
-            habitat: Habitat instance for routing and execution
+            habitat: Habitat instance for routing
             registry_path: Path to agent-registry.jsonld
-            capsule_loader: Function to load capsule by ID (capsule_id -> Capsule)
-            llm_fn: LLM function for generation
+            llm_fn: LLM function for capsules
+            loaded_capsules: Dict of capsule_id -> Capsule instances
         """
         super().__init__(path, llm_fn)
         self.habitat = habitat
         self.registry_path = Path(registry_path)
         self.registry = load_kg(str(registry_path))
-        self.capsule_loader = capsule_loader or self._default_loader
-        self._capsule_cache = {}
+        self._loaded_capsules = loaded_capsules or {}
 
-    def _default_loader(self, capsule_id: str) -> Capsule | None:
-        """Default loader - looks in examples/ directory."""
-        if capsule_id in self._capsule_cache:
-            return self._capsule_cache[capsule_id]
+    def run(self, query: str) -> dict:
+        """
+        Pure router. No AEC on routing decision.
 
-        examples_dir = Path("examples")
-        capsule_path = examples_dir / capsule_id
+        1. Distill query → intent + entities
+        2. Score registry → single best agent
+        3. Execute that agent → real response + real AEC
+        4. Return agent result directly
+        """
+        start = time.time()
 
-        if capsule_path.exists():
-            try:
-                capsule = Capsule(str(capsule_path), llm_fn=self.llm_fn)
-                self._capsule_cache[capsule_id] = capsule
-                return capsule
-            except Exception:
-                pass
+        # Step 1: Distill — extract intent and entities
+        ctx = {
+            "input": query,
+            "distilled": {},
+            "augmented": {},
+            "generated": "",
+            "review": {},
+            "meta": {"capsule_id": self.id},
+            "telemetry": {"stages": {}}
+        }
+        ctx = self.distill(ctx)
 
-        return None
-
-    def augment(self, ctx: dict) -> dict:
-        """Override augment to query registry KG for matching agents."""
-        # Standard KB/KG augment first
-        ctx = super().augment(ctx)
-
-        # Query registry for matching capsules
         intent = ctx["distilled"].get("intent", "general")
         entities = ctx["distilled"].get("entities", [])
-        query = ctx.get("input", "")
 
-        # Find matching agents from registry
+        # Step 2: Score registry — find single best agent
         matching_agents = self._find_agents(intent, entities, query)
-        ctx["augmented"]["matching_agents"] = matching_agents
-        ctx["augmented"]["registry_matches"] = len(matching_agents)
 
-        return ctx
+        if not matching_agents:
+            return {
+                "input": query,
+                "generated": "[GHOST] No suitable agent found for this query.",
+                "review": {
+                    "ghost": True,
+                    "aec": {"score": 0.0, "passed": False, "ghost": True}
+                },
+                "_routed_to": [],
+                "_routed_capsule_id": None,
+                "_ghost": True,
+                "_gap_tokens": [e.lower() for e in entities if len(e) >= 3],
+                "telemetry": {
+                    "total_ms": round((time.time() - start) * 1000, 1)
+                }
+            }
+
+        # Step 3: Execute the single best agent
+        best_agent = matching_agents[0]
+        capsule_id = best_agent.get("aether:capsuleId")
+        routing_score = best_agent.get("_score", 0)
+        capsule = self._get_capsule(capsule_id)
+
+        if not capsule:
+            return {
+                "input": query,
+                "generated": f"[GHOST] Agent {capsule_id} not loaded.",
+                "review": {
+                    "ghost": True,
+                    "aec": {"score": 0.0, "passed": False, "ghost": True}
+                },
+                "_routed_to": [],
+                "_routed_capsule_id": capsule_id,
+                "_ghost": True,
+                "telemetry": {
+                    "total_ms": round((time.time() - start) * 1000, 1)
+                }
+            }
+
+        # Run the selected agent — FULL DAGR including AEC
+        agent_result = capsule.run(query)
+
+        # Step 4: Return agent result directly with routing metadata
+        routing_ms = round((time.time() - start) * 1000, 1)
+        agent_result["_routed_to"] = [best_agent.get("rdfs:label", capsule_id)]
+        agent_result["_routed_capsule_id"] = capsule_id
+        agent_result["_routing_score"] = routing_score
+        if "telemetry" not in agent_result:
+            agent_result["telemetry"] = {}
+        agent_result["telemetry"]["routing_ms"] = routing_ms
+
+        return agent_result
+
+    def _get_capsule(self, capsule_id: str) -> Capsule | None:
+        """Find loaded capsule by ID or folder name."""
+        # Try exact match first
+        if capsule_id in self._loaded_capsules:
+            return self._loaded_capsules[capsule_id]
+        # Try folder name match (capsule_id might be full folder name)
+        for key, capsule in self._loaded_capsules.items():
+            if capsule_id in key or key in capsule_id:
+                return capsule
+        return None
 
     def _find_agents(self, intent: str, entities: list, query: str) -> list:
         """
@@ -167,8 +224,11 @@ class OrchestratorCapsule(Capsule):
             # Capability match alone is not enough - prevents generic matching
             score = content_score + capability_score
             if content_score > 0 and score > 0:
+                # Store score in node for later reference
+                node_copy = dict(node)
+                node_copy["_score"] = score
                 scored.append({
-                    "node": node,
+                    "node": node_copy,
                     "score": score,
                     "capsule_id": capsule_id,
                     "agent_type": agent_type
@@ -183,10 +243,11 @@ class OrchestratorCapsule(Capsule):
         # Return SINGLE best match unless:
         # - Top 2 scores are within 1 point of each other AND
         # - They are from DIFFERENT domains (genuine multi-domain query)
-        best_score = scored[0]["score"]
-        best_domain = scored[0]["node"].get("aether:domain", "")
+        best = scored[0]
+        best_score = best["score"]
+        best_domain = best["node"].get("aether:domain", "")
 
-        results = [scored[0]["node"]]
+        results = [best["node"]]
 
         if len(scored) > 1:
             second = scored[1]
@@ -201,116 +262,6 @@ class OrchestratorCapsule(Capsule):
 
         return results
 
-    def generate(self, ctx: dict) -> dict:
-        """Override generate to execute matched agents via Habitat."""
-        matching_agents = ctx["augmented"].get("matching_agents", [])
-
-        if not matching_agents:
-            ctx["generated"] = "[GHOST] No suitable agent found for this query."
-            ctx["review"] = {
-                "ghost": True,
-                "aec": {"score": 0.0, "passed": False, "ghost": True}
-            }
-            ctx["_routed_to"] = []
-            ctx["_agent_results"] = []
-            return ctx
-
-        # Get max_agents from definition
-        orch_config = self.files["definition"].get("orchestrator", {})
-        max_agents = orch_config.get("max_agents", 3)
-
-        # Get capsule IDs to execute
-        capsule_ids = [
-            a["aether:capsuleId"] for a in matching_agents[:max_agents]
-        ]
-
-        # Load capsules
-        capsules = {}
-        for cid in capsule_ids:
-            capsule = self.capsule_loader(cid)
-            if capsule:
-                capsules[cid] = capsule
-
-        if not capsules:
-            ctx["generated"] = "[GHOST] No agents could be loaded for execution."
-            ctx["review"] = {
-                "ghost": True,
-                "aec": {"score": 0.0, "passed": False, "ghost": True}
-            }
-            ctx["_routed_to"] = []
-            ctx["_agent_results"] = []
-            return ctx
-
-        # Execute via Habitat (pass explicit capsule_ids to skip topic routing)
-        results = self.habitat.execute_all(
-            topic=ctx["distilled"].get("intent", "general"),
-            query=ctx["input"],
-            capsules=capsules,
-            max_agents=max_agents,
-            capsule_ids=capsule_ids
-        )
-
-        # Compose response
-        ctx["generated"] = self._compose_response(results)
-        ctx["_routed_to"] = [r.get("capsule_name", r.get("capsule_id")) for r in results]
-        ctx["_agent_results"] = results
-
-        # Aggregate AEC scores
-        scores = [r["aec_score"] for r in results if "aec_score" in r]
-        avg_score = sum(scores) / len(scores) if scores else 0.0
-        all_passed = all(r.get("aec_passed", False) for r in results if "aec_passed" in r)
-        any_ghost = any(r.get("ghost", False) for r in results)
-
-        ctx["review"] = {
-            "aec": {
-                "score": round(avg_score, 3),
-                "passed": all_passed and not any_ghost,
-                "ghost": any_ghost and not all_passed,
-                "agents_executed": len(results),
-            },
-            "ghost": any_ghost and not all_passed,
-            "queued": False,
-            "self_corrected": False,
-        }
-
-        return ctx
-
-    def _compose_response(self, results: list) -> str:
-        """Compose multi-agent results into single response."""
-        if not results:
-            return "[GHOST] No agents executed."
-
-        parts = []
-        for r in results:
-            if r.get("error"):
-                parts.append(
-                    f"[{r.get('capsule_name', r['capsule_id'])}] ERROR: {r['error']}"
-                )
-            elif r.get("ghost"):
-                parts.append(
-                    f"[{r['capsule_name']}] GHOST — could not verify response (AEC: {r['aec_score']:.2f})"
-                )
-            else:
-                parts.append(
-                    f"[{r['capsule_name']} — AEC: {r['aec_score']:.2f}]\n"
-                    f"{r['response']}"
-                )
-
-        return "\n\n---\n\n".join(parts)
-
-    def review(self, ctx: dict) -> dict:
-        """Override review - already handled in generate for orchestrator."""
-        # Review is done in generate() for orchestrator
-        # Just ensure review dict exists
-        if "review" not in ctx:
-            ctx["review"] = {
-                "aec": {"score": 0.0, "passed": False, "ghost": True},
-                "ghost": True,
-                "queued": False,
-                "self_corrected": False,
-            }
-        return ctx
-
 
 def orchestrate(
     query: str,
@@ -318,7 +269,7 @@ def orchestrate(
     registry_path: str = "registry/agent-registry.jsonld",
     orchestrator_path: str = None,
     llm_fn: Callable = None,
-    max_agents: int = 3
+    loaded_capsules: dict = None
 ) -> dict:
     """
     Convenience function to run orchestration.
@@ -329,7 +280,7 @@ def orchestrate(
         registry_path: Path to agent registry KG
         orchestrator_path: Path to orchestrator capsule (auto-detects if None)
         llm_fn: LLM function for capsules
-        max_agents: Max agents to execute
+        loaded_capsules: Dict of capsule_id -> Capsule instances
 
     Returns:
         Orchestration result dict
@@ -347,7 +298,8 @@ def orchestrate(
         orchestrator_path,
         habitat=habitat,
         registry_path=registry_path,
-        llm_fn=llm_fn
+        llm_fn=llm_fn,
+        loaded_capsules=loaded_capsules
     )
 
     # Run pipeline
@@ -356,10 +308,10 @@ def orchestrate(
     return {
         "query": query,
         "routed_to": result.get("_routed_to", []),
-        "agent_results": result.get("_agent_results", []),
-        "response": result["generated"],
-        "aec": result["review"]["aec"],
-        "ghost": result["review"].get("ghost", False),
+        "routed_capsule_id": result.get("_routed_capsule_id"),
+        "response": result.get("generated", ""),
+        "aec": result.get("review", {}).get("aec", {}),
+        "ghost": result.get("review", {}).get("ghost", False),
     }
 
 
@@ -382,6 +334,18 @@ if __name__ == "__main__":
 
     print(f"Registered {len(h.list_capsules())} capsules")
 
+    # Load capsules
+    capsules = {}
+    for d in Path("examples").iterdir():
+        if d.is_dir():
+            try:
+                c = Capsule(str(d), llm_fn=make_llm_fn("stub"))
+                capsules[d.name] = c
+            except:
+                pass
+
+    print(f"Loaded {len(capsules)} capsules")
+
     # Find orchestrator
     orch_path = list(Path("examples").glob("orchestrator*"))[0]
     print(f"Orchestrator: {orch_path.name}")
@@ -391,11 +355,13 @@ if __name__ == "__main__":
         str(orch_path),
         habitat=h,
         registry_path="registry/agent-registry.jsonld",
-        llm_fn=make_llm_fn("stub")
+        llm_fn=make_llm_fn("stub"),
+        loaded_capsules=capsules
     )
 
     # Test query
     result = orch.run("Create a professional document")
     print(f"\nQuery: Create a professional document")
     print(f"Routed to: {result.get('_routed_to')}")
-    print(f"Response preview: {result['generated'][:200]}...")
+    print(f"AEC score: {result.get('review', {}).get('aec', {}).get('score', 0)}")
+    print(f"Response preview: {result.get('generated', '')[:200]}...")

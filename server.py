@@ -60,14 +60,15 @@ def load_all_capsules(provider="stub", model=None):
 
     print(f"Loaded {loaded} capsules")
 
-    # Create orchestrator
+    # Create orchestrator with loaded capsules
     orch_path = next(Path(EXAMPLES_PATH).glob("orchestrator*"), None)
     if orch_path:
         orchestrator = OrchestratorCapsule(
             str(orch_path),
             habitat=habitat,
             registry_path=REGISTRY_PATH,
-            llm_fn=llm_fn
+            llm_fn=llm_fn,
+            loaded_capsules=capsules
         )
         print(f"Orchestrator ready: {orch_path.name}")
     else:
@@ -108,8 +109,8 @@ def registry():
 @app.route("/orchestrate", methods=["POST"])
 def orchestrate():
     """
-    Route a query to matching agents and execute them.
-    Body: {"query": str, "provider": str?, "model": str?, "max_agents": int?}
+    Route a query to the best agent and execute it.
+    Body: {"query": str, "provider": str?, "model": str?}
     """
     global orchestrator
 
@@ -117,7 +118,6 @@ def orchestrate():
     query = data.get("query", "")
     provider = data.get("provider", DEFAULT_PROVIDER)
     model = data.get("model", DEFAULT_MODEL)
-    max_agents = data.get("max_agents", 1)
 
     if not query:
         return jsonify({"error": "Missing query"}), 400
@@ -127,59 +127,47 @@ def orchestrate():
 
     start_time = time.time()
 
-    # If provider specified, create new llm_fn for this request
-    if provider != DEFAULT_PROVIDER or model != DEFAULT_MODEL:
-        llm_fn = make_llm_fn(provider=provider, model=model)
-        # Create temporary orchestrator with new llm_fn
-        orch = OrchestratorCapsule(
-            str(orchestrator.path),
-            habitat=habitat,
-            registry_path=REGISTRY_PATH,
-            llm_fn=llm_fn
-        )
-    else:
-        orch = orchestrator
+    try:
+        # If provider specified, create new llm_fn for this request
+        if provider != DEFAULT_PROVIDER or model != DEFAULT_MODEL:
+            llm_fn = make_llm_fn(provider=provider, model=model)
+            # Create temporary orchestrator with new llm_fn
+            orch = OrchestratorCapsule(
+                str(orchestrator.path),
+                habitat=habitat,
+                registry_path=REGISTRY_PATH,
+                llm_fn=llm_fn,
+                loaded_capsules=capsules
+            )
+        else:
+            orch = orchestrator
 
-    # Run orchestrator
-    result = orch.run(query)
+        # Run orchestrator (pure routing + agent execution)
+        result = orch.run(query)
 
-    total_time_ms = int((time.time() - start_time) * 1000)
+        routed_to = result.get("_routed_to", [])
+        ghost = result.get("_ghost", False) or result.get("review", {}).get("ghost", False)
+        aec = result.get("review", {}).get("aec", {})
 
-    routed_to = result.get("_routed_to", [])
-    agent_results = result.get("_agent_results", [])
-    ghost = result["review"].get("ghost", False)
-
-    # Format results
-    formatted_results = []
-    for r in agent_results:
-        formatted_results.append({
-            "capsule_id": r.get("capsule_id"),
-            "capsule_name": r.get("capsule_name"),
-            "agent_type": capsules.get(r.get("capsule_id"), {}).files["manifest"].get("agentType", "unknown") if r.get("capsule_id") in capsules else "unknown",
-            "response": r.get("response", ""),
-            "aec_score": r.get("aec_score", 0.0),
-            "aec_passed": r.get("aec_passed", False),
-            "ghost": r.get("ghost", False),
-            "grounded": r.get("grounded", 0),
-            "ungrounded": r.get("ungrounded", 0),
-            "persona": r.get("persona", 0),
+        return jsonify({
+            "query": query,
+            "routed_to": routed_to,
+            "routed_capsule_id": result.get("_routed_capsule_id", ""),
+            "response": result.get("generated", ""),
+            "aec_score": aec.get("score", 0.0),
+            "aec_passed": aec.get("passed", False),
+            "ghost": ghost,
+            "ghost_message": result.get("generated", "") if ghost else None,
+            "gap_tokens": result.get("_gap_tokens", []),
+            "grounded": aec.get("grounded_statements", 0),
+            "ungrounded": aec.get("ungrounded_statements", 0),
+            "persona": aec.get("persona_statements", 0),
+            "statements": aec.get("statements", []),
+            "total_time_ms": round((time.time() - start_time) * 1000, 1)
         })
 
-    # Build response
-    response = {
-        "query": query,
-        "routed_to": routed_to,
-        "results": formatted_results,
-        "ghost": ghost,
-        "total_time_ms": total_time_ms
-    }
-
-    if ghost and not routed_to:
-        response["ghost_message"] = "[GHOST] No suitable agent found for this query."
-        # Extract gap tokens from query
-        response["gap_tokens"] = query.lower().split()[:5]
-
-    return jsonify(response)
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @app.route("/verify", methods=["POST"])
