@@ -819,19 +819,23 @@
         <div class="setting-row">
           <label>Provider</label>
           <select id="llm-provider">
-            <option value="anthropic">Anthropic</option>
-            <option value="openai">OpenAI</option>
-            <option value="stub">Stub (no API)</option>
+            <option value="stub">Stub (no API key needed)</option>
+            <option value="anthropic">Anthropic (Claude)</option>
+            <option value="openai">OpenAI (GPT)</option>
           </select>
+        </div>
+        <div class="setting-row">
+          <label>Model</label>
+          <input type="text" id="llm-model" placeholder="e.g. claude-sonnet-4-20250514">
         </div>
         <div class="setting-row">
           <label>API Key</label>
           <input type="password" id="api-key" placeholder="sk-...">
-          <div class="setting-hint">Stored in browser session only. Never sent except to your LLM provider.</div>
+          <div class="setting-hint">Stored in browser session only. Sent to server with each request.</div>
         </div>
         <div class="setting-row">
-          <label>Model</label>
-          <input type="text" id="llm-model" value="claude-sonnet-4-6">
+          <button class="btn btn-primary" onclick="saveSettings()">Save & Test Connection</button>
+          <span id="settings-status" style="margin-left: 12px; font-size: 13px;"></span>
         </div>
       </div>
 
@@ -921,6 +925,67 @@ let network = null;
 let SERVER_URL = 'http://127.0.0.1:8000';
 let liveMode = false;
 let serverInfo = null;
+
+// ============================================================
+// SETTINGS MANAGEMENT
+// ============================================================
+function getSettings() {
+  return {
+    provider: sessionStorage.getItem('aether_provider') || 'stub',
+    model: sessionStorage.getItem('aether_model') || null,
+    api_key: sessionStorage.getItem('aether_api_key') || null
+  };
+}
+
+function saveSettings() {
+  const provider = document.getElementById('llm-provider').value;
+  const model = document.getElementById('llm-model').value || null;
+  const apiKey = document.getElementById('api-key').value || null;
+
+  // Save to session
+  sessionStorage.setItem('aether_provider', provider);
+  if (model) sessionStorage.setItem('aether_model', model);
+  else sessionStorage.removeItem('aether_model');
+  if (apiKey) sessionStorage.setItem('aether_api_key', apiKey);
+  else sessionStorage.removeItem('aether_api_key');
+
+  const status = document.getElementById('settings-status');
+  status.innerHTML = 'Testing...';
+  status.style.color = 'var(--aec-gray)';
+
+  // Test connection
+  fetch(SERVER_URL + '/settings', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      provider: provider,
+      model: model,
+      api_key: apiKey
+    })
+  })
+  .then(r => r.json())
+  .then(d => {
+    if (d.status === 'ok') {
+      status.innerHTML = '✓ Connected — ' + provider;
+      status.style.color = 'var(--aec-green)';
+    } else {
+      status.innerHTML = '✗ Failed — ' + (d.message || 'Unknown error');
+      status.style.color = 'var(--aec-red)';
+    }
+  })
+  .catch(e => {
+    status.innerHTML = '✗ Server error — ' + e.message;
+    status.style.color = 'var(--aec-red)';
+  });
+}
+
+function restoreSettings() {
+  const provider = sessionStorage.getItem('aether_provider');
+  const model = sessionStorage.getItem('aether_model');
+  if (provider) document.getElementById('llm-provider').value = provider;
+  if (model) document.getElementById('llm-model').value = model;
+  // Never restore API key to input for security
+}
 
 // ============================================================
 // AEC ENGINE (JavaScript)
@@ -1126,6 +1191,9 @@ document.addEventListener('DOMContentLoaded', async function() {
 
   // Check server connection first
   await checkServerConnection();
+
+  // Restore saved settings from sessionStorage
+  restoreSettings();
 
   loadRegistry();
   switchKGAgent('frontend-design');
@@ -1415,8 +1483,8 @@ async function runOrchestrateServer(query) {
   const routingPanel = document.getElementById('routing-panel');
   const resultsContainer = document.getElementById('agent-results');
 
-  const provider = document.getElementById('llm-provider')?.value || 'stub';
-  const model = document.getElementById('llm-model')?.value || null;
+  // Get settings from sessionStorage (includes api_key)
+  const settings = getSettings();
 
   resultsContainer.innerHTML = '<p style="color: var(--aec-gray); text-align: center;">Calling server...</p>';
 
@@ -1424,7 +1492,7 @@ async function runOrchestrateServer(query) {
     const response = await fetch(`${SERVER_URL}/orchestrate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ query, provider, model, max_agents: 3 })
+      body: JSON.stringify({ query, ...settings })
     });
 
     if (!response.ok) throw new Error('Server error');
@@ -1462,33 +1530,27 @@ async function runOrchestrateServer(query) {
       `;
       updateScoreDisplay(0, false);
     } else {
-      // Show agent results
-      let cardsHtml = '';
-      const results = data.results || [];
-      results.forEach(r => {
-        const score = r.aec_score?.toFixed(3) || '0.000';
-        const passed = r.aec_passed;
-        const isGhost = r.ghost;
-        cardsHtml += `
-          <div class="agent-result-card${isGhost ? ' ghost' : ''}">
-            <div class="agent-result-header">
-              <span class="agent-result-name">${r.capsule_name || r.capsule_id}</span>
-              <span class="agent-result-score ${passed ? 'pass' : 'fail'}">AEC: ${score} ${passed ? '✓ PASS' : isGhost ? '👻 GHOST' : '✗ FAIL'}</span>
-            </div>
-            <p style="color: ${isGhost ? 'var(--aec-orange)' : '#333'}; font-size: 13px; margin-bottom: 12px;">
-              ${r.response ? r.response.substring(0, 300) : '[No response]'}${r.response?.length > 300 ? '...' : ''}
-            </p>
-            <div style="font-size: 11px; color: var(--aec-gray);">${r.grounded || 0}G · ${r.ungrounded || 0}U · ${r.persona || 0}P</div>
-          </div>
-        `;
-      });
-      resultsContainer.innerHTML = cardsHtml || '<p>No results returned.</p>';
+      // Show single agent result (new API format)
+      const score = data.aec_score?.toFixed(3) || '0.000';
+      const passed = data.aec_passed;
+      const isGhost = data.ghost;
+      const agentName = data.routed_to?.[0] || data.routed_capsule_id || 'Agent';
 
-      // Calculate average score
-      const scores = results.map(r => r.aec_score || 0);
-      const avgScore = scores.length > 0 ? scores.reduce((a, b) => a + b) / scores.length : 0;
-      const allPassed = results.every(r => r.aec_passed);
-      updateScoreDisplay(avgScore, allPassed && !data.ghost);
+      const cardsHtml = `
+        <div class="agent-result-card${isGhost ? ' ghost' : ''}">
+          <div class="agent-result-header">
+            <span class="agent-result-name">${agentName}</span>
+            <span class="agent-result-score ${passed ? 'pass' : 'fail'}">AEC: ${score} ${passed ? '✓ PASS' : isGhost ? '👻 GHOST' : '✗ FAIL'}</span>
+          </div>
+          <p style="color: ${isGhost ? 'var(--aec-orange)' : '#333'}; font-size: 13px; margin-bottom: 12px; white-space: pre-wrap;">
+            ${data.response ? data.response.substring(0, 500) : '[No response]'}${data.response?.length > 500 ? '...' : ''}
+          </p>
+          <div style="font-size: 11px; color: var(--aec-gray);">${data.grounded || 0}G · ${data.ungrounded || 0}U · ${data.persona || 0}P</div>
+        </div>
+      `;
+      resultsContainer.innerHTML = cardsHtml;
+
+      updateScoreDisplay(data.aec_score || 0, passed && !isGhost);
     }
 
   } catch (e) {

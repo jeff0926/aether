@@ -106,11 +106,49 @@ def registry():
         return jsonify({"error": str(e)}), 500
 
 
+@app.route("/settings", methods=["POST"])
+def update_settings():
+    """
+    Test LLM connection with provided settings.
+    Body: {"provider": str, "model": str?, "api_key": str?}
+    """
+    data = request.get_json() or {}
+    provider = data.get("provider", "stub")
+    model = data.get("model", None)
+    api_key = data.get("api_key", None)
+
+    try:
+        llm_fn = make_llm_fn(provider=provider, model=model, api_key=api_key)
+        # Quick test call
+        test_result = llm_fn("Say OK")
+        test_text = test_result.get("text", "")
+
+        # Check for error in response
+        if "[LLM Error" in test_text:
+            return jsonify({
+                "status": "error",
+                "message": test_text
+            }), 400
+
+        return jsonify({
+            "status": "ok",
+            "provider": provider,
+            "model": model or "default",
+            "test": "connected",
+            "response": test_text[:50]
+        })
+    except Exception as e:
+        return jsonify({
+            "status": "error",
+            "message": str(e)
+        }), 400
+
+
 @app.route("/orchestrate", methods=["POST"])
 def orchestrate():
     """
     Route a query to the best agent and execute it.
-    Body: {"query": str, "provider": str?, "model": str?}
+    Body: {"query": str, "provider": str?, "model": str?, "api_key": str?}
     """
     global orchestrator
 
@@ -118,6 +156,7 @@ def orchestrate():
     query = data.get("query", "")
     provider = data.get("provider", DEFAULT_PROVIDER)
     model = data.get("model", DEFAULT_MODEL)
+    api_key = data.get("api_key", None)
 
     if not query:
         return jsonify({"error": "Missing query"}), 400
@@ -128,19 +167,21 @@ def orchestrate():
     start_time = time.time()
 
     try:
-        # If provider specified, create new llm_fn for this request
-        if provider != DEFAULT_PROVIDER or model != DEFAULT_MODEL:
-            llm_fn = make_llm_fn(provider=provider, model=model)
-            # Create temporary orchestrator with new llm_fn
-            orch = OrchestratorCapsule(
-                str(orchestrator.path),
-                habitat=habitat,
-                registry_path=REGISTRY_PATH,
-                llm_fn=llm_fn,
-                loaded_capsules=capsules
-            )
-        else:
-            orch = orchestrator
+        # Create llm_fn with provided settings (including api_key)
+        llm_fn = make_llm_fn(provider=provider, model=model, api_key=api_key)
+
+        # Update capsules with new llm_fn for this request
+        for cap in capsules.values():
+            cap.llm_fn = llm_fn
+
+        # Create orchestrator with new llm_fn and updated capsules
+        orch = OrchestratorCapsule(
+            str(orchestrator.path),
+            habitat=habitat,
+            registry_path=REGISTRY_PATH,
+            llm_fn=llm_fn,
+            loaded_capsules=capsules
+        )
 
         # Run orchestrator (pure routing + agent execution)
         result = orch.run(query)
