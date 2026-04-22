@@ -805,7 +805,7 @@
         <h3>Server Connection</h3>
         <div class="setting-row">
           <label>Server URL</label>
-          <input type="text" id="server-url" value="http://localhost:8000">
+          <input type="text" id="server-url" value="http://127.0.0.1:8000">
         </div>
         <div class="setting-row">
           <button class="btn btn-primary" onclick="testServerConnection()">Test Connection</button>
@@ -918,7 +918,7 @@ let compiledKG = null;
 let network = null;
 
 // Server connection state
-let SERVER_URL = 'http://localhost:8000';
+let SERVER_URL = 'http://127.0.0.1:8000';
 let liveMode = false;
 let serverInfo = null;
 
